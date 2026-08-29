@@ -1,0 +1,42 @@
+{
+  "manifestVersion": 1,
+  "id": "aprincar.write-a",
+  "kind": "game",
+  "version": "1.0.0",
+  "publisher": "aprincar",
+  "name": {
+    "pt-BR": "Desenhe a Letra A"
+  },
+  "description": {
+    "pt-BR": "Desenhe a Letra A — experiência oficial de referência do Aprincar."
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [
+    "handwriting",
+    "drawing"
+  ],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "writing.trace-letter"
+    ],
+    "secondarySkills": [],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "interests": [
+      "letters",
+      "writing"
+    ],
+    "playType": "learning"
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}

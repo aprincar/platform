@@ -1,0 +1,41 @@
+{
+  "manifestVersion": 1,
+  "id": "aprincar.counting-animals",
+  "kind": "game",
+  "version": "1.0.0",
+  "publisher": "aprincar",
+  "name": {
+    "pt-BR": "Conte os Bichos"
+  },
+  "description": {
+    "pt-BR": "Conte os Bichos — experiência oficial de referência do Aprincar."
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [
+    "audio"
+  ],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "math.counting.1-10"
+    ],
+    "secondarySkills": [],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "interests": [
+      "math",
+      "counting"
+    ],
+    "playType": "learning"
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}

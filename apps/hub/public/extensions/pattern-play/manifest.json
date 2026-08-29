@@ -1,0 +1,39 @@
+{
+  "manifestVersion": 1,
+  "id": "aprincar.pattern-play",
+  "kind": "game",
+  "version": "1.0.0",
+  "publisher": "aprincar",
+  "name": {
+    "pt-BR": "Brincando com Padrões"
+  },
+  "description": {
+    "pt-BR": "Brincando com Padrões — experiência oficial de referência do Aprincar."
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "logic.patterns.ab"
+    ],
+    "secondarySkills": [],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "interests": [
+      "logic",
+      "patterns"
+    ],
+    "playType": "learning"
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}
