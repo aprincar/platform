@@ -2,13 +2,13 @@
   "manifestVersion": 1,
   "id": "aprincar.pattern-play",
   "kind": "game",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "aprincar",
   "name": {
-    "pt-BR": "Brincando com Padrões"
+    "pt-BR": "Trem dos Padrões"
   },
   "description": {
-    "pt-BR": "Brincando com Padrões — experiência oficial de referência do Aprincar."
+    "pt-BR": "Descubra qual peça continua cada sequência."
   },
   "engines": {
     "aprincar": "^1.0.0",
@@ -23,10 +23,12 @@
     "skills": [
       "logic.patterns.ab"
     ],
-    "secondarySkills": [],
+    "secondarySkills": [
+      "logic.patterns.abc"
+    ],
     "ageGuidance": {
       "min": 4,
-      "max": 7
+      "max": 8
     },
     "interests": [
       "logic",

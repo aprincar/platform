@@ -1,14 +1,14 @@
 {
   "manifestVersion": 1,
-  "id": "aprincar.color-match",
+  "id": "aprincar.space-shapes-3d",
   "kind": "game",
   "version": "1.1.0",
   "publisher": "aprincar",
   "name": {
-    "pt-BR": "Mundo das Cores"
+    "pt-BR": "Formas no Espaço 3D"
   },
   "description": {
-    "pt-BR": "Leve cada peça até a cor correspondente."
+    "pt-BR": "Gire sólidos em 3D e reconheça suas formas."
   },
   "engines": {
     "aprincar": "^1.0.0",
@@ -21,17 +21,17 @@
   "optionalPermissions": [],
   "contributes": {
     "skills": [
-      "perception.colors.match"
+      "math.geometry.solids"
     ],
     "secondarySkills": [],
     "ageGuidance": {
-      "min": 2,
-      "max": 6
+      "min": 5,
+      "max": 10
     },
     "interests": [
-      "colors",
-      "logic",
-      "drag"
+      "geometry",
+      "3d",
+      "exploration"
     ],
     "playType": "learning"
   },

@@ -56,7 +56,9 @@ export class AprincarGameClient {
     remove: (key: string, scope: 'device' | 'profile' = 'profile') =>
       this.request('storage.remove', { key, scope }),
   };
-  readonly capability = { request: (name: string) => this.request('capability.request', { name }) };
+  readonly capability = {
+    request: (name: string, payload: unknown = {}) => this.request('capability.request', { name, payload }),
+  };
 
   private onResponse(value: HostResponse): void {
     if (value?.type !== 'host.response' || !value.requestId) return;

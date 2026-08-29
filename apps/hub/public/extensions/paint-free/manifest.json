@@ -2,13 +2,13 @@
   "manifestVersion": 1,
   "id": "aprincar.paint-free",
   "kind": "game",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "aprincar",
   "name": {
     "pt-BR": "Pintura Livre"
   },
   "description": {
-    "pt-BR": "Pintura Livre — experiência oficial de referência do Aprincar."
+    "pt-BR": "Desenhe, pinte e experimente sem resposta certa ou errada."
   },
   "engines": {
     "aprincar": "^1.0.0",
@@ -17,18 +17,13 @@
   "entrypoints": {
     "game": "game.html"
   },
-  "permissions": [
-    "drawing",
-    "storage"
-  ],
+  "permissions": [],
   "optionalPermissions": [],
   "contributes": {
     "skills": [
       "creativity.visual-expression"
     ],
-    "secondarySkills": [
-      "motor.free-drawing"
-    ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 2,
       "max": 10
@@ -37,7 +32,7 @@
       "paint",
       "creative"
     ],
-    "playType": "free-play"
+    "playType": "creative"
   },
   "offline": true,
   "bundleMode": "single-html"

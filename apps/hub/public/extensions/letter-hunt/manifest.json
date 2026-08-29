@@ -2,13 +2,13 @@
   "manifestVersion": 1,
   "id": "aprincar.letter-hunt",
   "kind": "game",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "aprincar",
   "name": {
     "pt-BR": "Caça às Letras"
   },
   "description": {
-    "pt-BR": "Caça às Letras — experiência oficial de referência do Aprincar."
+    "pt-BR": "Encontre letras em movimento e avance por desafios."
   },
   "engines": {
     "aprincar": "^1.0.0",
@@ -17,9 +17,7 @@
   "entrypoints": {
     "game": "game.html"
   },
-  "permissions": [
-    "audio"
-  ],
+  "permissions": [],
   "optionalPermissions": [],
   "contributes": {
     "skills": [
