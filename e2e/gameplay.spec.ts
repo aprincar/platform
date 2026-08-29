@@ -29,7 +29,8 @@ test.describe('Gameplay and Evidence Generation', () => {
     await expect
       .poll(async () =>
         frame!.evaluate(() => {
-          const state = (window as unknown as { __APRINCAR_GAME_STATE__?: GameState }).__APRINCAR_GAME_STATE__;
+          const state = (window as unknown as { __APRINCAR_GAME_STATE__?: GameState })
+            .__APRINCAR_GAME_STATE__;
           return Boolean(state?.targets.length && state.targets.length >= 3);
         }),
       )
@@ -57,7 +58,9 @@ test.describe('Gameplay and Evidence Generation', () => {
     await expect
       .poll(async () =>
         frame!.evaluate(
-          () => (window as unknown as { __APRINCAR_GAME_STATE__?: GameState }).__APRINCAR_GAME_STATE__?.lastResult,
+          () =>
+            (window as unknown as { __APRINCAR_GAME_STATE__?: GameState }).__APRINCAR_GAME_STATE__
+              ?.lastResult,
         ),
       )
       .toBe('failure');
@@ -66,10 +69,12 @@ test.describe('Gameplay and Evidence Generation', () => {
       .poll(
         async () =>
           frame!.evaluate(
-            () => (window as unknown as { __APRINCAR_GAME_STATE__?: GameState }).__APRINCAR_GAME_STATE__?.level ?? 1,
+            () =>
+              (window as unknown as { __APRINCAR_GAME_STATE__?: GameState }).__APRINCAR_GAME_STATE__?.level ??
+              1,
           ),
         {
-        timeout: 3000,
+          timeout: 3000,
         },
       )
       .toBeGreaterThan(1);
