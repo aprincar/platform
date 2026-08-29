@@ -26,3 +26,5 @@ npm run check     # full gate after dependencies are installed
 The V1 extension artifact is a self-contained `game.html` plus `manifest.json`. A game may be authored with Vite, React, Phaser, Three.js or any browser technology that produces the same artifact.
 
 See `docs/ARCHITECTURE.md`, `docs/EXTENSIONS.md` and `docs/GITHUB_ORGANIZATION.md`.
+
+Documentation index: `docs/README.md`, `docs/DEVELOPMENT.md` and `docs/OPERATIONS.md`.
