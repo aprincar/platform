@@ -2,13 +2,13 @@
   "manifestVersion": 1,
   "id": "aprincar.counting-animals",
   "kind": "game",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "aprincar",
   "name": {
     "pt-BR": "Conte os Bichos"
   },
   "description": {
-    "pt-BR": "Conte os Bichos — experiência oficial de referência do Aprincar."
+    "pt-BR": "Conte bichos animados e escolha a quantidade correta."
   },
   "engines": {
     "aprincar": "^1.0.0",
@@ -17,9 +17,7 @@
   "entrypoints": {
     "game": "game.html"
   },
-  "permissions": [
-    "audio"
-  ],
+  "permissions": [],
   "optionalPermissions": [],
   "contributes": {
     "skills": [
@@ -32,7 +30,8 @@
     },
     "interests": [
       "math",
-      "counting"
+      "counting",
+      "animals"
     ],
     "playType": "learning"
   },

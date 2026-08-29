@@ -1,14 +1,14 @@
 {
   "manifestVersion": 1,
-  "id": "aprincar.color-match",
+  "id": "aprincar.memory-animals",
   "kind": "game",
   "version": "1.1.0",
   "publisher": "aprincar",
   "name": {
-    "pt-BR": "Mundo das Cores"
+    "pt-BR": "Memória dos Bichos"
   },
   "description": {
-    "pt-BR": "Leve cada peça até a cor correspondente."
+    "pt-BR": "Encontre pares em tabuleiros que crescem automaticamente."
   },
   "engines": {
     "aprincar": "^1.0.0",
@@ -21,19 +21,19 @@
   "optionalPermissions": [],
   "contributes": {
     "skills": [
-      "perception.colors.match"
+      "perception.visual.discrimination"
     ],
     "secondarySkills": [],
     "ageGuidance": {
-      "min": 2,
-      "max": 6
+      "min": 3,
+      "max": 10
     },
     "interests": [
-      "colors",
-      "logic",
-      "drag"
+      "memory",
+      "animals",
+      "logic"
     ],
-    "playType": "learning"
+    "playType": "practice"
   },
   "offline": true,
   "bundleMode": "single-html"

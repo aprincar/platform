@@ -2,13 +2,13 @@
   "manifestVersion": 1,
   "id": "aprincar.fruit-basket",
   "kind": "game",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "aprincar",
   "name": {
     "pt-BR": "Cesta de Frutas"
   },
   "description": {
-    "pt-BR": "Cesta de Frutas — experiência oficial de referência do Aprincar."
+    "pt-BR": "Escolha a quantidade pedida e leve as frutas até a cesta."
   },
   "engines": {
     "aprincar": "^1.0.0",
@@ -17,9 +17,7 @@
   "entrypoints": {
     "game": "game.html"
   },
-  "permissions": [
-    "audio"
-  ],
+  "permissions": [],
   "optionalPermissions": [],
   "contributes": {
     "skills": [
@@ -32,7 +30,8 @@
     },
     "interests": [
       "math",
-      "counting"
+      "counting",
+      "fruits"
     ],
     "playType": "learning"
   },

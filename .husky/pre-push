@@ -1,1 +1,1 @@
-npm run test
+node --experimental-strip-types --test packages/core-tests/*.test.ts

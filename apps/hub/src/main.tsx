@@ -21,7 +21,7 @@ function Hub() {
   useEffect(() => {
     (async () => {
       const urls = [
-        '/registry.json',
+        `${import.meta.env.BASE_URL}registry.json`,
         ...String(import.meta.env.VITE_APRINCAR_REGISTRY_URLS ?? '')
           .split(',')
           .map((x) => x.trim())
