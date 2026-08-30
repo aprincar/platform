@@ -25,15 +25,15 @@
     "check:production": "npm run check && npm run verify:official && npm run test:e2e"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.6",
+    "@changesets/cli": "^3.0.1",
     "@playwright/test": "^1.55.0",
-    "@types/node": "^22.18.0",
-    "eslint": "^9.35.0",
+    "@types/node": "^26.4.0",
+    "eslint": "^10.9.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
+    "lint-staged": "^17.3.0",
     "prettier": "^3.6.2",
-    "typescript": "^5.9.2",
-    "@eslint/js": "^9.35.0"
+    "typescript": "^7.0.2",
+    "@eslint/js": "^10.0.1"
   },
   "lint-staged": {
     "*.{ts,tsx,js,mjs,json,md,yml,yaml}": [
