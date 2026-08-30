@@ -22,6 +22,7 @@ export type GameState = {
   };
   targets: GameTarget[];
   selectedCount?: number;
+  inputReady?: boolean;
   lastResult?: string | null;
   lastGesture?: string;
   matchedPairs?: number;
@@ -39,10 +40,18 @@ declare global {
 
 export async function completeOnboarding(page: Page, name: string) {
   await page.goto('/');
-  await expect(page.getByText('Vamos começar a aprincar?')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Quem vai brincar?' })).toBeVisible({ timeout: 10000 });
   await page.getByLabel('Nome ou apelido').fill(name);
+  await page.getByRole('button', { name: 'Continuar' }).click();
+  await expect(page.getByRole('heading', { name: 'Quantos anos?' })).toBeVisible();
+  await page.getByRole('button', { name: 'Continuar' }).click();
+  await expect(page.getByRole('heading', { name: 'O que já gosta de explorar?' })).toBeVisible();
+  await page.getByRole('button', { name: 'Continuar' }).click();
+  await expect(page.getByRole('heading', { name: 'Interesses' })).toBeVisible();
+  await page.getByRole('button', { name: 'Continuar' }).click();
+  await expect(page.getByRole('heading', { name: 'Tempo para brincar' })).toBeVisible();
   await page.getByRole('button', { name: 'Criar meu espaço' }).click();
-  await expect(page.getByText(new RegExp(`Olá, ${name}!`))).toBeVisible();
+  await expect(page.getByText(new RegExp(`Oi, ${name}!`))).toBeVisible();
 }
 
 export async function openGame(page: Page, gameId: string, title: string) {
@@ -67,6 +76,10 @@ export async function getGameState(frame: Frame): Promise<GameState> {
   return state!;
 }
 
+export async function waitForGameInput(frame: Frame) {
+  await expect.poll(async () => (await getGameState(frame)).inputReady).toBe(true);
+}
+
 async function canvasBox(frame: Frame) {
   const canvas = frame.locator('canvas');
   await expect(canvas).toBeVisible();
@@ -75,11 +88,13 @@ async function canvasBox(frame: Frame) {
   return box!;
 }
 
-export async function clickCanvasTarget(page: Page, frame: Frame, target: GameTarget) {
+export async function clickCanvasTarget(_page: Page, frame: Frame, target: GameTarget) {
   expect(target.x).toBeDefined();
   expect(target.y).toBeDefined();
   const box = await canvasBox(frame);
-  await page.mouse.click(box.x + (target.x! / 960) * box.width, box.y + (target.y! / 640) * box.height);
+  await frame.locator('canvas').click({
+    position: { x: (target.x! / 960) * box.width, y: (target.y! / 640) * box.height },
+  });
 }
 
 export async function dragCanvasTarget(page: Page, frame: Frame, from: GameTarget, to: GameTarget) {
