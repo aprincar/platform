@@ -30,7 +30,7 @@
     "@types/node": "^22.18.0",
     "eslint": "^9.35.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
+    "lint-staged": "^17.4.1",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",
     "@eslint/js": "^9.35.0"
