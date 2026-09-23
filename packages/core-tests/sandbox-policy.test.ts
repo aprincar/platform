@@ -11,10 +11,10 @@ test('injects a CSP that blocks network connections for normal games', () => {
 });
 
 test('declaring optional network does not grant network access', () => {
-  const html = buildSandboxDocument(
-    '<!doctype html><html><head></head><body>ok</body></html>',
-    { permissions: [], optionalPermissions: ['network'] } as any,
-  );
+  const html = buildSandboxDocument('<!doctype html><html><head></head><body>ok</body></html>', {
+    permissions: [],
+    optionalPermissions: ['network'],
+  } as any);
   assert.match(html, /connect-src 'none'/i);
 });
 
