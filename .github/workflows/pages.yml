@@ -16,15 +16,36 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - name: Read canonical games pin
+        id: games-pin
+        run: echo "ref=$(node -p \"JSON.parse(require('fs').readFileSync('canonical-games.json','utf8')).commit\")" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: aprincar/games-official
+          ref: ${{ steps.games-pin.outputs.ref }}
+          path: .canonical-games
+      - name: Build canonical games
+        working-directory: .canonical-games
+        run: npm run check
+      - name: Regenerate official snapshot
+        env:
+          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
+        run: node scripts/sync-official-snapshot.mjs
+      - name: Require committed snapshot to match pin
+        run: git diff --exit-code -- apps/app/public/registry.json apps/app/public/extensions apps/hub/public/registry.json apps/hub/public/extensions
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run check
-      - run: npm run verify:official
+      - name: Verify canonical snapshot integrity
+        env:
+          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
+        run: npm run verify:official
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+
   deploy:
     needs: validate
     environment:
@@ -34,6 +55,21 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Read canonical games pin
+        id: games-pin
+        run: echo "ref=$(node -p \"JSON.parse(require('fs').readFileSync('canonical-games.json','utf8')).commit\")" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: aprincar/games-official
+          ref: ${{ steps.games-pin.outputs.ref }}
+          path: .canonical-games
+      - name: Build canonical games
+        working-directory: .canonical-games
+        run: npm run check
+      - name: Generate deploy snapshot from pinned source
+        env:
+          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
+        run: node scripts/sync-official-snapshot.mjs
       - uses: actions/setup-node@v4
         with:
           node-version: 22
