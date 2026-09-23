@@ -1,6 +1,6 @@
 {
   "name": "@aprincar/progress-engine",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": false,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -12,6 +12,6 @@
   },
   "types": "./src/index.ts",
   "dependencies": {
-    "@aprincar/extension-contracts": "0.1.0"
+    "@aprincar/extension-contracts": "1.0.0"
   }
 }
