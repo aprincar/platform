@@ -43,7 +43,6 @@ test('rejects remote-code permission and invalid identifiers', () => {
   assert.ok(result.errors.some((error) => error.includes('remote-code')));
 });
 
-
 test('rejects sensitive permissions when declared as required capabilities', () => {
   const result = validateExtensionManifest({
     manifestVersion: 1,
