@@ -12,3 +12,10 @@ jobs:
       - uses: github/codeql-action/init@v3
         with: { languages: javascript-typescript }
       - uses: github/codeql-action/analyze@v3
+      - name: Upload SARIF diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif
+          path: results/*.sarif
+          if-no-files-found: error
