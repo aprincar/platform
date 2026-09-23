@@ -26,11 +26,7 @@ test('official registry entry wins regardless of source order', () => {
 });
 
 test('higher trust wins deterministically for the same id and version', () => {
-  const merged = mergeRegistries(
-    [entry('experimental')],
-    [entry('community')],
-    [entry('curated')],
-  );
+  const merged = mergeRegistries([entry('experimental')], [entry('community')], [entry('curated')]);
   assert.equal(merged[0]?.trust, 'curated');
 });
 
