@@ -42,3 +42,43 @@ test('rejects remote-code permission and invalid identifiers', () => {
   assert.ok(result.errors.some((error) => error.includes('id')));
   assert.ok(result.errors.some((error) => error.includes('remote-code')));
 });
+
+test('rejects sensitive permissions when declared as required capabilities', () => {
+  const result = validateExtensionManifest({
+    manifestVersion: 1,
+    id: 'aprincar.connected-game',
+    kind: 'game',
+    version: '1.0.0',
+    publisher: 'aprincar',
+    name: { 'pt-BR': 'Jogo conectado' },
+    engines: { aprincar: '^1.0.0', sdkProtocol: 1 },
+    entrypoints: { game: 'game.html' },
+    permissions: ['network'],
+    optionalPermissions: [],
+    contributes: { skills: [] },
+    offline: false,
+    bundleMode: 'single-html',
+  });
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('sensitive permissions')));
+  assert.ok(result.errors.some((error) => error.includes('optionalPermissions')));
+});
+
+test('accepts non-offline games when network is optional', () => {
+  const result = validateExtensionManifest({
+    manifestVersion: 1,
+    id: 'aprincar.connected-game',
+    kind: 'game',
+    version: '1.0.0',
+    publisher: 'aprincar',
+    name: { 'pt-BR': 'Jogo conectado' },
+    engines: { aprincar: '^1.0.0', sdkProtocol: 1 },
+    entrypoints: { game: 'game.html' },
+    permissions: [],
+    optionalPermissions: ['network'],
+    contributes: { skills: [] },
+    offline: false,
+    bundleMode: 'single-html',
+  });
+  assert.equal(result.ok, true);
+});

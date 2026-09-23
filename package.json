@@ -22,7 +22,8 @@
     "check": "npm run test && npm run typecheck && npm run lint && npm run build",
     "prepare": "husky",
     "verify:official": "node scripts/verify-official-snapshot.mjs",
-    "check:production": "npm run check && npm run verify:official && npm run test:e2e"
+    "check:production": "npm run check && npm run verify:official && npm run test:e2e",
+    "sync:official": "node scripts/sync-official-snapshot.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",

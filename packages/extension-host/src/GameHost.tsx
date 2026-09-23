@@ -1,23 +1,27 @@
 import { useEffect, useRef } from 'react';
 import { PROTOCOL_VERSION, isGameMessage, type HostResponse } from '../../extension-sdk/src/protocol.ts';
-import type { ExtensionManifest } from '../../extension-contracts/src/types.ts';
-import { buildSandboxDocument } from './sandbox.ts';
+import type { ExtensionManifest, Permission } from '../../extension-contracts/src/types.ts';
+import { buildIframePermissionsPolicy, buildSandboxDocument } from './sandbox.ts';
 export interface GameHostServices {
   handle(
     message: { type: string; requestId?: string; payload?: unknown },
     manifest: ExtensionManifest,
   ): Promise<unknown>;
 }
+const EMPTY_PERMISSIONS: readonly Permission[] = [];
+
 export function GameHost({
   html,
   manifest,
   services,
   title,
+  grantedPermissions = EMPTY_PERMISSIONS,
 }: {
   html: string;
   manifest: ExtensionManifest;
   services: GameHostServices;
   title?: string;
+  grantedPermissions?: readonly Permission[];
 }) {
   const ref = useRef<HTMLIFrameElement>(null);
   useEffect(() => {
@@ -56,13 +60,14 @@ export function GameHost({
     };
     frame.addEventListener('load', onLoad);
     return () => frame.removeEventListener('load', onLoad);
-  }, [html, manifest, services]);
+  }, [html, manifest, services, grantedPermissions]);
   return (
     <iframe
       ref={ref}
       title={title ?? manifest.name['pt-BR'] ?? manifest.id}
-      srcDoc={buildSandboxDocument(html, manifest)}
+      srcDoc={buildSandboxDocument(html, manifest, grantedPermissions)}
       sandbox="allow-scripts"
+      allow={buildIframePermissionsPolicy(manifest, grantedPermissions)}
       referrerPolicy="no-referrer"
       style={{ width: '100%', height: '100%', border: 0, background: '#fff' }}
     />

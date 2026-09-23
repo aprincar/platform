@@ -29,19 +29,31 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Semantic and responsive E2E
         run: npm run test:e2e
+
   canonical-games:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - name: Read canonical games pin
+        id: games-pin
+        run: |
+          node -e "const fs=require('fs'); process.stdout.write('ref=' + JSON.parse(fs.readFileSync('canonical-games.json','utf8')).commit + '\\n')" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           repository: aprincar/games-official
+          ref: ${{ steps.games-pin.outputs.ref }}
           path: .canonical-games
       - name: Build canonical games
         working-directory: .canonical-games
         run: npm run check
-      - name: Compare platform deploy snapshot with games-official
+      - name: Regenerate official snapshot from pinned canonical source
         env:
           APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
-        run: node scripts/verify-official-snapshot.mjs
+        run: npm run sync:official
+      - name: Require committed snapshot to match generated output
+        run: git diff --exit-code -- apps/app/public/registry.json apps/app/public/extensions apps/hub/public/registry.json apps/hub/public/extensions
+      - name: Verify generated snapshot integrity
+        env:
+          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
+        run: npm run verify:official
