@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { db, extensionCacheAdapter, persistStorage, type ChildProfile } from '@aprincar/storage';
 import { ExtensionManager } from '@aprincar/extension-manager';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
+import { mergeRegistries, visibleForChild } from '@aprincar/extension-registry';
 
 export interface CreateProfileInput {
   name: string;
@@ -41,19 +42,17 @@ async function loadRegistry() {
       .map((x) => x.trim())
       .filter(Boolean),
   ];
-  const all: RegistryEntry[] = [];
+  const registries: RegistryEntry[][] = [];
   for (const url of urls) {
     try {
       const r = await fetch(url);
       if (!r.ok) continue;
-      for (const e of await r.json()) {
-        if (!all.some((x) => x.id === e.id && x.version === e.version)) all.push(e);
-      }
+      registries.push((await r.json()) as RegistryEntry[]);
     } catch {
       // Offline startup is expected; cached extensions and local data remain usable.
     }
   }
-  return all;
+  return mergeRegistries(...registries);
 }
 
 export function AppStoreProvider({ children }: { children: ReactNode }) {
@@ -77,11 +76,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     const allow = Boolean((await db.settings.get('allowCommunity'))?.value ?? false);
     setAllowCommunityState(allow);
     const loaded = await loadRegistry();
-    setRegistry(
-      loaded.filter(
-        (e) => e.trust === 'official' || e.trust === 'curated' || (allow && e.trust === 'community'),
-      ),
-    );
+    setRegistry(visibleForChild(loaded, allow));
     setLoading(false);
   };
 
