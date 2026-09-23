@@ -29,7 +29,6 @@ See `docs/ARCHITECTURE.md`, `docs/EXTENSIONS.md` and `docs/GITHUB_ORGANIZATION.m
 
 Documentation index: `docs/README.md`, `docs/DEVELOPMENT.md` and `docs/OPERATIONS.md`.
 
-
 ## Version contract
 
 Aprincar V1 intentionally uses independent version domains:
