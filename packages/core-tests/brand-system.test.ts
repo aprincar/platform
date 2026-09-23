@@ -12,10 +12,7 @@ const stacked = fs.readFileSync(new URL('logo-stacked.svg', brandRoot), 'utf8');
 const appIcon = fs.readFileSync(new URL('app-icon.svg', brandRoot), 'utf8');
 const favicon = fs.readFileSync(new URL('favicon.svg', brandRoot), 'utf8');
 const monochrome = fs.readFileSync(new URL('monochrome.svg', brandRoot), 'utf8');
-const guidelines = fs.readFileSync(
-  new URL('../../docs/design/BRAND_GUIDELINES.md', import.meta.url),
-  'utf8',
-);
+const guidelines = fs.readFileSync(new URL('../../docs/design/BRAND_GUIDELINES.md', import.meta.url), 'utf8');
 const icon192 = fs.readFileSync(new URL('../../apps/app/public/icons/icon-192.svg', import.meta.url), 'utf8');
 const icon512 = fs.readFileSync(new URL('../../apps/app/public/icons/icon-512.svg', import.meta.url), 'utf8');
 
