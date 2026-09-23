@@ -1,6 +1,6 @@
 {
   "name": "@aprincar/hub",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -11,8 +11,8 @@
     "preview": "vite preview --port 4174"
   },
   "dependencies": {
-    "@aprincar/extension-registry": "0.1.0",
-    "@aprincar/ui": "0.1.0",
+    "@aprincar/extension-registry": "1.0.0",
+    "@aprincar/ui": "1.0.0",
     "@mantine/core": "^9.5.0",
     "lucide-react": "^0.542.0",
     "react": "^19.2.0",
