@@ -29,12 +29,18 @@ test('network CSP is enabled only after an explicit host grant', () => {
 });
 
 test('sensitive iframe features default to deny and require matching optional grants', () => {
-  const declared = { permissions: [], optionalPermissions: ['camera', 'microphone', 'geolocation'] } as any;
+  const declared = {
+    permissions: [],
+    optionalPermissions: ['camera', 'microphone', 'geolocation'],
+  } as any;
   assert.equal(
     buildIframePermissionsPolicy(declared),
     "camera 'none'; microphone 'none'; geolocation 'none'",
   );
-  assert.equal(buildIframePermissionsPolicy(declared, ['camera']), "camera *; microphone 'none'; geolocation 'none'");
+  assert.equal(
+    buildIframePermissionsPolicy(declared, ['camera']),
+    "camera *; microphone 'none'; geolocation 'none'",
+  );
 });
 
 test('places CSP metadata inside a head even when the extension omits one', () => {
