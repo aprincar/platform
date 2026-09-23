@@ -10,6 +10,8 @@ If references disagree, preserve the UX hierarchy of the single-file baseline wh
 
 ## Brand System v3
 
+Usage, asset names, clear space, minimum sizes and prohibited treatments are defined in [`BRAND_GUIDELINES.md`](BRAND_GUIDELINES.md).
+
 - Primary symbol: friendly yellow star with a small learning/pencil cue.
 - Wordmark: multicolor `Aprincar`, with blue, yellow, green, coral, orange and purple accents.
 - The canonical production identity is vector code from `packages/ui/src/index.tsx`; generated/bitmap concept artwork is reference material only.
