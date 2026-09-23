@@ -33,16 +33,16 @@ O wordmark pode usar fallback rounded/system sem distribuir fonte proprietária.
 
 ## Assets canônicos
 
-| Arquivo               | Uso                                         |
-| --------------------- | ------------------------------------------- |
-| `logo-symbol.svg`     | avatar, selo, áreas quadradas               |
-| `logo-horizontal.svg` | cabeçalhos e comunicação institucional      |
-| `logo-stacked.svg`    | composição vertical/quadrada                |
-| `app-icon.svg`        | ícone de aplicação/PWA                      |
-| `favicon.svg`         | contexto muito pequeno                      |
-| `monochrome.svg`      | impressão ou contexto sem cor               |
-| `aprincar-mark.svg`   | alias legado do símbolo                     |
-| `aprincar-logo.svg`   | alias legado horizontal                     |
+| Arquivo               | Uso                                    |
+| --------------------- | -------------------------------------- |
+| `logo-symbol.svg`     | avatar, selo, áreas quadradas          |
+| `logo-horizontal.svg` | cabeçalhos e comunicação institucional |
+| `logo-stacked.svg`    | composição vertical/quadrada           |
+| `app-icon.svg`        | ícone de aplicação/PWA                 |
+| `favicon.svg`         | contexto muito pequeno                 |
+| `monochrome.svg`      | impressão ou contexto sem cor          |
+| `aprincar-mark.svg`   | alias legado do símbolo                |
+| `aprincar-logo.svg`   | alias legado horizontal                |
 
 Os aliases antigos permanecem por compatibilidade; novos consumidores devem preferir os nomes canônicos.
 
