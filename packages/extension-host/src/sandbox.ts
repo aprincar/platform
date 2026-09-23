@@ -51,8 +51,7 @@ export function buildSandboxDocument(
   if (headEnd !== -1) return `${html.slice(0, headEnd)}${meta}${html.slice(headEnd)}`;
 
   const htmlEnd = findOpeningTagEnd(html, 'html');
-  if (htmlEnd !== -1)
-    return `${html.slice(0, htmlEnd)}<head>${meta}</head>${html.slice(htmlEnd)}`;
+  if (htmlEnd !== -1) return `${html.slice(0, htmlEnd)}<head>${meta}</head>${html.slice(htmlEnd)}`;
 
   return `<!doctype html><html><head>${meta}</head><body>${html}</body></html>`;
 }
