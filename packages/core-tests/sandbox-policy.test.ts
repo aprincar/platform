@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { buildIframePermissionsPolicy, buildSandboxDocument } from '../extension-host/src/sandbox.ts';
 
 const manifest: any = { permissions: [], optionalPermissions: [] };
-
 test('injects a CSP that blocks network connections for normal games', () => {
   const html = buildSandboxDocument('<!doctype html><html><head></head><body>ok</body></html>', manifest);
   assert.match(html, /Content-Security-Policy/i);
