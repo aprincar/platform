@@ -9,10 +9,7 @@ const canonicalRoot = path.resolve(
 );
 const registrySource = path.join(canonicalRoot, 'registry.json');
 const extensionsSource = path.join(canonicalRoot, 'extensions');
-const surfaces = [
-  path.join(root, 'apps', 'app', 'public'),
-  path.join(root, 'apps', 'hub', 'public'),
-];
+const surfaces = [path.join(root, 'apps', 'app', 'public'), path.join(root, 'apps', 'hub', 'public')];
 
 if (!fs.existsSync(registrySource)) {
   throw new Error(`Canonical registry missing: ${registrySource}`);
