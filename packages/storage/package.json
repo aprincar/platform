@@ -1,6 +1,6 @@
 {
   "name": "@aprincar/storage",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "dexie": "^4.2.0",
-    "@aprincar/extension-contracts": "0.1.0"
+    "@aprincar/extension-contracts": "1.0.0"
   },
   "exports": {
     ".": "./src/index.ts"
