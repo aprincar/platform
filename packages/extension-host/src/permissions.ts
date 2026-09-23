@@ -1,6 +1,11 @@
 import type { ExtensionManifest, Permission } from '../../extension-contracts/src/types.ts';
 
-export const SENSITIVE_PERMISSIONS = ['camera', 'microphone', 'network', 'geolocation'] as const satisfies readonly Permission[];
+export const SENSITIVE_PERMISSIONS = [
+  'camera',
+  'microphone',
+  'network',
+  'geolocation',
+] as const satisfies readonly Permission[];
 
 const SENSITIVE = new Set<Permission>(SENSITIVE_PERMISSIONS);
 
