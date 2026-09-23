@@ -1,6 +1,6 @@
 {
   "name": "@aprincar/extension-host",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": false,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "react": "^19.2.0",
-    "@aprincar/extension-contracts": "0.1.0",
-    "@aprincar/game-sdk": "0.1.0"
+    "@aprincar/extension-contracts": "1.0.0",
+    "@aprincar/game-sdk": "1.0.0"
   },
   "exports": {
     ".": "./src/index.ts"
