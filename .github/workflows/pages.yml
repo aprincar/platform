@@ -2,6 +2,8 @@ name: Publish App and Hub to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -50,6 +52,7 @@ jobs:
       - run: npm run test:e2e
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: validate
     environment:
       name: github-pages
