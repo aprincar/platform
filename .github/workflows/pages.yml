@@ -18,7 +18,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Read canonical games pin
         id: games-pin
-        run: echo "ref=$(node -p \"JSON.parse(require('fs').readFileSync('canonical-games.json','utf8')).commit\")" >> "$GITHUB_OUTPUT"
+        run: |
+          node -e "const fs=require('fs'); process.stdout.write('ref=' + JSON.parse(fs.readFileSync('canonical-games.json','utf8')).commit + '\\n')" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           repository: aprincar/games-official
@@ -57,7 +58,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Read canonical games pin
         id: games-pin
-        run: echo "ref=$(node -p \"JSON.parse(require('fs').readFileSync('canonical-games.json','utf8')).commit\")" >> "$GITHUB_OUTPUT"
+        run: |
+          node -e "const fs=require('fs'); process.stdout.write('ref=' + JSON.parse(fs.readFileSync('canonical-games.json','utf8')).commit + '\\n')" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           repository: aprincar/games-official
