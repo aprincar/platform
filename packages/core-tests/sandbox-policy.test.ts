@@ -34,10 +34,7 @@ test('sensitive iframe features default to deny and require matching optional gr
     buildIframePermissionsPolicy(declared),
     "camera 'none'; microphone 'none'; geolocation 'none'",
   );
-  assert.equal(
-    buildIframePermissionsPolicy(declared, ['camera']),
-    "camera *; microphone 'none'; geolocation 'none'",
-  );
+  assert.equal(buildIframePermissionsPolicy(declared, ['camera']), "camera *; microphone 'none'; geolocation 'none'");
 });
 
 test('places CSP metadata inside a head even when the extension omits one', () => {
