@@ -43,3 +43,25 @@ test('places CSP metadata inside a head even when the extension omits one', () =
   const html = buildSandboxDocument('<!doctype html><html><body>ok</body></html>', manifest);
   assert.match(html, /<html[^>]*><head><meta http-equiv="Content-Security-Policy"/i);
 });
+
+
+test('sandbox tag parsing stays linear on adversarial malformed input', () => {
+  const malformed = '<head='.repeat(20_000);
+  const html = buildSandboxDocument(malformed, manifest);
+  assert.match(html, /^<!doctype html><html><head>/i);
+  assert.ok(html.endsWith(`<body>${malformed}</body></html>`));
+});
+
+test('sandbox tag parsing does not mistake header for head', () => {
+  const html = buildSandboxDocument('<html><header>title</header><body>ok</body></html>', manifest);
+  assert.match(html, /<html><head><meta http-equiv="Content-Security-Policy"/i);
+  assert.match(html, /<header>title<\/header>/i);
+});
+
+test('sandbox tag parsing respects greater-than signs inside quoted attributes', () => {
+  const html = buildSandboxDocument(
+    '<html><head data-example="a>b"><title>ok</title></head><body>ok</body></html>',
+    manifest,
+  );
+  assert.match(html, /<head data-example="a>b"><meta http-equiv="Content-Security-Policy"/i);
+});
