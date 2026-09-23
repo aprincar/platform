@@ -1,6 +1,6 @@
 {
   "name": "aprincar-platform",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -23,7 +23,8 @@
     "prepare": "husky",
     "verify:official": "node scripts/verify-official-snapshot.mjs",
     "check:production": "npm run check && npm run verify:official && npm run test:e2e",
-    "sync:official": "node scripts/sync-official-snapshot.mjs"
+    "sync:official": "node scripts/sync-official-snapshot.mjs",
+    "verify:release-version": "node scripts/verify-release-version.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",

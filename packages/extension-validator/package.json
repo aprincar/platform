@@ -1,6 +1,6 @@
 {
   "name": "@aprincar/extension-validator",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": false,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -11,7 +11,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@aprincar/extension-contracts": "0.1.0",
-    "@aprincar/skill-graph": "0.1.0"
+    "@aprincar/extension-contracts": "1.0.0",
+    "@aprincar/skill-graph": "1.0.0"
   }
 }

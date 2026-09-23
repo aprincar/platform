@@ -1,0 +1,135 @@
+name: Publish GitHub Release
+
+on:
+  workflow_run:
+    workflows: [Publish App and Hub to GitHub Pages]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    outputs:
+      release_sha: ${{ steps.target.outputs.sha }}
+      tag: ${{ steps.version.outputs.tag }}
+      exists: ${{ steps.existing.outputs.exists }}
+    steps:
+      - name: Resolve exact main SHA
+        id: target
+        env:
+          WORKFLOW_RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          sha="${WORKFLOW_RUN_SHA:-$GITHUB_SHA}"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target.outputs.sha }}
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid semantic version: $version" >&2
+            exit 1
+          fi
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+      - name: Detect existing release
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  release:
+    needs: inspect
+    if: needs.inspect.outputs.exists != 'true' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      RELEASE_SHA: ${{ needs.inspect.outputs.release_sha }}
+      TAG: ${{ needs.inspect.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_SHA }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Require successful main workflows for this SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          required=("CI" "Security checks" "CodeQL" "Publish App and Hub to GitHub Pages")
+          for attempt in {1..120}; do
+            data="$(gh api "/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$RELEASE_SHA&event=push&per_page=100")"
+            all_success=true
+
+            for workflow in "${required[@]}"; do
+              result="$(printf '%s' "$data" | jq -r --arg workflow "$workflow" '
+                [.workflow_runs[] | select(.name == $workflow)]
+                | sort_by(.run_number)
+                | last
+                | if . == null then "missing none" else "\(.status) \(.conclusion // "none")" end
+              ')"
+              read -r status conclusion <<< "$result"
+
+              if [[ "$status" == "completed" && "$conclusion" != "success" ]]; then
+                echo "$workflow failed for $RELEASE_SHA: $conclusion" >&2
+                exit 1
+              fi
+              if [[ "$status" != "completed" || "$conclusion" != "success" ]]; then
+                all_success=false
+              fi
+            done
+
+            if [[ "$all_success" == "true" ]]; then
+              echo "All required main workflows are green for $RELEASE_SHA."
+              exit 0
+            fi
+            sleep 10
+          done
+
+          echo "Required main workflows did not all reach success for $RELEASE_SHA." >&2
+          exit 1
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Verify monorepo release versions
+        run: npm run verify:release-version
+      - name: Run repository release gate
+        run: npm run check
+      - name: Verify formatting
+        run: npm run format:check
+      - name: Audit production dependency risk
+        run: npm audit --audit-level=high
+      - name: Verify canonical official snapshot
+        run: npm run verify:official
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run semantic and responsive E2E
+        run: npm run test:e2e
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "$TAG already exists; nothing to publish."
+            exit 0
+          fi
+          gh release create "$TAG" --target "$RELEASE_SHA" --title "$TAG" --generate-notes
