@@ -11,12 +11,33 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Read canonical games pin
+        id: games-pin
+        run: echo "ref=$(node -p \"JSON.parse(require('fs').readFileSync('canonical-games.json','utf8')).commit\")" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: aprincar/games-official
+          ref: ${{ steps.games-pin.outputs.ref }}
+          path: .canonical-games
+      - name: Build canonical games
+        working-directory: .canonical-games
+        run: npm run check
+      - name: Generate official snapshot from pinned source
+        env:
+          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
+        run: node scripts/sync-official-snapshot.mjs
+      - name: Require release snapshot to match committed source
+        run: git diff --exit-code -- apps/app/public/registry.json apps/app/public/extensions apps/hub/public/registry.json apps/hub/public/extensions
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: Verify canonical snapshot integrity
+        env:
+          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
+        run: npm run verify:official
       - uses: actions/upload-artifact@v4
         with: { name: aprincar-app, path: apps/app/dist }
       - uses: actions/upload-artifact@v4
