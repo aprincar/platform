@@ -44,7 +44,6 @@ test('places CSP metadata inside a head even when the extension omits one', () =
   assert.match(html, /<html[^>]*><head><meta http-equiv="Content-Security-Policy"/i);
 });
 
-
 test('sandbox tag parsing stays linear on adversarial malformed input', () => {
   const malformed = '<head='.repeat(20_000);
   const html = buildSandboxDocument(malformed, manifest);
