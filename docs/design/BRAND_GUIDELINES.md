@@ -18,31 +18,31 @@ O símbolo é a estrela amarela amigável com rosto e pequeno acento de aprendiz
 
 A sequência canônica usa:
 
-| Letra | Cor |
-| --- | --- |
-| A | `#2563EB` |
-| p | `#FBCB24` |
-| r | `#22C55E` |
-| i | `#F43F5E` |
-| n | `#2563EB` |
-| c | `#FB923C` |
-| a | `#22C55E` |
-| r | `#8B5CF6` |
+| Letra | Cor       |
+| ----- | --------- |
+| A     | `#2563EB` |
+| p     | `#FBCB24` |
+| r     | `#22C55E` |
+| i     | `#F43F5E` |
+| n     | `#2563EB` |
+| c     | `#FB923C` |
+| a     | `#22C55E` |
+| r     | `#8B5CF6` |
 
 O wordmark pode usar fallback rounded/system sem distribuir fonte proprietária. Não transforme a tipografia em dependência de um arquivo de fonte externo.
 
 ## Assets canônicos
 
-| Arquivo | Uso |
-| --- | --- |
-| `logo-symbol.svg` | avatar, selo, áreas quadradas |
-| `logo-horizontal.svg` | cabeçalhos e comunicação institucional |
-| `logo-stacked.svg` | composição vertical/quadrada |
-| `app-icon.svg` | ícone de aplicação/PWA |
-| `favicon.svg` | contexto muito pequeno |
-| `monochrome.svg` | impressão ou contexto sem cor |
-| `aprincar-mark.svg` | alias legado do símbolo |
-| `aprincar-logo.svg` | alias legado horizontal |
+| Arquivo               | Uso                                         |
+| --------------------- | ------------------------------------------- |
+| `logo-symbol.svg`     | avatar, selo, áreas quadradas               |
+| `logo-horizontal.svg` | cabeçalhos e comunicação institucional      |
+| `logo-stacked.svg`    | composição vertical/quadrada                |
+| `app-icon.svg`        | ícone de aplicação/PWA                      |
+| `favicon.svg`         | contexto muito pequeno                      |
+| `monochrome.svg`      | impressão ou contexto sem cor               |
+| `aprincar-mark.svg`   | alias legado do símbolo                     |
+| `aprincar-logo.svg`   | alias legado horizontal                     |
 
 Os aliases antigos permanecem por compatibilidade; novos consumidores devem preferir os nomes canônicos.
 
