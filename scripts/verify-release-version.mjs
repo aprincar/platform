@@ -62,7 +62,9 @@ for (const { packagePath, relativeDir } of workspaces) {
     continue;
   }
   if (lockEntry.version !== version) {
-    fail(`package-lock.json ${relativeDir}: version must be "${version}", found "${lockEntry.version ?? '<missing>'}"`);
+    fail(
+      `package-lock.json ${relativeDir}: version must be "${version}", found "${lockEntry.version ?? '<missing>'}"`,
+    );
   }
   verifyInternalSpecs(`package-lock.json:${relativeDir}`, lockEntry);
 }
