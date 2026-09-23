@@ -1,0 +1,67 @@
+name: Publish GitHub Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - package.json
+      - package-lock.json
+      - apps/*/package.json
+      - packages/*/package.json
+      - scripts/verify-release-version.mjs
+      - .github/workflows/release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Verify monorepo release versions
+        run: npm run verify:release-version
+      - name: Run repository release gate
+        run: npm run check
+      - name: Verify formatting
+        run: npm run format:check
+      - name: Audit production dependency risk
+        run: npm audit --audit-level=high
+      - name: Verify canonical official snapshot
+        run: npm run verify:official
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run semantic and responsive E2E
+        run: npm run test:e2e
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid semantic version: $version" >&2
+            exit 1
+          fi
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+      - name: Publish release when missing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "$TAG already exists; nothing to publish."
+            exit 0
+          fi
+          gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --generate-notes
