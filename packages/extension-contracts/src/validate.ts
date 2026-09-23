@@ -2,6 +2,7 @@ import type { ExtensionManifest, Permission } from './types.ts';
 
 const ID = /^[a-z0-9][a-z0-9.-]*[a-z0-9]$/;
 const VERSION = /^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/;
+const SENSITIVE_PERMISSIONS: Permission[] = ['camera', 'microphone', 'network', 'geolocation'];
 const PERMISSIONS: Permission[] = [
   'storage',
   'audio',
@@ -49,6 +50,11 @@ export function validateExtensionManifest(input: unknown): {
   if (Array.isArray(m.permissions) && m.permissions.includes('remote-code'))
     errors.push('remote-code is forbidden');
   if (
+    Array.isArray(m.permissions) &&
+    m.permissions.some((permission: unknown) => SENSITIVE_PERMISSIONS.includes(permission as Permission))
+  )
+    errors.push('sensitive permissions must be declared only in optionalPermissions');
+  if (
     !Array.isArray(m.optionalPermissions) ||
     !m.optionalPermissions.every((p: unknown) => PERMISSIONS.includes(p as Permission))
   )
@@ -65,7 +71,7 @@ export function validateExtensionManifest(input: unknown): {
       age.min > age.max)
   )
     errors.push('ageGuidance must be between 2 and 14');
-  if (m.offline !== true && !(Array.isArray(m.permissions) && m.permissions.includes('network')))
-    errors.push('non-offline games must explicitly request network permission');
+  if (m.offline !== true && !(Array.isArray(m.optionalPermissions) && m.optionalPermissions.includes('network')))
+    errors.push('non-offline games must declare network in optionalPermissions');
   return errors.length ? { ok: false, errors } : { ok: true, errors, manifest: input as ExtensionManifest };
 }
