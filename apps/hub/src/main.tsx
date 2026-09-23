@@ -5,6 +5,7 @@ import './styles.css';
 import { Badge, Group, MantineProvider, Text, TextInput } from '@mantine/core';
 import { Search } from 'lucide-react';
 import { AprincarMascot, Brand, TrustBadge } from '@aprincar/ui';
+import { mergeRegistries } from '@aprincar/extension-registry';
 function artwork(e: any) {
   if (e.id.includes('3d')) return '🪐';
   if (e.id.includes('memory')) return '🦕🦊';
@@ -36,15 +37,15 @@ function Hub() {
           .map((x) => x.trim())
           .filter(Boolean),
       ];
-      const map = new Map();
+      const registries: any[][] = [];
       for (const url of urls) {
         try {
           const r = await fetch(url);
           if (!r.ok) continue;
-          for (const e of await r.json()) map.set(`${e.id}@${e.version}`, e);
+          registries.push(await r.json());
         } catch {}
       }
-      setRegistry([...map.values()]);
+      setRegistry(mergeRegistries(...registries));
     })();
   }, []);
   const list = useMemo(
