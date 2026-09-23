@@ -2,6 +2,8 @@ name: Publish App and Hub to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -39,15 +41,18 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run check
       - name: Verify canonical snapshot integrity
         env:
           APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
         run: npm run verify:official
+      - name: Remove auxiliary canonical-games checkout before Platform lint
+        run: rm -rf .canonical-games
+      - run: npm run check
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: validate
     environment:
       name: github-pages
