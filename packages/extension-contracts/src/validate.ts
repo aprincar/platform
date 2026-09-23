@@ -71,7 +71,10 @@ export function validateExtensionManifest(input: unknown): {
       age.min > age.max)
   )
     errors.push('ageGuidance must be between 2 and 14');
-  if (m.offline !== true && !(Array.isArray(m.optionalPermissions) && m.optionalPermissions.includes('network')))
+  if (
+    m.offline !== true &&
+    !(Array.isArray(m.optionalPermissions) && m.optionalPermissions.includes('network'))
+  )
     errors.push('non-offline games must declare network in optionalPermissions');
   return errors.length ? { ok: false, errors } : { ok: true, errors, manifest: input as ExtensionManifest };
 }
