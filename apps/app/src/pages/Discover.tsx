@@ -50,10 +50,7 @@ export function Discover() {
     [list],
   );
 
-  const otherEntries = useMemo(
-    () => list.filter((entry) => !familyForGame(entry.id)),
-    [list],
-  );
+  const otherEntries = useMemo(() => list.filter((entry) => !familyForGame(entry.id)), [list]);
 
   const selectedFamily = category === 'all' ? undefined : familyById(category);
 
