@@ -16,11 +16,7 @@ export const GAME_FAMILIES: GameFamily[] = [
     color: '#F59E0B',
     summary: 'Conte, compare e use quantidades em brincadeiras diferentes.',
     objective: 'Perceber quantidade e relacionar contagem com uma ação concreta.',
-    gameIds: [
-      'aprincar.counting-animals',
-      'aprincar.fruit-basket',
-      'aprincar.block-tower',
-    ],
+    gameIds: ['aprincar.counting-animals', 'aprincar.fruit-basket', 'aprincar.block-tower'],
   },
   {
     id: 'literacy',
