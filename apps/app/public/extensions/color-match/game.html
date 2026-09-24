@@ -1,5 +1,5 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Mundo das Cores — Aprincar</title><style>
-*{box-sizing:border-box}html,body,#game{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Inter,ui-rounded,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f6f2;color:#242523}canvas{display:block;touch-action:none}.three-ui{position:absolute;z-index:3;left:0;right:0;top:0;padding:20px 28px;pointer-events:none;text-align:center}.three-brand{position:absolute;left:22px;top:14px}.aprincar-game-lockup{display:flex;align-items:center;gap:8px;color:#2563eb;font:900 18px/1 ui-rounded,"Arial Rounded MT Bold","Trebuchet MS",Inter,system-ui,sans-serif}.aprincar-game-lockup svg{width:36px;height:36px;display:block}.aprincar-game-wordmark{display:inline-flex;letter-spacing:-.04em}.three-ui #three-level{position:absolute;right:26px;top:23px;color:#2563eb;font-weight:800}.three-ui h1{margin:28px auto 4px;font-size:clamp(24px,4vw,36px)}.three-ui p{margin:0;color:#6f716d;font-weight:700}#three-canvas{width:100%;height:100%}</style></head><body><div id="game"></div><script>window.APRINCAR_GAME_CONFIG={"name":"Mundo das Cores","mode":"color","variant":"colors","skillId":"perception.colors.match","fantasy":"Ateliê das cores","mechanic":"drag-match"};</script><script>(()=>{
+*{box-sizing:border-box}html,body,#game{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Inter,ui-rounded,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f6f2;color:#242523}canvas{display:block;touch-action:none}.three-ui{position:absolute;z-index:3;left:0;right:0;top:0;padding:20px 28px;pointer-events:none;text-align:center}.three-brand{position:absolute;left:22px;top:14px}.aprincar-game-lockup{display:flex;align-items:center;gap:8px;color:#2563eb;font:900 18px/1 ui-rounded,"Arial Rounded MT Bold","Trebuchet MS",Inter,system-ui,sans-serif}.aprincar-game-lockup svg{width:36px;height:36px;display:block}.aprincar-game-wordmark{display:inline-flex;letter-spacing:-.04em}.three-ui #three-level{position:absolute;right:26px;top:23px;color:#2563eb;font-weight:800}.three-ui h1{margin:28px auto 4px;font-size:clamp(24px,4vw,36px)}.three-ui p{margin:0;color:#6f716d;font-weight:700}#three-canvas{width:100%;height:100%}@media(max-width:600px){.three-ui{padding:12px 14px}.three-brand{left:12px;top:10px}.aprincar-game-lockup{font-size:14px;gap:5px}.aprincar-game-lockup svg{width:28px;height:28px}.three-ui #three-level{right:14px;top:15px;font-size:13px}.three-ui h1{margin:48px auto 4px;font-size:clamp(22px,7vw,30px);max-width:82vw}.three-ui p{font-size:13px;max-width:88vw;margin:0 auto;line-height:1.3}}@media(orientation:landscape) and (max-height:560px){.three-ui h1{margin:24px auto 2px}.three-ui p{font-size:12px}}</style></head><body><div id="game"></div><script>window.APRINCAR_GAME_CONFIG={"name":"Mundo das Cores","mode":"color","variant":"colors","skillId":"perception.colors.match","fantasy":"Ateliê das cores","mechanic":"drag-match","familyId":"creative","objective":"Classificar visualmente objetos por cor.","mobileFirst":true};</script><script>(()=>{
   let port=null, readyResolve;
   const pending=new Map();
   const connected=new Promise(r=>readyResolve=r);
@@ -729,10 +729,9 @@ window.AprincarFeedback = (() => {
       this.onDrag = options.onDrag;
       this.onDragEnd = options.onDragEnd;
 
-      this.downX = 0;
-      this.downY = 0;
       this.isDragging = false;
       this.isDown = false;
+      this.gestureHandled = false;
 
       this.setup();
     }
@@ -740,55 +739,59 @@ window.AprincarFeedback = (() => {
     setup() {
       this.gameObject.setInteractive({ draggable: true, useHandCursor: true });
       this.scene.input.setDraggable(this.gameObject);
+      this.scene.input.dragDistanceThreshold = Math.max(
+        this.scene.input.dragDistanceThreshold || 0,
+        this.threshold
+      );
 
-      this.gameObject.on('pointerdown', (pointer) => {
-        this.downX = pointer.x;
-        this.downY = pointer.y;
+      this.handlePointerDown = () => {
         this.isDragging = false;
         this.isDown = true;
-      });
+        this.gestureHandled = false;
+      };
 
-      this.gameObject.on('dragstart', (pointer) => {
-        const dist = Phaser.Math.Distance.Between(this.downX, this.downY, pointer.x, pointer.y);
-        if (dist >= this.threshold) {
-          this.isDragging = true;
-          if (this.onDragStart) this.onDragStart(pointer, this.gameObject);
-        }
-      });
+      this.handleDragStart = (pointer, gameObject) => {
+        if (gameObject !== this.gameObject || !this.isDown) return;
+        this.isDragging = true;
+        if (this.onDragStart) this.onDragStart(pointer, this.gameObject);
+      };
 
-      this.gameObject.on('drag', (pointer, dragX, dragY) => {
-        const dist = Phaser.Math.Distance.Between(this.downX, this.downY, pointer.x, pointer.y);
-        if (!this.isDragging && dist >= this.threshold) {
-          this.isDragging = true;
-          if (this.onDragStart) this.onDragStart(pointer, this.gameObject);
-        }
-        if (this.isDragging && this.onDrag) {
-          this.onDrag(pointer, this.gameObject, dragX, dragY);
-        }
-      });
+      this.handleDrag = (pointer, gameObject, dragX, dragY) => {
+        if (gameObject !== this.gameObject || !this.isDragging) return;
+        if (this.onDrag) this.onDrag(pointer, this.gameObject, dragX, dragY);
+      };
 
-      this.gameObject.on('dragend', (pointer) => {
-        if (this.isDragging) {
-          if (this.onDragEnd) this.onDragEnd(pointer, this.gameObject);
-        }
-      });
+      this.handleDragEnd = (pointer, gameObject) => {
+        if (gameObject !== this.gameObject || !this.isDragging) return;
+        if (this.onDragEnd) this.onDragEnd(pointer, this.gameObject);
+        this.gestureHandled = true;
+        this.isDown = false;
+        this.isDragging = false;
+      };
 
-      this.gameObject.on('pointerup', (pointer) => {
-        const dist = Phaser.Math.Distance.Between(this.downX, this.downY, pointer.x, pointer.y);
-        if (!this.isDragging && dist < this.threshold) {
-          if (this.onTap) this.onTap(pointer, this.gameObject);
+      this.handlePointerUp = (pointer) => {
+        if (this.isDragging) return;
+        if (this.isDown && !this.gestureHandled && this.onTap) {
+          this.onTap(pointer, this.gameObject);
         }
         this.isDown = false;
         this.isDragging = false;
-      });
+        this.gestureHandled = false;
+      };
+
+      this.gameObject.on('pointerdown', this.handlePointerDown);
+      this.gameObject.on('pointerup', this.handlePointerUp);
+      this.scene.input.on('dragstart', this.handleDragStart);
+      this.scene.input.on('drag', this.handleDrag);
+      this.scene.input.on('dragend', this.handleDragEnd);
     }
 
     destroy() {
-      this.gameObject.off('pointerdown');
-      this.gameObject.off('dragstart');
-      this.gameObject.off('drag');
-      this.gameObject.off('dragend');
-      this.gameObject.off('pointerup');
+      this.gameObject.off('pointerdown', this.handlePointerDown);
+      this.gameObject.off('pointerup', this.handlePointerUp);
+      this.scene.input.off('dragstart', this.handleDragStart);
+      this.scene.input.off('drag', this.handleDrag);
+      this.scene.input.off('dragend', this.handleDragEnd);
     }
   }
 
@@ -800,20 +803,139 @@ window.AprincarFeedback = (() => {
   };
 })();
 
+// Mobile-first layout primitives shared by official Phaser games.
+(() => {
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+  function metrics(scene) {
+    const width = Number(scene.scale.width) || 390;
+    const height = Number(scene.scale.height) || 844;
+    const portrait = height >= width;
+    const shortSide = Math.min(width, height);
+    const padding = clamp(shortSide * 0.04, 14, 28);
+    const headerHeight = portrait ? clamp(height * 0.085, 66, 78) : 62;
+    const promptHeight = portrait ? clamp(height * 0.11, 74, 96) : 72;
+    const footerHeight = portrait ? clamp(height * 0.13, 96, 122) : 86;
+    const stageTop = headerHeight + promptHeight;
+    const stageBottom = height - footerHeight;
+
+    return {
+      width,
+      height,
+      portrait,
+      landscape: !portrait,
+      padding,
+      touchTarget: clamp(shortSide * 0.14, 52, 68),
+      header: {
+        x: width / 2,
+        y: headerHeight / 2,
+        width,
+        height: headerHeight,
+      },
+      prompt: {
+        x: width / 2,
+        y: headerHeight + 8,
+        width: width - padding * 2,
+        height: promptHeight - 8,
+      },
+      stage: {
+        left: padding,
+        top: stageTop,
+        right: width - padding,
+        bottom: stageBottom,
+        width: width - padding * 2,
+        height: Math.max(160, stageBottom - stageTop),
+        centerX: width / 2,
+        centerY: stageTop + Math.max(160, stageBottom - stageTop) / 2,
+      },
+      footer: {
+        x: width / 2,
+        y: height - footerHeight / 2,
+        width: width - padding * 2,
+        height: footerHeight,
+      },
+    };
+  }
+
+  function columnsFor(count, metricsValue, preferred = 4) {
+    const maxCols = metricsValue.portrait ? preferred : Math.max(preferred, 5);
+    return Math.max(1, Math.min(count, maxCols));
+  }
+
+  function grid(count, bounds, options = {}) {
+    const cols = Math.max(1, Math.min(count, options.cols || 4));
+    const rows = Math.max(1, Math.ceil(count / cols));
+    const gapX = options.gapX ?? 10;
+    const gapY = options.gapY ?? 10;
+    const cellWidth = (bounds.width - gapX * (cols - 1)) / cols;
+    const cellHeight = (bounds.height - gapY * (rows - 1)) / rows;
+    const points = [];
+
+    for (let index = 0; index < count; index += 1) {
+      const col = index % cols;
+      const row = Math.floor(index / cols);
+      points.push({
+        x: bounds.left + cellWidth / 2 + col * (cellWidth + gapX),
+        y: bounds.top + cellHeight / 2 + row * (cellHeight + gapY),
+        width: cellWidth,
+        height: cellHeight,
+        row,
+        col,
+      });
+    }
+
+    return { cols, rows, cellWidth, cellHeight, points };
+  }
+
+  function row(count, bounds, options = {}) {
+    const gap = options.gap ?? 10;
+    const maxWidth = options.maxWidth ?? 104;
+    const minWidth = options.minWidth ?? 54;
+    const available = bounds.width - gap * Math.max(0, count - 1);
+    const width = clamp(available / Math.max(1, count), minWidth, maxWidth);
+    const total = width * count + gap * Math.max(0, count - 1);
+    const start = bounds.left + (bounds.width - total) / 2;
+    return Array.from({ length: count }, (_, index) => ({
+      x: start + width / 2 + index * (width + gap),
+      y: bounds.top + bounds.height / 2,
+      width,
+      height: bounds.height,
+    }));
+  }
+
+  window.AprincarLayout = {
+    clamp,
+    metrics,
+    columnsFor,
+    grid,
+    row,
+  };
+})();
+
 // Standardized Phaser Game Configuration Factory for Aprincar
 window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneClass, options = {}) {
+  const mobileFirst = window.APRINCAR_GAME_CONFIG?.mobileFirst === true;
+  const scale = mobileFirst
+    ? {
+        mode: Phaser.Scale.RESIZE,
+        width: Math.max(320, window.innerWidth || 390),
+        height: Math.max(480, window.innerHeight || 844),
+      }
+    : {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 960,
+        height: 640
+      };
+
   return {
     type: Phaser.AUTO,
     parent: 'game',
     backgroundColor: options.backgroundColor || '#f7f6f2',
-    scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: 960,
-      height: 640
-    },
+    scale,
     input: {
-      activePointers: 3
+      activePointers: 3,
+      touch: true
     },
     render: {
       antialias: true,
@@ -831,7 +953,18 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
   const CFG = window.APRINCAR_GAME_CONFIG;
   const BRAND = window.APRINCAR_BRAND;
   const FONT = BRAND.fontFamily;
-  const C = { bg: 0xf7f6f2, purple: 0x8b5cf6, blue: 0x2563eb, coral: 0xf43f5e, orange: 0xfb923c, sun: 0xfbcb24, leaf: 0x22c55e, sky: 0x38bdf8, ink: '#13203d', white: 0xffffff };
+  const C = {
+    bg: 0xf7f6f2,
+    purple: 0x8b5cf6,
+    blue: 0x2563eb,
+    coral: 0xf43f5e,
+    orange: 0xfb923c,
+    sun: 0xfbcb24,
+    leaf: 0x22c55e,
+    sky: 0x38bdf8,
+    ink: '#13203d',
+    white: 0xffffff
+  };
 
   class AprincarBaseScene extends Phaser.Scene {
     constructor(sceneKey = 'main') {
@@ -843,26 +976,101 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
       this.stars = 0;
       this.testTargets = [];
       this.challenge = null;
+      this.mobileFirst = CFG.mobileFirst === true;
     }
 
     async create() {
       this.cameras.main.setBackgroundColor(C.bg);
-      
-      // Header decorativo
-      this.add.rectangle(480, 50, 960, 100, C.white).setStrokeStyle(1, 0xe2dfd7);
-      BRAND.addPhaser(this, 22, 16);
-      this.titleText = this.add.text(480, 18, CFG.name, { fontFamily: FONT, fontSize: '26px', fontStyle: 'bold', color: C.ink }).setOrigin(0.5, 0);
-      this.levelText = this.add.text(910, 26, 'Fase 1', { fontFamily: FONT, fontSize: '18px', fontStyle: 'bold', color: '#6f5bd7' }).setOrigin(1, 0);
-      
-      // Instrução principal
-      this.promptText = this.add.text(480, 114, '', { fontFamily: FONT, fontSize: '28px', fontStyle: 'bold', color: C.ink, align: 'center', wordWrap: { width: 840 } }).setOrigin(0.5, 0);
-      
-      // Rodapé
-      this.statusText = this.add.text(480, 580, '', { fontFamily: FONT, fontSize: '22px', fontStyle: 'bold', color: '#5143a6' }).setOrigin(0.5);
-      this.starText = this.add.text(32, 574, '⭐ 0', { fontFamily: FONT, fontSize: '22px', fontStyle: 'bold', color: '#6f5bd7' });
+      this.createChrome();
+
+      if (this.mobileFirst) {
+        this.scale.on('resize', () => {
+          this.layoutChrome();
+          if (typeof this.onViewportResize === 'function') this.onViewportResize();
+        });
+      }
 
       await aprincar.session.start({ mode: CFG.mode });
       this.nextRound();
+    }
+
+    createChrome() {
+      this.headerBackground = this.add.rectangle(0, 0, 1, 1, C.white).setStrokeStyle(1, 0xe2dfd7);
+      BRAND.addPhaser(this, this.mobileFirst ? 14 : 22, this.mobileFirst ? 14 : 16);
+
+      this.titleText = this.add.text(0, 0, CFG.name, {
+        fontFamily: FONT,
+        fontSize: this.mobileFirst ? '20px' : '26px',
+        fontStyle: 'bold',
+        color: C.ink,
+        align: 'center'
+      }).setOrigin(0.5, 0);
+
+      this.levelText = this.add.text(0, 0, 'Fase 1', {
+        fontFamily: FONT,
+        fontSize: this.mobileFirst ? '15px' : '18px',
+        fontStyle: 'bold',
+        color: '#6f5bd7'
+      }).setOrigin(1, 0);
+
+      this.promptText = this.add.text(0, 0, '', {
+        fontFamily: FONT,
+        fontSize: this.mobileFirst ? '23px' : '28px',
+        fontStyle: 'bold',
+        color: C.ink,
+        align: 'center'
+      }).setOrigin(0.5, 0);
+
+      this.statusText = this.add.text(0, 0, '', {
+        fontFamily: FONT,
+        fontSize: this.mobileFirst ? '17px' : '22px',
+        fontStyle: 'bold',
+        color: '#5143a6',
+        align: 'center'
+      }).setOrigin(0.5);
+
+      this.starText = this.add.text(0, 0, '⭐ 0', {
+        fontFamily: FONT,
+        fontSize: this.mobileFirst ? '17px' : '22px',
+        fontStyle: 'bold',
+        color: '#6f5bd7'
+      });
+
+      this.layoutChrome();
+    }
+
+    layoutChrome() {
+      if (!this.mobileFirst) {
+        this.headerBackground.setPosition(480, 50).setSize(960, 100);
+        this.titleText.setPosition(480, 18).setWordWrapWidth(560);
+        this.levelText.setPosition(910, 26);
+        this.promptText.setPosition(480, 114).setWordWrapWidth(840);
+        this.statusText.setPosition(480, 580).setWordWrapWidth(720);
+        this.starText.setPosition(32, 574);
+        return;
+      }
+
+      const layout = window.AprincarLayout.metrics(this);
+      this.layout = layout;
+      this.headerBackground
+        .setPosition(layout.header.x, layout.header.y)
+        .setSize(layout.header.width, layout.header.height);
+
+      const titleWidth = Math.max(120, layout.width - 170);
+      this.titleText
+        .setPosition(layout.width / 2, 14)
+        .setWordWrapWidth(titleWidth);
+
+      this.levelText.setPosition(layout.width - layout.padding, 18);
+      this.promptText
+        .setPosition(layout.prompt.x, layout.prompt.y)
+        .setWordWrapWidth(layout.prompt.width);
+
+      this.statusText
+        .setPosition(layout.footer.x, layout.height - 34)
+        .setWordWrapWidth(Math.max(160, layout.footer.width - 110));
+
+      this.starText.setPosition(layout.padding, layout.height - 42);
     }
 
     updateState(values = {}) {
@@ -871,6 +1079,7 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
     }
 
     clearRound() {
+      this.input.off('dragstart');
       this.input.off('drag');
       this.input.off('dragend');
       this.input.off('pointerdown');
@@ -880,8 +1089,11 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
       this.roundGroup = this.add.container(0, 0);
       this.statusText.setText('');
       this.locked = false;
+      this.attempts = 0;
+      this.consecutiveFailures = 0;
       this.testTargets = [];
       this.challenge = null;
+      if (this.mobileFirst) this.layout = window.AprincarLayout.metrics(this);
     }
 
     target(value, x, y, w, h, kind) {
@@ -889,8 +1101,24 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
     }
 
     addCardButton(x, y, w, h, label, value, color = C.white, kind = 'action') {
-      const box = this.add.rectangle(x, y, w, h, color).setStrokeStyle(2, 0xe2dfd7).setInteractive({ useHandCursor: true });
-      const text = this.add.text(x, y, label, { fontFamily: FONT, fontSize: `${Math.min(34, h * 0.44)}px`, fontStyle: 'bold', color: color === C.white ? C.ink : '#ffffff' }).setOrigin(0.5);
+      if (this.mobileFirst) {
+        const minimum = this.layout?.touchTarget ?? 52;
+        w = Math.max(w, minimum);
+        h = Math.max(h, minimum);
+      }
+
+      const box = this.add.rectangle(x, y, w, h, color)
+        .setStrokeStyle(2, 0xe2dfd7)
+        .setInteractive({ useHandCursor: true });
+
+      const text = this.add.text(x, y, label, {
+        fontFamily: FONT,
+        fontSize: `${Math.min(this.mobileFirst ? 28 : 34, h * 0.44)}px`,
+        fontStyle: 'bold',
+        color: color === C.white ? C.ink : '#ffffff',
+        align: 'center'
+      }).setOrigin(0.5);
+
       this.roundGroup.add([box, text]);
       this.target(kind === 'action' ? label : value, x, y, w, h, kind);
       box.on('pointerup', () => this.choose(value, box));
@@ -899,22 +1127,48 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
 
     choose(value, source) {
       if (this.locked) return;
-      this.submitResult(value === this.challenge.answer, { selected: value, target: this.challenge.answer, sourceX: source?.x });
+      this.submitResult(value === this.challenge.answer, {
+        selected: value,
+        target: this.challenge.answer,
+        sourceX: source?.x
+      });
+    }
+
+    async recordOutcome(result, metadata = {}, options = {}) {
+      const failuresBeforeAttempt = this.consecutiveFailures;
+      const assistance = options.assistance ??
+        (result !== 'observed' && failuresBeforeAttempt >= 2 ? 'visual-cue' : 'none');
+      const independent = options.independent ??
+        (result === 'observed' ? true : failuresBeforeAttempt === 0);
+
+      this.attempts += 1;
+      const payload = {
+        skillId: options.skillId ?? CFG.skillId,
+        result,
+        independent,
+        assistance,
+        difficulty: options.difficulty ?? this.challenge?.difficulty ?? 0.35,
+        confidence: options.confidence ?? (result === 'failure' ? 0.8 : 0.95),
+        attempts: this.attempts,
+        metadata: { level: this.level, ...metadata }
+      };
+
+      const response = await aprincar.evidence.submit(payload);
+
+      if (result === 'failure') this.consecutiveFailures += 1;
+      else if (result === 'success') this.consecutiveFailures = 0;
+
+      this.updateState({
+        attempts: this.attempts,
+        independent: payload.independent,
+        assistance: payload.assistance
+      });
+
+      return response;
     }
 
     async recordEvidence(ok, metadata = {}) {
-      this.attempts++;
-      const assistanceLevel = this.consecutiveFailures >= 2 ? 'visual-cue' : 'none';
-      return aprincar.evidence.submit({
-        skillId: CFG.skillId,
-        result: ok ? 'success' : 'failure',
-        independent: this.consecutiveFailures === 0,
-        assistance: assistanceLevel,
-        difficulty: this.challenge?.difficulty ?? 0.35,
-        confidence: ok ? 0.95 : 0.8,
-        attempts: this.attempts,
-        metadata: { level: this.level, ...metadata }
-      });
+      return this.recordOutcome(ok ? 'success' : 'failure', metadata);
     }
 
     async submitResult(ok, metadata = {}) {
@@ -924,24 +1178,27 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
       await this.recordEvidence(ok, metadata);
 
       if (ok) {
-        this.consecutiveFailures = 0;
         this.stars += 2;
         this.starText.setText(`⭐ ${this.stars}`);
-        if (window.AprincarFeedback) window.AprincarFeedback.celebrate(this, 480, 320);
+        if (window.AprincarFeedback) {
+          const centerX = this.mobileFirst ? this.layout.stage.centerX : 480;
+          const centerY = this.mobileFirst ? this.layout.stage.centerY : 320;
+          window.AprincarFeedback.celebrate(this, centerX, centerY);
+        }
         await aprincar.rewards.request({ reason: `${CFG.mode}-round`, amount: 2 });
         this.time.delayedCall(800, () => {
           this.level++;
           this.nextRound();
         });
       } else {
-        this.consecutiveFailures++;
         if (window.AprincarAudio) window.AprincarAudio.softError();
         this.locked = false;
         this.updateState({ inputReady: true });
-        
-        // Assistência progressiva suave se errar repetidamente
+
         if (this.consecutiveFailures >= 2) {
-          const correctTarget = this.testTargets.find(t => t.kind === 'choice' && t.value === this.challenge?.answer);
+          const correctTarget = this.testTargets.find(
+            (target) => target.kind === 'choice' && target.value === this.challenge?.answer
+          );
           if (correctTarget && window.AprincarFeedback) {
             window.AprincarFeedback.showAssistanceHint(this, correctTarget);
           }
@@ -956,8 +1213,14 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
 
 // Mundo das Cores — Ateliê das Cores
 (() => {
-  const { C, FONT } = window.AprincarConstants;
-  const COLOR_HEX = { violet: C.purple, coral: C.coral, sun: C.sun, leaf: C.leaf, sky: C.sky };
+  const { C } = window.AprincarConstants;
+  const COLOR_HEX = {
+    violet: C.purple,
+    coral: C.coral,
+    sun: C.sun,
+    leaf: C.leaf,
+    sky: C.sky
+  };
   const COLOR_ITEMS = {
     coral: 'car',
     leaf: 'leaf',
@@ -970,95 +1233,209 @@ window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneCla
     nextRound() {
       this.clearRound();
       this.levelText.setText(`Fase ${this.level}`);
+
       const seed = (Date.now() % 100000) + this.level * 97;
       const rng = createSeededRandom(seed);
       this.challenge = generateColorChallenge({ rng, seed, level: this.level });
 
+      const layout = this.layout;
+      const stage = layout.stage;
+      const options = this.challenge.options || [];
+      const itemType = COLOR_ITEMS[this.challenge.answer] || 'car';
+
       this.promptText.setText(`Leve a peça até a cor ${this.challenge.label}`);
 
-      // Peça arrastável com objeto ilustrado
-      const itemType = COLOR_ITEMS[this.challenge.answer] || 'car';
-      const pieceContainer = this.add.container(180, 320);
+      const sourceY = stage.top + Math.min(120, stage.height * 0.20);
+      const sourceDiameter = window.AprincarLayout.clamp(
+        layout.touchTarget * 1.45,
+        78,
+        layout.portrait ? 96 : 112
+      );
+
+      const pieceContainer = this.add.container(stage.centerX, sourceY);
       const pieceGfx = this.add.graphics();
-      // Glow base
-      pieceGfx.fillStyle(COLOR_HEX[this.challenge.answer] || C.blue, 0.25);
-      pieceGfx.fillCircle(0, 0, 56);
-      pieceGfx.lineStyle(3, COLOR_HEX[this.challenge.answer] || C.blue, 0.9);
-      pieceGfx.strokeCircle(0, 0, 52);
-      // Item ilustrado
-      window.AprincarVectorArt.drawColorItem(pieceGfx, itemType, 0, 0, 72);
+      const answerColor = COLOR_HEX[this.challenge.answer] || C.blue;
+      pieceGfx.fillStyle(answerColor, 0.22);
+      pieceGfx.fillCircle(0, 0, sourceDiameter / 2);
+      pieceGfx.lineStyle(3, answerColor, 0.9);
+      pieceGfx.strokeCircle(0, 0, sourceDiameter / 2 - 4);
+      window.AprincarVectorArt.drawColorItem(
+        pieceGfx,
+        itemType,
+        0,
+        0,
+        sourceDiameter * 0.66
+      );
 
-      const hitZone = this.add.circle(0, 0, 52, 0xffffff, 0.001).setInteractive({ draggable: true, useHandCursor: true });
-      this.input.setDraggable(hitZone);
+      const hitZone = this.add.circle(
+        0,
+        0,
+        sourceDiameter / 2,
+        0xffffff,
+        0.001
+      );
+
       pieceContainer.add([pieceGfx, hitZone]);
+      pieceContainer.setSize(sourceDiameter, sourceDiameter);
       this.roundGroup.add(pieceContainer);
+      this.target(
+        'source',
+        stage.centerX,
+        sourceY,
+        sourceDiameter,
+        sourceDiameter,
+        'drag-source'
+      );
 
-      this.target('source', 180, 320, 108, 108, 'drag-source');
+      const gridTop = sourceY + sourceDiameter / 2 + 28;
+      const gridBottom = stage.bottom - 12;
+      const dropArea = {
+        left: stage.left,
+        top: gridTop,
+        width: stage.width,
+        height: Math.max(170, gridBottom - gridTop)
+      };
+      const cols = layout.portrait ? Math.min(2, options.length) : options.length;
+      const grid = window.AprincarLayout.grid(options.length, dropArea, {
+        cols,
+        gapX: layout.portrait ? 14 : 20,
+        gapY: layout.portrait ? 18 : 14
+      });
 
-      // Casinhas de Cores (Drop Zones)
       const slots = [];
-      const options = this.challenge.options || [];
-      options.forEach((color, i) => {
-        const x = 440 + i * 140;
-        const slotContainer = this.add.container(x, 320);
-        const slotGfx = this.add.graphics();
+      options.forEach((color, index) => {
+        const cell = grid.points[index];
         const hex = COLOR_HEX[color] || C.purple;
+        const slotWidth = window.AprincarLayout.clamp(
+          cell.width * 0.78,
+          layout.touchTarget,
+          layout.portrait ? 132 : 150
+        );
+        const slotHeight = window.AprincarLayout.clamp(
+          cell.height * 0.70,
+          layout.touchTarget,
+          layout.portrait ? 112 : 130
+        );
 
-        // Casinha estilizada
+        const slotContainer = this.add.container(cell.x, cell.y);
+        const slotGfx = this.add.graphics();
         slotGfx.fillStyle(hex, 0.18);
-        slotGfx.fillRoundedRect(-55, -60, 110, 120, 16);
+        slotGfx.fillRoundedRect(
+          -slotWidth / 2,
+          -slotHeight / 2 + 10,
+          slotWidth,
+          slotHeight - 10,
+          16
+        );
         slotGfx.lineStyle(4, hex, 0.9);
-        slotGfx.strokeRoundedRect(-55, -60, 110, 120, 16);
-        // Telhado da casinha
+        slotGfx.strokeRoundedRect(
+          -slotWidth / 2,
+          -slotHeight / 2 + 10,
+          slotWidth,
+          slotHeight - 10,
+          16
+        );
         slotGfx.fillStyle(hex, 0.85);
-        slotGfx.fillTriangle(-60, -60, 60, -60, 0, -95);
+        slotGfx.fillTriangle(
+          -slotWidth / 2 - 4,
+          -slotHeight / 2 + 10,
+          slotWidth / 2 + 4,
+          -slotHeight / 2 + 10,
+          0,
+          -slotHeight / 2 - 18
+        );
 
         slotContainer.add(slotGfx);
         slotContainer.setData('color', color);
+        slotContainer.setData('width', slotWidth);
+        slotContainer.setData('height', slotHeight);
         this.roundGroup.add(slotContainer);
 
-        this.target(color, x, 320, 110, 120, 'drop-zone');
+        this.target(
+          color,
+          cell.x,
+          cell.y,
+          slotWidth,
+          slotHeight,
+          'drop-zone'
+        );
         slots.push(slotContainer);
       });
 
-      this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-        if (gameObject === hitZone) {
+      window.AprincarInputGestures.attachTapOrDrag(this, pieceContainer, {
+        threshold: 10,
+        onDrag: (pointer) => {
+          if (this.locked) return;
           pieceContainer.x = pointer.x;
           pieceContainer.y = pointer.y;
-        }
-      });
+          this.updateState({ lastGesture: 'drag' });
+        },
+        onDragEnd: () => {
+          if (this.locked) {
+            this.restorePiece(pieceContainer, stage.centerX, sourceY);
+            return;
+          }
 
-      this.input.on('dragend', (pointer, gameObject) => {
-        if (gameObject !== hitZone) return;
-
-        const hit = slots.find(s => {
-          const bounds = new Phaser.Geom.Rectangle(s.x - 55, s.y - 60, 110, 120);
-          return Phaser.Geom.Intersects.CircleToRectangle(new Phaser.Geom.Circle(pieceContainer.x, pieceContainer.y, 40), bounds);
-        });
-
-        const ok = !!hit && hit.getData('color') === this.challenge.answer;
-        this.submitResult(ok, { target: this.challenge.answer, selected: hit?.getData('color') ?? null });
-
-        if (!ok) {
-          if (window.AprincarAudio) window.AprincarAudio.softError();
-          this.tweens.add({
-            targets: pieceContainer,
-            x: 180,
-            y: 320,
-            duration: 320,
-            ease: 'Back.easeOut'
+          const hit = slots.find((slot) => {
+            const width = slot.getData('width');
+            const height = slot.getData('height');
+            return Phaser.Geom.Rectangle.Contains(
+              new Phaser.Geom.Rectangle(
+                slot.x - width / 2,
+                slot.y - height / 2,
+                width,
+                height
+              ),
+              pieceContainer.x,
+              pieceContainer.y
+            );
           });
+
+          const selected = hit?.getData('color') ?? null;
+          const ok = selected === this.challenge.answer;
+          this.submitResult(ok, {
+            target: this.challenge.answer,
+            selected,
+            interaction: 'drag'
+          });
+
+          if (!ok) {
+            this.restorePiece(pieceContainer, stage.centerX, sourceY, true);
+          }
         }
       });
 
       window.__APRINCAR_GAME_STATE__ = {
         mode: 'color',
         variant: 'colors',
+        familyId: 'creative',
+        objective: window.APRINCAR_GAME_CONFIG.objective,
         level: this.level,
         challenge: this.challenge,
         targets: this.testTargets,
+        viewport: {
+          width: layout.width,
+          height: layout.height,
+          portrait: layout.portrait
+        },
+        attempts: this.attempts,
         inputReady: true
       };
+    }
+
+    restorePiece(piece, x, y, tween = false) {
+      if (tween) {
+        this.tweens.add({
+          targets: piece,
+          x,
+          y,
+          duration: 260,
+          ease: 'Back.easeOut'
+        });
+        return;
+      }
+      piece.x = x;
+      piece.y = y;
     }
   }
 
