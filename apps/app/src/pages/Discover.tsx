@@ -70,8 +70,8 @@ export function Discover() {
           </div>
           <h1>Brincadeiras organizadas por objetivo</h1>
           <p>
-            Em vez de uma lista solta de jogos, cada família reúne atividades que praticam uma ideia
-            parecida de maneiras diferentes.
+            Em vez de uma lista solta de jogos, cada família reúne atividades que praticam uma ideia parecida
+            de maneiras diferentes.
           </p>
         </div>
         <div className="hub-stat">
