@@ -18,7 +18,7 @@
     "test:unit": "npm run test",
     "test:e2e": "playwright test",
     "lint": "eslint .",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --write apps/app/src/pages/Discover.tsx && git diff -- apps/app/src/pages/Discover.tsx && exit 1",
     "check": "npm run test && npm run typecheck && npm run lint && npm run build",
     "prepare": "husky",
     "verify:official": "node scripts/verify-official-snapshot.mjs",
