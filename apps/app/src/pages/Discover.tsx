@@ -1,60 +1,61 @@
-import { Button, Group, RangeSlider, Select, Text, TextInput } from '@mantine/core';
+import { Button, RangeSlider, Select, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Compass, RotateCcw, Search, SlidersHorizontal } from 'lucide-react';
+import { RotateCcw, Search, SlidersHorizontal } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
 import { EmptyState } from '@aprincar/ui';
-
-const childCategories = [
-  ['all', 'Todos', '🌟'],
-  ['math', 'Números', '🔢'],
-  ['letters', 'Letras', '🔤'],
-  ['logic', 'Lógica', '🧩'],
-  ['creative', 'Criar', '🎨'],
-  ['colors', 'Cores', '🌈'],
-  ['3d', '3D', '🪐'],
-] as const;
+import { GAME_FAMILIES, familyById, familyForGame } from '../game-families';
 
 export function Discover() {
   const { registry } = useAppStore();
   const [q, setQ] = useState('');
   const [category, setCategory] = useState('all');
 
-  // Adult filter state
   const [adultFiltersOpen, { toggle: toggleAdultFilters }] = useDisclosure(false);
   const [trustFilter, setTrustFilter] = useState<string>('all');
   const [ageRange, setAgeRange] = useState<[number, number]>([2, 10]);
 
   const list = useMemo(() => {
-    return registry.filter((e) => {
-      // Text query
+    return registry.filter((entry) => {
       const hay = (
-        e.id +
+        entry.id +
         ' ' +
-        (e.name?.['pt-BR'] ?? '') +
+        (entry.name?.['pt-BR'] ?? '') +
         ' ' +
-        (e.description?.['pt-BR'] ?? '') +
+        (entry.description?.['pt-BR'] ?? '') +
         ' ' +
-        (e.tags ?? []).join(' ') +
+        (entry.tags ?? []).join(' ') +
         ' ' +
-        (e.skills ?? []).join(' ')
+        (entry.skills ?? []).join(' ')
       ).toLowerCase();
-      const qok = !q || hay.includes(q.toLowerCase());
 
-      // Child category filter
-      const catOk =
-        category === 'all' || (category === '3d' ? e.id.includes('3d') : (e.tags ?? []).includes(category));
-
-      // Adult filters
-      const trustOk = trustFilter === 'all' || e.trust === trustFilter;
-      const minAge = e.ageGuidance?.min ?? 2;
-      const maxAge = e.ageGuidance?.max ?? 10;
+      const queryOk = !q || hay.includes(q.toLowerCase());
+      const familyOk = category === 'all' || familyForGame(entry.id)?.id === category;
+      const trustOk = trustFilter === 'all' || entry.trust === trustFilter;
+      const minAge = entry.ageGuidance?.min ?? 2;
+      const maxAge = entry.ageGuidance?.max ?? 10;
       const ageOk = minAge <= ageRange[1] && maxAge >= ageRange[0];
 
-      return qok && catOk && trustOk && ageOk;
+      return queryOk && familyOk && trustOk && ageOk;
     });
   }, [registry, q, category, trustFilter, ageRange]);
+
+  const familySections = useMemo(
+    () =>
+      GAME_FAMILIES.map((family) => ({
+        family,
+        entries: list.filter((entry) => family.gameIds.includes(entry.id)),
+      })).filter((section) => section.entries.length > 0),
+    [list],
+  );
+
+  const otherEntries = useMemo(
+    () => list.filter((entry) => !familyForGame(entry.id)),
+    [list],
+  );
+
+  const selectedFamily = category === 'all' ? undefined : familyById(category);
 
   const resetFilters = () => {
     setQ('');
@@ -65,33 +66,31 @@ export function Discover() {
 
   return (
     <div className="aprincar-page">
-      {/* Hub Hero */}
       <section className="hub-hero">
         <div>
           <div className="child-eyebrow" style={{ color: '#BDB4FF' }}>
-            Aprincar Hub & Descoberta
+            Escolha pelo que quer descobrir
           </div>
-          <h1>Explore brincadeiras e atividades</h1>
+          <h1>Brincadeiras organizadas por objetivo</h1>
           <p>
-            Descubra experiências criadas com carinho pedagógico. Você pode jogar online e guardar suas
-            favoritas para brincar offline.
+            Em vez de uma lista solta de jogos, cada família reúne atividades que praticam uma ideia
+            parecida de maneiras diferentes.
           </p>
         </div>
         <div className="hub-stat">
-          <strong>{registry.length}</strong>
-          <span>brincadeiras no catálogo</span>
+          <strong>{GAME_FAMILIES.length}</strong>
+          <span>famílias de descoberta</span>
         </div>
       </section>
 
-      {/* Search and Category Filter Bar */}
-      <section className="aprincar-panel" style={{ padding: 18 }}>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+      <section className="aprincar-panel game-family-filter-panel">
+        <div className="discover-search-row">
           <TextInput
             leftSection={<Search size={17} />}
             placeholder="Buscar brincadeiras, temas ou palavras…"
             value={q}
-            onChange={(e) => setQ(e.currentTarget.value)}
-            style={{ flex: '1 1 300px' }}
+            onChange={(event) => setQ(event.currentTarget.value)}
+            className="discover-search-input"
             radius="xl"
             aria-label="Buscar brincadeiras"
           />
@@ -105,39 +104,34 @@ export function Discover() {
           </Button>
         </div>
 
-        {/* Child Category Chips */}
-        <div className="filter-row" style={{ marginTop: 14 }}>
-          {childCategories.map(([id, label, icon]) => (
+        <div className="filter-row game-family-filter-row">
+          <button
+            className={`filter-chip ${category === 'all' ? 'active' : ''}`}
+            onClick={() => setCategory('all')}
+          >
+            <span>🌟</span> Todos
+          </button>
+          {GAME_FAMILIES.map((family) => (
             <button
-              key={id}
-              className={`filter-chip ${category === id ? 'active' : ''}`}
-              onClick={() => setCategory(id)}
+              key={family.id}
+              className={`filter-chip ${category === family.id ? 'active' : ''}`}
+              onClick={() => setCategory(family.id)}
             >
-              <span>{icon}</span> {label}
+              <span>{family.icon}</span> {family.title}
             </button>
           ))}
         </div>
 
-        {/* Collapsible Adult Filters */}
         {adultFiltersOpen && (
-          <div
-            className="adult-filters-box"
-            style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--ap-border)' }}
-          >
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                gap: 16,
-              }}
-            >
+          <div className="adult-filters-box">
+            <div className="adult-filters-grid">
               <div>
                 <Text size="sm" fw={800} mb={6}>
-                  Nível de confiança (Trust)
+                  Nível de confiança
                 </Text>
                 <Select
                   value={trustFilter}
-                  onChange={(v) => setTrustFilter(v ?? 'all')}
+                  onChange={(value) => setTrustFilter(value ?? 'all')}
                   data={[
                     { value: 'all', label: 'Todos os níveis' },
                     { value: 'official', label: 'Oficial Aprincar' },
@@ -164,7 +158,7 @@ export function Discover() {
                 />
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+              <div className="adult-filters-reset">
                 <Button
                   variant="subtle"
                   color="gray"
@@ -179,32 +173,77 @@ export function Discover() {
         )}
       </section>
 
-      {/* Results grid */}
-      <section>
-        <div className="section-head">
-          <div>
-            <h2>{list.length} experiências encontradas</h2>
-            <p>Escolha livremente. Todas respeitam o ritmo da criança e não possuem anúncios.</p>
+      {list.length === 0 ? (
+        <EmptyState
+          title="Nenhuma brincadeira encontrada"
+          description="Tente ajustar a busca ou limpar os filtros para encontrar outras experiências."
+          action={
+            <Button className="ap-primary" onClick={resetFilters}>
+              Ver todas as brincadeiras
+            </Button>
+          }
+        />
+      ) : selectedFamily ? (
+        <section className="game-family-focus">
+          <div className="game-family-heading">
+            <div className="game-family-icon" aria-hidden="true">
+              {selectedFamily.icon}
+            </div>
+            <div>
+              <div className="child-eyebrow" style={{ color: selectedFamily.color }}>
+                Família de brincadeiras
+              </div>
+              <h2>{selectedFamily.title}</h2>
+              <p>{selectedFamily.objective}</p>
+            </div>
           </div>
-        </div>
-        {list.length === 0 ? (
-          <EmptyState
-            title="Nenhuma brincadeira encontrada"
-            description="Tente ajustar sua busca ou limpar os filtros para encontrar outras experiências."
-            action={
-              <Button className="ap-primary" onClick={resetFilters}>
-                Ver todas as brincadeiras
-              </Button>
-            }
-          />
-        ) : (
-          <div className="game-grid" style={{ marginTop: 16 }}>
-            {list.map((e) => (
-              <GameCard key={e.id} entry={e} />
+          <div className="game-grid game-family-grid">
+            {list.map((entry) => (
+              <GameCard key={entry.id} entry={entry} />
             ))}
           </div>
-        )}
-      </section>
+        </section>
+      ) : (
+        <>
+          {familySections.map(({ family, entries }) => (
+            <section key={family.id} className="game-family-section">
+              <div className="game-family-heading">
+                <div className="game-family-icon" aria-hidden="true">
+                  {family.icon}
+                </div>
+                <div>
+                  <div className="child-eyebrow" style={{ color: family.color }}>
+                    {entries.length} {entries.length === 1 ? 'atividade' : 'atividades'}
+                  </div>
+                  <h2>{family.title}</h2>
+                  <p>{family.summary}</p>
+                </div>
+              </div>
+              <div className="game-shelf game-family-shelf">
+                {entries.map((entry) => (
+                  <GameCard key={entry.id} entry={entry} compact />
+                ))}
+              </div>
+            </section>
+          ))}
+
+          {otherEntries.length > 0 && (
+            <section className="game-family-section">
+              <div className="section-head">
+                <div>
+                  <h2>Outras experiências</h2>
+                  <p>Conteúdos curados ou da comunidade que ainda não pertencem às famílias oficiais.</p>
+                </div>
+              </div>
+              <div className="game-grid" style={{ marginTop: 16 }}>
+                {otherEntries.map((entry) => (
+                  <GameCard key={entry.id} entry={entry} />
+                ))}
+              </div>
+            </section>
+          )}
+        </>
+      )}
     </div>
   );
 }
