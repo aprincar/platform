@@ -1893,3 +1893,114 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Game families: mobile-first discovery */
+.game-family-filter-panel {
+  padding: 16px;
+}
+.discover-search-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.discover-search-input {
+  width: 100%;
+}
+.game-family-filter-row {
+  margin-top: 14px;
+}
+.adult-filters-box {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ap-border);
+}
+.adult-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.adult-filters-reset {
+  display: flex;
+  align-items: flex-end;
+}
+.game-family-section,
+.game-family-focus {
+  display: grid;
+  gap: 14px;
+}
+.game-family-heading {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+.game-family-heading h2 {
+  margin: 2px 0 4px;
+  font-size: clamp(22px, 7vw, 30px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.game-family-heading p {
+  margin: 0;
+  color: var(--ap-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.game-family-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--ap-surface);
+  border: 1px solid var(--ap-border);
+  box-shadow: var(--ap-shadow-soft);
+  font-size: 27px;
+}
+.game-family-shelf {
+  margin-inline: -14px;
+  padding-inline: 14px;
+  grid-auto-columns: minmax(225px, 80vw);
+  scroll-padding-inline: 14px;
+}
+.game-family-grid {
+  margin-top: 2px;
+}
+
+@media (min-width: 768px) {
+  .game-family-filter-panel {
+    padding: 18px;
+  }
+  .discover-search-row {
+    display: flex;
+  }
+  .discover-search-input {
+    flex: 1 1 300px;
+  }
+  .adult-filters-grid {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+  }
+  .game-family-heading {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .game-family-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    font-size: 32px;
+  }
+  .game-family-heading h2 {
+    font-size: 30px;
+  }
+  .game-family-heading p {
+    font-size: 14px;
+  }
+  .game-family-shelf {
+    margin-inline: 0;
+    padding-inline: 0;
+    grid-auto-columns: minmax(250px, 300px);
+  }
+}
