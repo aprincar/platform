@@ -1,6 +1,6 @@
-import { Button, Text, Group, Badge } from '@mantine/core';
-import { ArrowLeft, Play, Sparkles, Star, Trophy } from 'lucide-react';
-import { Link, useParams, useNavigate } from '@tanstack/react-router';
+import { Button } from '@mantine/core';
+import { ArrowLeft, Sparkles, Star } from 'lucide-react';
+import { useParams, useNavigate } from '@tanstack/react-router';
 import { WORLDS, type WorldInfo } from '../worlds';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
@@ -11,22 +11,15 @@ export function WorldDetail() {
   const { registry } = useAppStore();
 
   const world: WorldInfo = WORLDS.find((w) => w.id === worldId) ?? WORLDS[0]!;
+  const matchingGames = world.gameIds
+    .map((gameId) => registry.find((game) => game.id === gameId))
+    .filter((game): game is NonNullable<typeof game> => Boolean(game));
 
-  // Match games related to this world by skillIds or tags
-  const matchingGames = registry.filter((game) => {
-    const hasSkill = (game.skills ?? []).some((s) => world.skillIds.includes(s));
-    const hasTag = (game.tags ?? []).some(
-      (t) => world.id.includes(t) || world.title.toLowerCase().includes(t),
-    );
-    return hasSkill || hasTag;
-  });
-
-  const featuredGame = matchingGames[0] ?? registry[0];
+  const featuredGame = matchingGames[0];
   const otherGames = matchingGames.slice(1);
 
   return (
     <div className="aprincar-page">
-      {/* World header */}
       <section
         className="world-detail-hero"
         style={{ '--world-hero-accent': world.color, backgroundColor: world.accentBg } as React.CSSProperties}
@@ -40,22 +33,22 @@ export function WorldDetail() {
         >
           Voltar para Início
         </Button>
+
         <div className="world-detail-header-inner">
           <div className="world-detail-icon">{world.icon}</div>
           <div>
             <div className="child-eyebrow" style={{ color: world.color }}>
-              Mundo Aprincar · {world.suggestedAges}
+              Família de brincadeiras · {world.suggestedAges}
             </div>
             <h1>{world.title}</h1>
             <p className="world-detail-desc">{world.description}</p>
           </div>
         </div>
 
-        {/* Visual learning path trail */}
         <div className="world-trail-panel">
           <div className="world-trail-title">
             <Sparkles size={16} color={world.color} />
-            <strong>Seu caminho de descobertas</strong>
+            <strong>O que você vai praticar</strong>
           </div>
           <div className="world-trail-nodes">
             {world.trail.map((step, idx) => (
@@ -71,16 +64,15 @@ export function WorldDetail() {
         </div>
       </section>
 
-      {/* Primary recommendation: Comece daqui */}
       {featuredGame && (
         <section className="aprincar-panel world-spotlight-card">
           <div className="section-head">
             <div>
               <div className="child-eyebrow" style={{ color: world.color }}>
-                Recomendado para começar
+                Primeira atividade
               </div>
-              <h2>Comece daqui</h2>
-              <p>Uma brincadeira perfeita para dar os primeiros passos neste mundo.</p>
+              <h2>Comece por aqui</h2>
+              <p>A primeira atividade apresenta o objetivo da família de forma simples.</p>
             </div>
           </div>
           <div style={{ marginTop: 16 }}>
@@ -89,20 +81,21 @@ export function WorldDetail() {
         </section>
       )}
 
-      {/* Other games in this world */}
-      <section>
-        <div className="section-head">
-          <div>
-            <h2>Outras brincadeiras deste mundo</h2>
-            <p>Mais maneiras de explorar {world.title.toLowerCase()} no seu ritmo.</p>
+      {otherGames.length > 0 && (
+        <section>
+          <div className="section-head">
+            <div>
+              <h2>Continue explorando</h2>
+              <p>Outras atividades trabalham o mesmo objetivo por uma mecânica diferente.</p>
+            </div>
           </div>
-        </div>
-        <div className="game-grid" style={{ marginTop: 16 }}>
-          {(otherGames.length > 0 ? otherGames : matchingGames).map((game) => (
-            <GameCard key={game.id} entry={game} />
-          ))}
-        </div>
-      </section>
+          <div className="game-grid" style={{ marginTop: 16 }}>
+            {otherGames.map((game) => (
+              <GameCard key={game.id} entry={game} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
