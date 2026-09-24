@@ -22,11 +22,7 @@ export const WORLDS: WorldInfo[] = [
     description: 'Contagem, quantidade e ações concretas com objetos, frutas e blocos.',
     childSummary: 'Conte, escolha quantidades e use os números para resolver pequenas missões!',
     skillIds: ['math.counting.1-10'],
-    gameIds: [
-      'aprincar.counting-animals',
-      'aprincar.fruit-basket',
-      'aprincar.block-tower',
-    ],
+    gameIds: ['aprincar.counting-animals', 'aprincar.fruit-basket', 'aprincar.block-tower'],
     suggestedAges: '3 a 8 anos',
     trail: ['Perceber quantidades', 'Contar', 'Levar a quantidade certa', 'Construir contando'],
   },
