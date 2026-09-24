@@ -27,7 +27,7 @@ test.describe('Visual Screenshots Capture', () => {
 
     // Discover
     await page.goto('/discover');
-    await expect(page.getByRole('heading', { name: 'Explore brincadeiras e atividades' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Brincadeiras organizadas por objetivo' })).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'mobile-discover.png') });
 
@@ -38,8 +38,8 @@ test.describe('Visual Screenshots Capture', () => {
     await page.screenshot({ path: path.join(outDir, 'mobile-library.png') });
 
     // World Detail
-    await page.goto('/world/math');
-    await expect(page.getByRole('heading', { name: 'Matemática' })).toBeVisible();
+    await page.goto('/world/quantities');
+    await expect(page.getByRole('heading', { name: 'Números e Quantidades' })).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'mobile-world.png') });
   });
@@ -54,8 +54,8 @@ test.describe('Visual Screenshots Capture', () => {
     await page.screenshot({ path: path.join(outDir, 'tablet-home.png') });
 
     // Tablet World
-    await page.goto('/world/colors-shapes');
-    await expect(page.getByRole('heading', { name: 'Cores e Formas' })).toBeVisible();
+    await page.goto('/world/creative');
+    await expect(page.getByRole('heading', { name: 'Cores e Criação' })).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'tablet-world.png') });
 
