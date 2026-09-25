@@ -9,8 +9,8 @@
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
-  color: #242523;
-  background: #f7f6f2;
+  color: #20263a;
+  background: #f7f7fb;
   --ap-bg: #f7f7fb;
   --ap-surface: #ffffff;
   --ap-surface-muted: #eef1f7;
@@ -21,7 +21,7 @@
   --ap-primary-strong: #3b55d9;
   --ap-primary-soft: #eef1ff;
   --ap-sun: #ffc83d;
-  --ap-orange: #fb923c;
+  --ap-orange: #ff9f43;
   --ap-leaf: #2fc98f;
   --ap-coral: #ff6b6b;
   --ap-purple: #8b6ff7;
