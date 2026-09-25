@@ -19,7 +19,7 @@
     },
     "manifestUrl": "/extensions/block-tower/manifest.json",
     "entryUrl": "/extensions/block-tower/game.html",
-    "integrity": "b0553e37ed4fb9fc4ede52ed5518a82605b395530c6724611bf42f297e97ce21",
+    "integrity": "648880dc1316bcbb10cdf66663e1dcf40b8c713c189bb4196b887ba079191ea3",
     "tags": [
       "math",
       "counting",
@@ -139,7 +139,7 @@
     },
     "manifestUrl": "/extensions/fruit-basket/manifest.json",
     "entryUrl": "/extensions/fruit-basket/game.html",
-    "integrity": "d7185c84de1dfccb91a3d645be90b5a2e183d865e1dec482e654fe0cb23af265",
+    "integrity": "26198dc386f5433635f5c80ba695ec1433c07c25149ee6bcd6c8878745a445cf",
     "tags": [
       "math",
       "counting",
