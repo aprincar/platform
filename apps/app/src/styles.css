@@ -32,6 +32,9 @@
   --ap-radius: 26px;
   --ap-max: 1240px;
   --ap-bottom-nav-height: 74px;
+  --ap-focus: #245cf6;
+  --ap-touch-target: 44px;
+  color-scheme: light;
 }
 
 :root[data-aprincar-theme='pastel'] {
@@ -42,6 +45,9 @@
   --ap-muted: #766a72;
   --ap-border: #f1dde7;
   --ap-primary-soft: #eef3ff;
+}
+:root[data-aprincar-theme='light'] {
+  color-scheme: light;
 }
 :root[data-aprincar-theme='contrast'] {
   --ap-bg: #000;
@@ -54,7 +60,10 @@
   --ap-primary-strong: #ffe500;
   --ap-primary-soft: #2b2900;
   --ap-purple-soft: #271d3b;
+  --ap-focus: #00ffff;
+  color-scheme: dark;
 }
+:root[data-aprincar-theme='dark'],
 :root[data-aprincar-theme='night'] {
   --ap-bg: #101426;
   --ap-surface: #191f36;
@@ -66,6 +75,8 @@
   --ap-primary-strong: #a7c3ff;
   --ap-primary-soft: #202d4d;
   --ap-purple-soft: #29264b;
+  --ap-focus: #a7c3ff;
+  color-scheme: dark;
 }
 
 * {
@@ -102,6 +113,13 @@ a {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+}
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--ap-focus);
+  outline-offset: 3px;
+}
+:where(button, [role='button'], .aprincar-nav-link, .mobile-nav-link, .filter-chip) {
+  min-height: var(--ap-touch-target);
 }
 .brand-link {
   display: inline-flex;
@@ -355,6 +373,14 @@ a {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
   .hero-star-mascot {
     animation: none;
   }

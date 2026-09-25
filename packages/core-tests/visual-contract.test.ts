@@ -49,3 +49,21 @@ test('profile model can persist onboarding preferences without requiring cloud i
   assert.match(store, /CreateProfileInput/);
   assert.match(store, /dailyGoalMinutes/);
 });
+
+
+test('design system exposes accessible light, dark, automatic and contrast themes', () => {
+  const theme = read('../../apps/app/src/theme.ts');
+  const settings = read('../../apps/app/src/pages/Settings.tsx');
+  const styles = read('../../apps/app/src/styles.css');
+
+  assert.match(theme, /AprincarThemePreference = 'system' \| 'light' \| 'dark' \| 'contrast'/);
+  assert.match(theme, /prefers-color-scheme: dark/);
+  assert.match(theme, /observeThemePreference/);
+  assert.match(settings, /Automático \(seguir o aparelho\)/);
+  assert.match(settings, /Alto contraste/);
+  assert.match(styles, /data-aprincar-theme='dark'/);
+  assert.match(styles, /:focus-visible/);
+  assert.match(styles, /--ap-touch-target:\s*44px/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+  assert.match(styles, /color-scheme:\s*dark/);
+});

@@ -91,3 +91,8 @@ Priorize branco, `#F7F7FB` ou superfícies claras. Em fundos escuros, use a marc
 A representação React canônica vive em `@aprincar/ui`. Os SVGs em `apps/app/public/brand` são a distribuição estática da mesma identidade.
 
 PWA, App, Hub, templates e jogos oficiais devem consumir a identidade canônica em vez de redesenhar a marca localmente.
+
+
+## Design System
+
+A implementação visual completa é definida em [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md). A marca permanece independente do mascote; temas, tokens, acessibilidade e componentes não devem redefinir a identidade.

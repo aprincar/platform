@@ -1,96 +1,130 @@
-# Aprincar Design System — Production Visual Contract
+# Aprincar Design System v4
 
-Aprincar V1 uses three complementary sources of truth:
+O Design System v4 transforma a identidade **Portal de Descoberta** em regras de produto reutilizáveis. A logo é a assinatura institucional; o mascote é um personagem de apoio e nunca substitui a marca.
 
-1. `docs/design/reference/aprincar-ux-baseline.html` — interaction hierarchy and product flows.
-2. `docs/design/reference/aprincar-brand-v3-concept.png` — approved visual direction for the star character and multicolor wordmark.
-3. The production components in `@aprincar/ui` — canonical vector implementation used by App, Hub, PWA and official games.
+## Princípios
 
-If references disagree, preserve the UX hierarchy of the single-file baseline while following the production Brand System v3 and the mobile-first rules below.
+1. **Mobile-first de verdade** — a menor superfície é o baseline, não uma adaptação tardia.
+2. **Aprender com finalidade** — cada atividade explicita habilidade, objetivo e evidência observável.
+3. **Acessibilidade como contrato** — teclado, leitor de tela, contraste, touch e redução de movimento fazem parte do DoD.
+4. **Consistência sem monotonia** — o shell usa Navy + Blue; famílias pedagógicas podem usar acentos próprios.
+5. **Local/offline-first** — aparência e preferências não dependem de identidade em nuvem.
 
-## Brand System v3
+## Marca
 
-Usage, asset names, clear space, minimum sizes and prohibited treatments are defined in [`BRAND_GUIDELINES.md`](BRAND_GUIDELINES.md).
+- Símbolo: A abstrato + portal/play + luz de descoberta.
+- Wordmark: Navy `#17213D` + Blue `#4F6EF7`.
+- Mascote: apoio em hero, onboarding, empty/loading states e comunicação pedagógica.
+- O mascote não aparece como favicon, app icon ou substituto universal do logo.
 
-- Primary symbol: friendly yellow star with a small learning/pencil cue.
-- Wordmark: multicolor `Aprincar`, with blue, yellow, green, coral, orange and purple accents.
-- The canonical production identity is vector code from `packages/ui/src/index.tsx`; generated/bitmap concept artwork is reference material only.
-- App, Hub, PWA icons, official games and templates must not invent independent Aprincar logos.
-- The brand must remain legible in small sizes and must not depend on gradients, 3D rendering or raster artwork to function.
+## Tokens semânticos
 
-## Core tokens
+| Token | Claro | Escuro | Alto contraste |
+| --- | --- | --- | --- |
+| `--ap-bg` | `#F7F7FB` | `#101426` | `#000000` |
+| `--ap-surface` | `#FFFFFF` | `#191F36` | `#111111` |
+| `--ap-text` | `#20263A` | `#F3F5FF` | `#FFFFFF` |
+| `--ap-primary` | `#4F6EF7` | `#79A5FF` | `#FFE500` |
+| `--ap-focus` | `#245CF6` | `#A7C3FF` | `#00FFFF` |
+| `--ap-touch-target` | `44px` | `44px` | `44px` |
 
-- Background: `#F7F6F2`
-- Surface: `#FFFFFF`
-- Text: `#242523`
-- Blue: `#2563EB`
-- Sun: `#FBCB24`
-- Orange: `#FB923C`
-- Leaf: `#22C55E`
-- Coral: `#F43F5E`
-- Purple: `#8B5CF6`
-- Navy: `#13203D`
+Cores Sun, Leaf, Coral e Purple são acentos. Não devem substituir tokens semânticos de texto, superfície ou foco.
 
-Mantine provides accessible primitives; it does **not** define Aprincar appearance.
+## Temas
 
-## Child experience
+A preferência canônica possui quatro valores:
 
-Child Mode must never resemble an administrative dashboard. It prioritizes illustration, large touch targets, short copy, direct actions, horizontal shelves and low cognitive load.
+- `system`: segue `prefers-color-scheme` e reage a mudanças do sistema;
+- `light`: força tema claro;
+- `dark`: força tema escuro;
+- `contrast`: força alto contraste.
 
-### Desktop
+Valores legados são migrados automaticamente: `standard -> light`, `night -> dark`, `pastel -> light`.
 
-- Sticky top navigation with brand, primary child destinations and profile control.
-- Hero may use a two-column composition.
-- Game discovery uses 3–4 columns where space permits.
+## Tipografia
 
-### Mobile
+- Corpo: Inter/system UI.
+- Títulos: Nunito Sans/Inter/system UI.
+- Não depender de fonte remota para a interface continuar legível offline.
+- Texto essencial não deve ser renderizado dentro de imagens.
 
-Mobile is a first-class layout, not a compressed desktop view.
+## Espaçamento e geometria
 
-- Header contains brand + profile only.
-- Child navigation moves to the fixed bottom navigation.
-- Responsible/settings actions remain in the profile/adult flow, not in the child bottom bar.
-- Touch targets are at least 44px; primary actions target 48–56px.
-- Respect `env(safe-area-inset-*)`.
-- No accidental horizontal page overflow at 320px width.
-- Shelves may scroll horizontally with snap; discovery grids adapt to available width.
-- Important content must not be hidden by browser chrome, the home indicator or the bottom navigation.
+- Grid base: 4px.
+- Ritmo recomendado: 8 / 12 / 16 / 24 / 32 / 48.
+- Touch target mínimo: 44 × 44 CSS px.
+- Radius de produto: 16–26px; componentes infantis podem usar valores maiores sem comprometer densidade.
+- Conteúdo principal: largura máxima aproximada de 1240px.
 
-## Game runtime
+## Estados interativos
 
-Entering a game is a focused fullscreen experience. The normal App shell must not compete with gameplay.
+Todo controle deve prever: default, hover quando aplicável, pressed, disabled e `:focus-visible`.
 
-- Use dynamic viewport units (`100dvh` / `100svh`) with safe fallbacks.
-- Phaser and Three.js must react to resize/orientation changes.
-- Do not require hover for essential actions.
-- Drag/drop targets must remain touch friendly.
-- Portrait and landscape are supported where the game mechanics permit them.
+O foco nunca pode depender apenas de mudança de cor. O anel canônico usa 3px e offset de 3px.
 
-## Onboarding
+## Movimento
 
-The original five-step product flow is mandatory:
+`prefers-reduced-motion: reduce` desativa animações decorativas e reduz transições globalmente. Mecânicas pedagógicas não podem exigir animação para transmitir estado ou resposta.
 
-1. child name/avatar;
-2. age;
-3. current exploration/focus;
-4. interests;
-5. play-time goal.
+## Estrutura de navegação
 
-On mobile, show one clear question per step and keep primary progression within thumb reach.
+### Infantil
 
-## Parent Mode
+- Início
+- Descobrir
+- Biblioteca
+- Mais
 
-Parent Mode may use denser dashboard patterns, but must retain Aprincar typography, surfaces and navigation language. Desktop side navigation becomes tabs/segmented navigation on narrow screens; data tables must have mobile list/card fallbacks.
+No mobile, a navegação primária fica na bottom navigation. Ações de perfil e responsáveis permanecem fora do fluxo principal da criança.
 
-## Regression gates
+### Catálogo pedagógico
 
-Future UI changes must verify:
+As atividades oficiais são organizadas por cinco famílias:
 
-- Brand System v3 remains canonical.
-- Child Mode retains the UX hierarchy of `aprincar-ux-baseline.html`.
-- No desktop-only navigation is merely wrapped onto mobile.
-- 320/360/375/390/412/430px widths do not create unintended overflow.
-- PWA safe-area handling remains intact.
-- Game runtime remains fullscreen and viewport-safe.
+1. Números e Quantidades
+2. Letras e Escrita
+3. Lógica e Memória
+4. Cores e Criação
+5. Formas e Espaço
 
-Playwright E2E in CI is the final behavioral/responsive gate.
+Cada card de atividade deve responder, sem abrir o jogo: **o que vou praticar, para quem é e qual é a ação principal**.
+
+## Contrato para jogos educativos
+
+Um jogo oficial não entra no catálogo apenas porque é divertido. Deve declarar:
+
+- fantasia/contexto;
+- habilidade principal;
+- objetivo observável;
+- mecânica coerente com a habilidade;
+- feedback de tentativa;
+- critério de conclusão;
+- evidência produzida;
+- faixa etária orientativa;
+- funcionamento touch/mobile;
+- comportamento offline quando declarado.
+
+Repetições com a mesma mecânica e mesmo objetivo devem virar variações de conteúdo, e não jogos distintos.
+
+## Acessibilidade — DoD
+
+- navegação por teclado nas superfícies web;
+- foco visível;
+- labels e nomes acessíveis;
+- contraste compatível com WCAG AA para conteúdo essencial;
+- 44px de alvo táctil mínimo;
+- `prefers-reduced-motion`;
+- safe areas em mobile/PWA;
+- layout funcional a partir de 320px;
+- nenhuma instrução baseada somente em cor;
+- leitores de tela recebem nomes e estados úteis.
+
+## Ownership
+
+- `@aprincar/ui`: primitives e representação React da marca;
+- `apps/app/src/styles.css`: tokens semânticos e layout do App;
+- `apps/app/src/theme.ts`: contrato e resolução de temas;
+- `docs/design/BRAND_GUIDELINES.md`: uso da marca;
+- este documento: regras de produto, tema, acessibilidade e composição.
+
+Novos componentes devem consumir tokens existentes antes de criar novos valores locais.
