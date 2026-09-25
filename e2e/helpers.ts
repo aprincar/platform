@@ -13,6 +13,8 @@ export type GameTarget = {
 export type GameState = {
   mode: string;
   variant?: string;
+  familyId?: string;
+  objective?: string;
   level: number;
   challenge: Record<string, unknown> & {
     answer?: string | number;
@@ -21,6 +23,11 @@ export type GameState = {
     pairs?: number;
   };
   targets: GameTarget[];
+  viewport?: {
+    width: number;
+    height: number;
+    portrait?: boolean;
+  };
   selectedCount?: number;
   inputReady?: boolean;
   lastResult?: string | null;
@@ -63,7 +70,9 @@ export async function completeOnboarding(page: Page, name: string) {
   await expect(onboardingHeading).toBeVisible({ timeout: 15000 });
   await page.getByLabel('Nome ou apelido').fill(name);
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Quantos anos?' })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole('heading', { name: 'Quantos anos?' })).toBeVisible({
+    timeout: 10000,
+  });
   await page.getByRole('button', { name: 'Continuar' }).click();
   await expect(page.getByRole('heading', { name: 'O que já gosta de explorar?' })).toBeVisible({
     timeout: 10000,
@@ -71,9 +80,13 @@ export async function completeOnboarding(page: Page, name: string) {
   await page.getByRole('button', { name: 'Continuar' }).click();
   await expect(page.getByRole('heading', { name: 'Interesses' })).toBeVisible({ timeout: 10000 });
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Tempo para brincar' })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole('heading', { name: 'Tempo para brincar' })).toBeVisible({
+    timeout: 10000,
+  });
   await page.getByRole('button', { name: 'Criar meu espaço' }).click();
-  await expect(page.getByRole('heading', { name: 'Mundos de Descoberta' })).toBeVisible({ timeout: 15000 });
+  await expect(page.getByRole('heading', { name: 'Mundos de Descoberta' })).toBeVisible({
+    timeout: 15000,
+  });
 }
 
 export async function openGame(page: Page, gameId: string, title: string) {
@@ -114,11 +127,30 @@ async function canvasBox(frame: Frame) {
   return box!;
 }
 
+function logicalViewport(state: GameState) {
+  const width = state.viewport?.width;
+  const height = state.viewport?.height;
+  if (Number.isFinite(width) && Number.isFinite(height) && width! > 0 && height! > 0) {
+    return { width: width!, height: height! };
+  }
+  return { width: 960, height: 640 };
+}
+
+async function canvasPoint(frame: Frame, logical: { x: number; y: number }) {
+  const box = await canvasBox(frame);
+  const state = await getGameState(frame);
+  const viewport = logicalViewport(state);
+  return {
+    x: box.x + (logical.x / viewport.width) * box.width,
+    y: box.y + (logical.y / viewport.height) * box.height,
+  };
+}
+
 export async function clickCanvasTarget(page: Page, frame: Frame, target: GameTarget) {
   expect(target.x).toBeDefined();
   expect(target.y).toBeDefined();
-  const box = await canvasBox(frame);
-  await page.mouse.click(box.x + (target.x! / 960) * box.width, box.y + (target.y! / 640) * box.height);
+  const point = await canvasPoint(frame, { x: target.x!, y: target.y! });
+  await page.mouse.click(point.x, point.y);
 }
 
 export async function dragCanvasTarget(page: Page, frame: Frame, from: GameTarget, to: GameTarget) {
@@ -126,32 +158,70 @@ export async function dragCanvasTarget(page: Page, frame: Frame, from: GameTarge
   expect(from.y).toBeDefined();
   expect(to.x).toBeDefined();
   expect(to.y).toBeDefined();
-  const box = await canvasBox(frame);
-  const start = { x: box.x + (from.x! / 960) * box.width, y: box.y + (from.y! / 640) * box.height };
-  const end = { x: box.x + (to.x! / 960) * box.width, y: box.y + (to.y! / 640) * box.height };
+
+  const start = await canvasPoint(frame, { x: from.x!, y: from.y! });
+  const end = await canvasPoint(frame, { x: to.x!, y: to.y! });
+
   await page.mouse.move(start.x, start.y);
   await page.mouse.down();
   await page.mouse.move(end.x, end.y, { steps: 12 });
   await page.mouse.up();
 }
 
-export async function drawCanvasStroke(page: Page, frame: Frame, points: Array<{ x: number; y: number }>) {
+export async function drawCanvasStroke(
+  page: Page,
+  frame: Frame,
+  points: Array<{ x: number; y: number }>,
+) {
   expect(points.length).toBeGreaterThan(1);
-  const box = await canvasBox(frame);
   const [first, ...rest] = points;
   expect(first).toBeTruthy();
-  await page.mouse.move(box.x + (first!.x / 960) * box.width, box.y + (first!.y / 640) * box.height);
+
+  const start = await canvasPoint(frame, first!);
+  await page.mouse.move(start.x, start.y);
   await page.mouse.down();
+
   for (const point of rest) {
-    await page.mouse.move(box.x + (point.x / 960) * box.width, box.y + (point.y / 640) * box.height, {
-      steps: 5,
-    });
+    const next = await canvasPoint(frame, point);
+    await page.mouse.move(next.x, next.y, { steps: 5 });
   }
+
   await page.mouse.up();
 }
 
+export async function drawCanvasStrokeInTarget(
+  page: Page,
+  frame: Frame,
+  target: GameTarget,
+  points: Array<{ x: number; y: number }>,
+) {
+  expect(target.x).toBeDefined();
+  expect(target.y).toBeDefined();
+  expect(target.w).toBeDefined();
+  expect(target.h).toBeDefined();
+  expect(points.length).toBeGreaterThan(1);
+
+  const left = target.x! - target.w! / 2;
+  const top = target.y! - target.h! / 2;
+  const logicalPoints = points.map((point) => ({
+    x: left + point.x * target.w!,
+    y: top + point.y * target.h!,
+  }));
+
+  await drawCanvasStroke(page, frame, logicalPoints);
+}
+
 export async function clickThreeTarget(page: Page, frame: Frame, target: GameTarget) {
+  if (Number.isFinite(target.x) && Number.isFinite(target.y)) {
+    const point = await canvasPoint(frame, { x: target.x!, y: target.y! });
+    await page.mouse.click(point.x, point.y);
+    return;
+  }
+
   expect(target.normalized).toBeTruthy();
   const box = await canvasBox(frame);
-  await page.mouse.click(box.x + target.normalized!.x * box.width, box.y + target.normalized!.y * box.height);
+  await page.mouse.click(
+    box.x + target.normalized!.x * box.width,
+    box.y + target.normalized!.y * box.height,
+  );
 }
