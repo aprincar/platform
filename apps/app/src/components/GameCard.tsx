@@ -1,11 +1,12 @@
 import { Badge, Button, Group, Text } from '@mantine/core';
 import { CloudDownload, Play, Star } from 'lucide-react';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
+import { getSkill } from '@aprincar/skill-graph';
 import { OfflineBadge, TrustBadge } from '@aprincar/ui';
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { useAppStore } from '../app-store';
 import { Link } from '@tanstack/react-router';
-import { familyForGame, purposeForGame } from '../game-families';
+import { familyForGame } from '../game-families';
 
 function art(entry: RegistryEntry) {
   if (entry.id.includes('space-shapes')) return { glyph: '◇ ○', cls: 'cover-3d' };
@@ -26,7 +27,8 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
   const [offline, setOffline] = useState(false);
   const cover = useMemo(() => art(entry), [entry.id]);
   const family = familyForGame(entry.id);
-  const purpose = purposeForGame(entry.id);
+  const primarySkill = entry.skills[0] ? getSkill(entry.skills[0]) : undefined;
+  const objective = entry.objective?.['pt-BR'] ?? entry.description?.['pt-BR'];
 
   useEffect(() => {
     store.isOfflineReady(entry).then(setOffline);
@@ -65,11 +67,11 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
           </div>
         </Group>
 
-        {purpose && (
+        {(primarySkill || objective) && (
           <div className="game-purpose">
             <span className="game-purpose-label">Pratica</span>
-            <strong>{purpose.skillLabel}</strong>
-            {!compact && <span className="game-purpose-detail">{purpose.purpose}</span>}
+            <strong>{primarySkill?.label['pt-BR'] ?? entry.skills[0] ?? 'Exploração'}</strong>
+            {!compact && objective && <span className="game-purpose-detail">{objective}</span>}
           </div>
         )}
 

@@ -52,6 +52,7 @@ export interface RegistryEntry {
   publisher: string;
   name: LocalizedText;
   description?: LocalizedText;
+  objective?: LocalizedText;
   skills: string[];
   ageGuidance?: AgeGuidance;
   manifestUrl: string;

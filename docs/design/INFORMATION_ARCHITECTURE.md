@@ -16,8 +16,8 @@ O catálogo apresenta primeiro a finalidade pedagógica e depois filtros adminis
 
 - nome;
 - família;
-- habilidade praticada;
-- finalidade em linguagem humana;
+- habilidade praticada, resolvida pelo `@aprincar/skill-graph`;
+- finalidade em linguagem humana, publicada pelo registry canônico de `games-official`;
 - idade orientativa;
 - disponibilidade offline;
 - nível de confiança.

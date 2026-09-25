@@ -93,7 +93,7 @@ Cada card de atividade deve responder, sem abrir o jogo: **o que vou praticar, p
 
 ## Contrato para jogos educativos
 
-Um jogo oficial não entra no catálogo apenas porque é divertido. Deve declarar:
+Um jogo oficial não entra no catálogo apenas porque é divertido. A finalidade exibida no produto vem do `objective` canônico publicado pelo registry de `games-official`; o nome da habilidade vem de `@aprincar/skill-graph`. Deve declarar:
 
 - fantasia/contexto;
 - habilidade principal;

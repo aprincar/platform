@@ -73,13 +73,14 @@ test('game discovery exposes educational purpose without changing stable routes'
   const card = read('../../apps/app/src/components/GameCard.tsx');
 
   assert.match(layout, /\['\/discover', 'Jogos', Compass\]/);
-  assert.match(families, /GAME_PURPOSES/);
-  assert.match(families, /Contagem 1–10/);
-  assert.match(families, /Reconhecimento de letras/);
-  assert.match(families, /Raciocínio espacial/);
+  const contracts = read('../extension-contracts/src/types.ts');
+
+  assert.doesNotMatch(families, /GAME_PURPOSES/);
+  assert.match(contracts, /objective\?:\s*LocalizedText/);
   assert.match(card, /game-purpose-label/);
   assert.match(card, /Pratica/);
-  assert.match(card, /purposeForGame/);
+  assert.match(card, /getSkill/);
+  assert.match(card, /entry\.objective\?\.\['pt-BR'\]/);
 });
 
 test('v4 overrides keep action and content surfaces semantic across themes', () => {
