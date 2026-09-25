@@ -67,3 +67,19 @@ test('design system exposes accessible light, dark, automatic and contrast theme
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);
   assert.match(styles, /color-scheme:\s*dark/);
 });
+
+
+test('game discovery exposes educational purpose without changing stable routes', () => {
+  const layout = read('../../apps/app/src/layout.tsx');
+  const families = read('../../apps/app/src/game-families.ts');
+  const card = read('../../apps/app/src/components/GameCard.tsx');
+
+  assert.match(layout, /\['\/discover', 'Jogos', Compass\]/);
+  assert.match(families, /GAME_PURPOSES/);
+  assert.match(families, /Contagem 1–10/);
+  assert.match(families, /Reconhecimento de letras/);
+  assert.match(families, /Raciocínio espacial/);
+  assert.match(card, /game-purpose-label/);
+  assert.match(card, /Pratica/);
+  assert.match(card, /purposeForGame/);
+});

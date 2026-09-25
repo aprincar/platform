@@ -527,6 +527,36 @@ a {
   letter-spacing: -0.025em;
   min-width: 0;
 }
+.game-purpose {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 7px;
+  row-gap: 3px;
+  padding: 9px 10px;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--game-accent) 10%, var(--ap-surface));
+  border: 1px solid color-mix(in srgb, var(--game-accent) 22%, var(--ap-border));
+}
+.game-purpose-label {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ap-muted);
+}
+.game-purpose strong {
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.25;
+  color: var(--ap-text);
+}
+.game-purpose-detail {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ap-muted);
+}
 .game-meta {
   display: flex;
   gap: 6px;
@@ -2417,5 +2447,20 @@ a {
 
   .world-card {
     min-height: 0;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .game-purpose {
+    padding: 8px 9px;
+  }
+
+  .game-purpose strong {
+    font-size: 12px;
+  }
+
+  .child-card.compact .game-purpose-detail {
+    display: none;
   }
 }

@@ -32,14 +32,14 @@ import { Onboarding } from './pages/Onboarding';
 
 const desktopChildItems = [
   ['/', 'Início', Home],
-  ['/discover', 'Descobrir', Compass],
+  ['/discover', 'Jogos', Compass],
   ['/library', 'Biblioteca', Library],
   ['/missions', 'Missões', Sparkles],
 ] as const;
 
 const mobileChildItems = [
   ['/', 'Início', Home],
-  ['/discover', 'Descobrir', Compass],
+  ['/discover', 'Jogos', Compass],
   ['/library', 'Biblioteca', Library],
   ['/more', 'Mais', MoreHorizontal],
 ] as const;

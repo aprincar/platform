@@ -5,7 +5,7 @@ import { OfflineBadge, TrustBadge } from '@aprincar/ui';
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { useAppStore } from '../app-store';
 import { Link } from '@tanstack/react-router';
-import { familyForGame } from '../game-families';
+import { familyForGame, purposeForGame } from '../game-families';
 
 function art(entry: RegistryEntry) {
   if (entry.id.includes('space-shapes')) return { glyph: '◇ ○', cls: 'cover-3d' };
@@ -26,6 +26,7 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
   const [offline, setOffline] = useState(false);
   const cover = useMemo(() => art(entry), [entry.id]);
   const family = familyForGame(entry.id);
+  const purpose = purposeForGame(entry.id);
 
   useEffect(() => {
     store.isOfflineReady(entry).then(setOffline);
@@ -63,6 +64,14 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
             <TrustBadge trust={entry.trust} />
           </div>
         </Group>
+
+        {purpose && (
+          <div className="game-purpose">
+            <span className="game-purpose-label">Pratica</span>
+            <strong>{purpose.skillLabel}</strong>
+            {!compact && <span className="game-purpose-detail">{purpose.purpose}</span>}
+          </div>
+        )}
 
         <div className="game-meta">
           <Badge radius="xl" variant="light">
