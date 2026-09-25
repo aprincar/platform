@@ -2467,13 +2467,16 @@ a {
   }
 }
 
-
 /* Theme-aware v4 surfaces. Decorative game covers may stay bright, but shell/content surfaces
    must consume semantic tokens so dark/high-contrast themes remain functional. */
 :root[data-aprincar-theme='dark'] .app-bg,
 :root[data-aprincar-theme='contrast'] .app-bg {
   background:
-    radial-gradient(circle at 88% 3%, color-mix(in srgb, var(--ap-primary) 14%, transparent), transparent 29%),
+    radial-gradient(
+      circle at 88% 3%,
+      color-mix(in srgb, var(--ap-primary) 14%, transparent),
+      transparent 29%
+    ),
     radial-gradient(circle at 4% 45%, color-mix(in srgb, var(--ap-sun) 10%, transparent), transparent 25%),
     var(--ap-bg);
 }
@@ -2509,7 +2512,11 @@ a {
 :root[data-aprincar-theme='dark'] .child-hero-side,
 :root[data-aprincar-theme='contrast'] .child-hero-side {
   background:
-    radial-gradient(circle at 62% 23%, color-mix(in srgb, var(--ap-primary) 12%, transparent), transparent 22%),
+    radial-gradient(
+      circle at 62% 23%,
+      color-mix(in srgb, var(--ap-primary) 12%, transparent),
+      transparent 22%
+    ),
     radial-gradient(circle at 25% 73%, color-mix(in srgb, var(--ap-leaf) 12%, transparent), transparent 25%),
     var(--ap-surface-muted);
 }

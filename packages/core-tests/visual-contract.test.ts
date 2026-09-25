@@ -82,14 +82,10 @@ test('game discovery exposes educational purpose without changing stable routes'
   assert.match(card, /purposeForGame/);
 });
 
-
 test('v4 overrides keep action and content surfaces semantic across themes', () => {
   const styles = read('../../apps/app/src/styles.css');
 
-  assert.match(
-    styles,
-    /\.ap-primary\s*\{[\s\S]*var\(--ap-action-bg\)[\s\S]*var\(--ap-action-text\)/,
-  );
+  assert.match(styles, /\.ap-primary\s*\{[\s\S]*var\(--ap-action-bg\)[\s\S]*var\(--ap-action-text\)/);
   assert.match(styles, /data-aprincar-theme='dark'[\s\S]*\.child-card/);
   assert.match(styles, /data-aprincar-theme='contrast'[\s\S]*\.child-card/);
   assert.match(styles, /background:\s*var\(--ap-surface\)/);
