@@ -130,8 +130,15 @@ async function canvasBox(frame: Frame) {
 function logicalViewport(state: GameState) {
   const width = state.viewport?.width;
   const height = state.viewport?.height;
-  if (Number.isFinite(width) && Number.isFinite(height) && width! > 0 && height! > 0) {
-    return { width: width!, height: height! };
+  if (
+    typeof width === 'number' &&
+    typeof height === 'number' &&
+    Number.isFinite(width) &&
+    Number.isFinite(height) &&
+    width > 0 &&
+    height > 0
+  ) {
+    return { width, height };
   }
   return { width: 960, height: 640 };
 }
