@@ -61,7 +61,8 @@ export function applyThemePreference(preference: AprincarThemePreference): Aprin
   if (typeof document !== 'undefined') {
     document.documentElement.dataset.aprincarThemePreference = preference;
     document.documentElement.dataset.aprincarTheme = resolved;
-    document.documentElement.style.colorScheme = resolved === 'dark' || resolved === 'contrast' ? 'dark' : 'light';
+    document.documentElement.style.colorScheme =
+      resolved === 'dark' || resolved === 'contrast' ? 'dark' : 'light';
   }
   return resolved;
 }

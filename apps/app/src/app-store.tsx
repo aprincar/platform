@@ -2,11 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { db, extensionCacheAdapter, persistStorage, type ChildProfile } from '@aprincar/storage';
 import { ExtensionManager } from '@aprincar/extension-manager';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
-import {
-  normalizeThemePreference,
-  observeThemePreference,
-  type AprincarThemePreference,
-} from './theme';
+import { normalizeThemePreference, observeThemePreference, type AprincarThemePreference } from './theme';
 import { mergeRegistries, visibleForChild } from '@aprincar/extension-registry';
 
 export interface CreateProfileInput {

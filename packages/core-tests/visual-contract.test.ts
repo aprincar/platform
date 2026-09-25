@@ -50,7 +50,6 @@ test('profile model can persist onboarding preferences without requiring cloud i
   assert.match(store, /dailyGoalMinutes/);
 });
 
-
 test('design system exposes accessible light, dark, automatic and contrast themes', () => {
   const theme = read('../../apps/app/src/theme.ts');
   const settings = read('../../apps/app/src/pages/Settings.tsx');
@@ -67,7 +66,6 @@ test('design system exposes accessible light, dark, automatic and contrast theme
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);
   assert.match(styles, /color-scheme:\s*dark/);
 });
-
 
 test('game discovery exposes educational purpose without changing stable routes', () => {
   const layout = read('../../apps/app/src/layout.tsx');

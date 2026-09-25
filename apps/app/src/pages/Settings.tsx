@@ -6,12 +6,7 @@ import { useAppStore } from '../app-store';
 import { normalizeThemePreference } from '../theme';
 
 export function Settings() {
-  const {
-    allowCommunity,
-    setAllowCommunity,
-    themePreference,
-    setThemePreference,
-  } = useAppStore();
+  const { allowCommunity, setAllowCommunity, themePreference, setThemePreference } = useAppStore();
   const [pin, setPin] = useState('');
   const [pinSaved, setPinSaved] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);

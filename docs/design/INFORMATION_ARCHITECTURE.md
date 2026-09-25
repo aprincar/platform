@@ -5,9 +5,11 @@ A navegação v4 separa **o que a criança quer fazer** do que o adulto precisa 
 ## Navegação infantil
 
 ### Início
+
 Retoma a experiência com destaque adequado à idade, biblioteca e famílias pedagógicas.
 
 ### Jogos
+
 Catálogo em `/discover`. O rótulo da navegação é direto; a linguagem interna pode continuar convidando a descobrir.
 
 O catálogo apresenta primeiro a finalidade pedagógica e depois filtros administrativos. Cada jogo oficial mostra:
@@ -21,9 +23,11 @@ O catálogo apresenta primeiro a finalidade pedagógica e depois filtros adminis
 - nível de confiança.
 
 ### Biblioteca
+
 Favoritos e conteúdos preparados para retorno rápido.
 
 ### Mais
+
 Acesso secundário a missões fora da tela, aparência/configurações e área protegida do responsável.
 
 ## Área do responsável

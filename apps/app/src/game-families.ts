@@ -112,7 +112,6 @@ export function familyForGame(gameId: string) {
   return GAME_FAMILIES.find((family) => family.gameIds.includes(gameId));
 }
 
-
 export function purposeForGame(gameId: string) {
   return GAME_PURPOSES[gameId];
 }

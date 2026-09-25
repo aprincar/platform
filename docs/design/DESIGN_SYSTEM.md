@@ -19,16 +19,16 @@ O Design System v4 transforma a identidade **Portal de Descoberta** em regras de
 
 ## Tokens semânticos
 
-| Token | Claro | Escuro | Alto contraste |
-| --- | --- | --- | --- |
-| `--ap-bg` | `#F7F7FB` | `#101426` | `#000000` |
-| `--ap-surface` | `#FFFFFF` | `#191F36` | `#111111` |
-| `--ap-text` | `#20263A` | `#F3F5FF` | `#FFFFFF` |
-| `--ap-primary` | `#4F6EF7` | `#79A5FF` | `#FFE500` |
-| `--ap-action-bg` | `#3B55D9` | `#A7C3FF` | `#FFE500` |
-| `--ap-action-text` | `#FFFFFF` | `#101426` | `#000000` |
-| `--ap-focus` | `#245CF6` | `#A7C3FF` | `#00FFFF` |
-| `--ap-touch-target` | `44px` | `44px` | `44px` |
+| Token               | Claro     | Escuro    | Alto contraste |
+| ------------------- | --------- | --------- | -------------- |
+| `--ap-bg`           | `#F7F7FB` | `#101426` | `#000000`      |
+| `--ap-surface`      | `#FFFFFF` | `#191F36` | `#111111`      |
+| `--ap-text`         | `#20263A` | `#F3F5FF` | `#FFFFFF`      |
+| `--ap-primary`      | `#4F6EF7` | `#79A5FF` | `#FFE500`      |
+| `--ap-action-bg`    | `#3B55D9` | `#A7C3FF` | `#FFE500`      |
+| `--ap-action-text`  | `#FFFFFF` | `#101426` | `#000000`      |
+| `--ap-focus`        | `#245CF6` | `#A7C3FF` | `#00FFFF`      |
+| `--ap-touch-target` | `44px`    | `44px`    | `44px`         |
 
 Cores Sun, Leaf, Coral e Purple são acentos. Não devem substituir tokens semânticos de texto, superfície ou foco. O azul da marca não é usado automaticamente como fundo de texto: ações usam `--ap-action-bg`/`--ap-action-text` para preservar contraste AA.
 
