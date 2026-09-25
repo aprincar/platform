@@ -38,6 +38,7 @@ jobs:
         run: |
           npm ci
           npm run build
+          npm run registry
 
       - name: Update canonical pin
         run: |
