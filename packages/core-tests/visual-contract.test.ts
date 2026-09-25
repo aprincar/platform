@@ -4,7 +4,7 @@ import fs from 'node:fs';
 
 const read = (relative: string) => fs.readFileSync(new URL(relative, import.meta.url), 'utf8');
 
-test('Aprincar child experience is mobile-first and preserves the single-file UX hierarchy', () => {
+test('Aprincar child experience is mobile-first and follows the v4 visual hierarchy', () => {
   const ui = read('../ui/src/index.tsx');
   const layout = read('../../apps/app/src/layout.tsx');
   const home = read('../../apps/app/src/pages/Home.tsx');
