@@ -6,7 +6,7 @@ import {
   clickCanvasTarget,
   clickThreeTarget,
   dragCanvasTarget,
-  drawCanvasStroke,
+  drawCanvasStrokeInTarget,
   waitForGameInput,
 } from './helpers';
 import path from 'node:path';
@@ -86,23 +86,33 @@ test.describe('APRINCAR Final Consistency 150 Screenshots Matrix', () => {
           const drop = state.targets.find((t) => t.kind === 'drop-zone');
           if (src && drop) await dragCanvasTarget(page, frame, src, drop);
         } else if (game.slug === 'write-a') {
-          await drawCanvasStroke(page, frame, [
-            { x: 520, y: 460 },
-            { x: 600, y: 220 },
-            { x: 680, y: 460 },
-          ]);
+          const drawZone = state.targets.find(
+            (t) => t.kind === 'draw-zone' && t.value === 'handwriting-zone',
+          );
+          if (drawZone) {
+            await drawCanvasStrokeInTarget(page, frame, drawZone, [
+              { x: 0.2, y: 0.82 },
+              { x: 0.5, y: 0.16 },
+              { x: 0.8, y: 0.82 },
+            ]);
+          }
           await page.waitForTimeout(200);
           const checkBtn = state.targets.find(
             (t) => t.kind === 'action' && (t.value === 'Conferir' || t.value === '__check__'),
           );
           if (checkBtn) await clickCanvasTarget(page, frame, checkBtn);
         } else if (game.slug === 'paint-free') {
-          await drawCanvasStroke(page, frame, [
-            { x: 320, y: 270 },
-            { x: 430, y: 330 },
-            { x: 540, y: 260 },
-            { x: 650, y: 380 },
-          ]);
+          const drawZone = state.targets.find(
+            (t) => t.kind === 'draw-zone' && t.value === 'paint-zone',
+          );
+          if (drawZone) {
+            await drawCanvasStrokeInTarget(page, frame, drawZone, [
+              { x: 0.18, y: 0.3 },
+              { x: 0.36, y: 0.58 },
+              { x: 0.55, y: 0.28 },
+              { x: 0.76, y: 0.66 },
+            ]);
+          }
           await page.waitForTimeout(200);
           const saveBtn = state.targets.find((t) => t.kind === 'action' && t.value === 'Guardar desenho');
           if (saveBtn) await clickCanvasTarget(page, frame, saveBtn);
