@@ -68,9 +68,17 @@ async function exerciseReversibleCounting(page: Page, gameId: string, title: str
   await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 10000 }).toBe('failure');
   await waitForGameInput(frame);
 
-  await clickCanvasTarget(page, frame, toggles[answer]!);
+  const retryState = await getGameState(frame);
+  const selectedToggle = retryState.targets.find(
+    (target) => target.kind === 'toggle' && target.value === toggles[answer]!.value,
+  );
+  expect(selectedToggle).toBeTruthy();
+  await clickCanvasTarget(page, frame, selectedToggle!);
   await expect.poll(async () => (await getGameState(frame)).selectedCount, { timeout: 10000 }).toBe(answer);
-  await clickCanvasTarget(page, frame, action!);
+
+  const retryAction = targetByKind(await getGameState(frame), 'action', 'Conferir');
+  expect(retryAction).toBeTruthy();
+  await clickCanvasTarget(page, frame, retryAction!);
   await expect
     .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
     .toBeGreaterThan(initial.level);
