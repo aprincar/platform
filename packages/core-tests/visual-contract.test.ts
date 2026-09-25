@@ -26,7 +26,7 @@ test('Aprincar child experience is mobile-first and follows the v4 visual hierar
   assert.match(onboarding, /Tempo/);
   assert.match(play, /game-runtime/);
 
-  assert.match(styles, /--ap-bg:\s*#F7F6F2/i);
+  assert.match(styles, /--ap-bg:\s*#F7F7FB/i);
   assert.match(styles, /safe-area-inset-bottom/);
   assert.match(styles, /100dvh/);
   assert.match(styles, /100svh/);
