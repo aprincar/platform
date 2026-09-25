@@ -102,9 +102,7 @@ test.describe('APRINCAR Final Consistency 150 Screenshots Matrix', () => {
           );
           if (checkBtn) await clickCanvasTarget(page, frame, checkBtn);
         } else if (game.slug === 'paint-free') {
-          const drawZone = state.targets.find(
-            (t) => t.kind === 'draw-zone' && t.value === 'paint-zone',
-          );
+          const drawZone = state.targets.find((t) => t.kind === 'draw-zone' && t.value === 'paint-zone');
           if (drawZone) {
             await drawCanvasStrokeInTarget(page, frame, drawZone, [
               { x: 0.18, y: 0.3 },

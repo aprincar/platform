@@ -2004,7 +2004,6 @@ a {
   }
 }
 
-
 /* Aprincar Brand v4 — Portal de Descoberta */
 :root {
   --ap-shadow: 0 20px 55px rgba(23, 33, 61, 0.09);
@@ -2251,12 +2250,11 @@ a {
 .world-card {
   border-color: rgba(23, 33, 61, 0.08);
   border-radius: 24px;
-  background:
-    linear-gradient(
-      145deg,
-      #fff 0%,
-      color-mix(in srgb, var(--world-accent, #4f6ef7) 8%, #fff) 100%
-    );
+  background: linear-gradient(
+    145deg,
+    #fff 0%,
+    color-mix(in srgb, var(--world-accent, #4f6ef7) 8%, #fff) 100%
+  );
   min-height: 138px;
 }
 
@@ -2270,12 +2268,7 @@ a {
 
 .world-card-icon,
 .game-family-icon {
-  font-family:
-    ui-rounded,
-    'Arial Rounded MT Bold',
-    'Trebuchet MS',
-    system-ui,
-    sans-serif;
+  font-family: ui-rounded, 'Arial Rounded MT Bold', 'Trebuchet MS', system-ui, sans-serif;
   font-weight: 950;
   letter-spacing: -0.07em;
 }

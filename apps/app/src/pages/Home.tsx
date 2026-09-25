@@ -42,12 +42,15 @@ export function Home() {
         <div className="child-hero-main">
           <div className="child-eyebrow">Aprender acontece brincando</div>
           <h1>
-            Oi, {profile?.name}! <span className="hero-wave" aria-hidden="true">✦</span>
+            Oi, {profile?.name}!{' '}
+            <span className="hero-wave" aria-hidden="true">
+              ✦
+            </span>
           </h1>
           <p className="hero-question">Bora explorar uma ideia nova?</p>
           <p className="hero-description">
-            Conte, desenhe, descubra padrões, experimente formas e crie do seu jeito. Cada brincadeira abre
-            um caminho diferente para aprender.
+            Conte, desenhe, descubra padrões, experimente formas e crie do seu jeito. Cada brincadeira abre um
+            caminho diferente para aprender.
           </p>
           <div className="hero-actions">
             <Button

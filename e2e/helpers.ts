@@ -175,11 +175,7 @@ export async function dragCanvasTarget(page: Page, frame: Frame, from: GameTarge
   await page.mouse.up();
 }
 
-export async function drawCanvasStroke(
-  page: Page,
-  frame: Frame,
-  points: Array<{ x: number; y: number }>,
-) {
+export async function drawCanvasStroke(page: Page, frame: Frame, points: Array<{ x: number; y: number }>) {
   expect(points.length).toBeGreaterThan(1);
   const [first, ...rest] = points;
   expect(first).toBeTruthy();
@@ -227,8 +223,5 @@ export async function clickThreeTarget(page: Page, frame: Frame, target: GameTar
 
   expect(target.normalized).toBeTruthy();
   const box = await canvasBox(frame);
-  await page.mouse.click(
-    box.x + target.normalized!.x * box.width,
-    box.y + target.normalized!.y * box.height,
-  );
+  await page.mouse.click(box.x + target.normalized!.x * box.width, box.y + target.normalized!.y * box.height);
 }
