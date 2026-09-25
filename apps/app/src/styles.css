@@ -66,6 +66,7 @@
   --ap-action-bg-hover: #fff06a;
   --ap-action-text: #000000;
   --ap-purple-soft: #271d3b;
+  --ap-navy: #ffffff;
   --ap-focus: #00ffff;
   color-scheme: dark;
 }
@@ -84,6 +85,7 @@
   --ap-action-bg-hover: #c2d4ff;
   --ap-action-text: #101426;
   --ap-purple-soft: #29264b;
+  --ap-navy: #f3f5ff;
   --ap-focus: #a7c3ff;
   color-scheme: dark;
 }
@@ -2422,13 +2424,14 @@ a {
 }
 
 .ap-primary {
-  background: linear-gradient(135deg, #4f6ef7, #3b55d9) !important;
-  box-shadow: 0 8px 20px rgba(79, 110, 247, 0.18);
+  background: linear-gradient(135deg, var(--ap-action-bg), var(--ap-action-bg-hover)) !important;
+  color: var(--ap-action-text) !important;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--ap-action-bg) 18%, transparent);
 }
 
 .ap-secondary {
-  background: #eef1ff !important;
-  color: #3b55d9 !important;
+  background: var(--ap-primary-soft) !important;
+  color: var(--ap-primary-strong) !important;
 }
 
 @media (max-width: 767px) {
@@ -2462,4 +2465,98 @@ a {
   .child-card.compact .game-purpose-detail {
     display: none;
   }
+}
+
+
+/* Theme-aware v4 surfaces. Decorative game covers may stay bright, but shell/content surfaces
+   must consume semantic tokens so dark/high-contrast themes remain functional. */
+:root[data-aprincar-theme='dark'] .app-bg,
+:root[data-aprincar-theme='contrast'] .app-bg {
+  background:
+    radial-gradient(circle at 88% 3%, color-mix(in srgb, var(--ap-primary) 14%, transparent), transparent 29%),
+    radial-gradient(circle at 4% 45%, color-mix(in srgb, var(--ap-sun) 10%, transparent), transparent 25%),
+    var(--ap-bg);
+}
+
+:root[data-aprincar-theme='dark'] .aprincar-topbar,
+:root[data-aprincar-theme='contrast'] .aprincar-topbar {
+  background: color-mix(in srgb, var(--ap-bg) 92%, transparent);
+  border-bottom-color: var(--ap-border);
+}
+
+:root[data-aprincar-theme='dark'] .aprincar-nav-link.active,
+:root[data-aprincar-theme='dark'] .mobile-nav-link.active,
+:root[data-aprincar-theme='contrast'] .aprincar-nav-link.active,
+:root[data-aprincar-theme='contrast'] .mobile-nav-link.active {
+  background: var(--ap-primary-soft);
+  color: var(--ap-primary-strong);
+}
+
+:root[data-aprincar-theme='dark'] .aprincar-panel,
+:root[data-aprincar-theme='dark'] .child-hero,
+:root[data-aprincar-theme='dark'] .child-card,
+:root[data-aprincar-theme='dark'] .game-card-body,
+:root[data-aprincar-theme='dark'] .filter-chip,
+:root[data-aprincar-theme='contrast'] .aprincar-panel,
+:root[data-aprincar-theme='contrast'] .child-hero,
+:root[data-aprincar-theme='contrast'] .child-card,
+:root[data-aprincar-theme='contrast'] .game-card-body,
+:root[data-aprincar-theme='contrast'] .filter-chip {
+  background: var(--ap-surface);
+  border-color: var(--ap-border);
+}
+
+:root[data-aprincar-theme='dark'] .child-hero-side,
+:root[data-aprincar-theme='contrast'] .child-hero-side {
+  background:
+    radial-gradient(circle at 62% 23%, color-mix(in srgb, var(--ap-primary) 12%, transparent), transparent 22%),
+    radial-gradient(circle at 25% 73%, color-mix(in srgb, var(--ap-leaf) 12%, transparent), transparent 25%),
+    var(--ap-surface-muted);
+}
+
+:root[data-aprincar-theme='dark'] .hero-orbit-chip,
+:root[data-aprincar-theme='contrast'] .hero-orbit-chip {
+  background: color-mix(in srgb, var(--ap-surface) 92%, transparent);
+  border-color: var(--ap-border);
+  color: var(--ap-text);
+}
+
+:root[data-aprincar-theme='dark'] .game-title,
+:root[data-aprincar-theme='dark'] .game-family-heading h2,
+:root[data-aprincar-theme='dark'] .child-hero h1,
+:root[data-aprincar-theme='contrast'] .game-title,
+:root[data-aprincar-theme='contrast'] .game-family-heading h2,
+:root[data-aprincar-theme='contrast'] .child-hero h1 {
+  color: var(--ap-text);
+}
+
+:root[data-aprincar-theme='dark'] .game-meta .mantine-Badge-root,
+:root[data-aprincar-theme='contrast'] .game-meta .mantine-Badge-root {
+  background: var(--ap-surface-muted);
+  color: var(--ap-muted);
+  border-color: var(--ap-border);
+}
+
+:root[data-aprincar-theme='dark'] .world-card,
+:root[data-aprincar-theme='contrast'] .world-card {
+  background: linear-gradient(
+    145deg,
+    var(--ap-surface) 0%,
+    color-mix(in srgb, var(--world-accent, var(--ap-primary)) 10%, var(--ap-surface)) 100%
+  );
+  border-color: var(--ap-border);
+}
+
+:root[data-aprincar-theme='dark'] .world-card-icon,
+:root[data-aprincar-theme='dark'] .game-family-icon,
+:root[data-aprincar-theme='contrast'] .world-card-icon,
+:root[data-aprincar-theme='contrast'] .game-family-icon {
+  background: var(--ap-surface-muted);
+  border-color: var(--ap-border);
+}
+
+:root[data-aprincar-theme='dark'] .local-first-card,
+:root[data-aprincar-theme='contrast'] .local-first-card {
+  background: color-mix(in srgb, var(--ap-leaf) 8%, var(--ap-surface));
+  border-color: color-mix(in srgb, var(--ap-leaf) 28%, var(--ap-border));
 }
