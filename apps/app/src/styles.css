@@ -20,6 +20,9 @@
   --ap-primary: #4f6ef7;
   --ap-primary-strong: #3b55d9;
   --ap-primary-soft: #eef1ff;
+  --ap-action-bg: #3b55d9;
+  --ap-action-bg-hover: #2f45b8;
+  --ap-action-text: #ffffff;
   --ap-sun: #ffc83d;
   --ap-orange: #ff9f43;
   --ap-leaf: #2fc98f;
@@ -59,6 +62,9 @@
   --ap-primary: #ffe500;
   --ap-primary-strong: #ffe500;
   --ap-primary-soft: #2b2900;
+  --ap-action-bg: #ffe500;
+  --ap-action-bg-hover: #fff06a;
+  --ap-action-text: #000000;
   --ap-purple-soft: #271d3b;
   --ap-focus: #00ffff;
   color-scheme: dark;
@@ -74,6 +80,9 @@
   --ap-primary: #79a5ff;
   --ap-primary-strong: #a7c3ff;
   --ap-primary-soft: #202d4d;
+  --ap-action-bg: #a7c3ff;
+  --ap-action-bg-hover: #c2d4ff;
+  --ap-action-text: #101426;
   --ap-purple-soft: #29264b;
   --ap-focus: #a7c3ff;
   color-scheme: dark;
@@ -303,11 +312,11 @@ a {
   padding-inline: 18px !important;
 }
 .ap-primary {
-  background: var(--ap-primary) !important;
-  color: #fff !important;
+  background: var(--ap-action-bg) !important;
+  color: var(--ap-action-text) !important;
 }
 .ap-primary:hover {
-  background: var(--ap-primary-strong) !important;
+  background: var(--ap-action-bg-hover) !important;
 }
 .ap-secondary {
   background: var(--ap-primary-soft) !important;
@@ -630,9 +639,9 @@ a {
   cursor: pointer;
 }
 .filter-chip.active {
-  background: var(--ap-primary);
-  color: #fff;
-  border-color: var(--ap-primary);
+  background: var(--ap-action-bg);
+  color: var(--ap-action-text);
+  border-color: var(--ap-action-bg);
 }
 
 .onboarding-shell {
@@ -749,8 +758,8 @@ a {
   color: var(--ap-primary-strong);
 }
 .onboarding-progress-item.active .onboarding-step {
-  background: var(--ap-primary);
-  color: #fff;
+  background: var(--ap-action-bg);
+  color: var(--ap-action-text);
 }
 .onboarding-step-panel {
   flex: 1;
@@ -802,9 +811,9 @@ a {
   cursor: pointer;
 }
 .age-shortcuts button.selected {
-  background: var(--ap-primary);
-  color: #fff;
-  border-color: var(--ap-primary);
+  background: var(--ap-action-bg);
+  color: var(--ap-action-text);
+  border-color: var(--ap-action-bg);
 }
 .onboarding-choice-grid {
   display: grid;
