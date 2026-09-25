@@ -1,5 +1,5 @@
 import { Button, Text } from '@mantine/core';
-import { ArrowRight, Compass, Library, Sparkles, Star } from 'lucide-react';
+import { ArrowRight, Compass, Library, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { AprincarMascot, MissionCard, WorldCard } from '@aprincar/ui';
 import { useAppStore } from '../app-store';
@@ -40,14 +40,14 @@ export function Home() {
       {/* Hero child section */}
       <section className="child-hero aprincar-panel">
         <div className="child-hero-main">
-          <div className="child-eyebrow">Seu espaço de descobertas</div>
+          <div className="child-eyebrow">Aprender acontece brincando</div>
           <h1>
-            Oi, {profile?.name}! <span aria-hidden="true">👋</span>
+            Oi, {profile?.name}! <span className="hero-wave" aria-hidden="true">✦</span>
           </h1>
-          <p className="hero-question">O que vamos descobrir hoje?</p>
+          <p className="hero-question">Bora explorar uma ideia nova?</p>
           <p className="hero-description">
-            Escolha uma aventura, continue algo que gostou ou experimente um jogo novo. Aqui, aprender
-            acontece brincando.
+            Conte, desenhe, descubra padrões, experimente formas e crie do seu jeito. Cada brincadeira abre
+            um caminho diferente para aprender.
           </p>
           <div className="hero-actions">
             <Button
@@ -69,9 +69,9 @@ export function Home() {
           </div>
         </div>
         <div className="child-hero-side" aria-hidden="true">
-          <div className="hero-spark hero-spark-one">★</div>
-          <div className="hero-spark hero-spark-two">●</div>
-          <div className="hero-spark hero-spark-three">▲</div>
+          <div className="hero-orbit-chip hero-orbit-one">Jogar</div>
+          <div className="hero-orbit-chip hero-orbit-two">Criar</div>
+          <div className="hero-orbit-chip hero-orbit-three">Descobrir</div>
           <AprincarMascot size={250} className="hero-star-mascot" />
         </div>
       </section>
@@ -114,12 +114,12 @@ export function Home() {
         </section>
       )}
 
-      {/* 9 Educational Worlds */}
+      {/* Discovery families */}
       <section>
         <div className="section-head">
           <div>
             <h2>Mundos de Descoberta</h2>
-            <p>Explore por áreas do conhecimento com caminhos lúdicos.</p>
+            <p>Cinco caminhos com objetivos claros, sem transformar brincar em lição de casa.</p>
           </div>
         </div>
         <div className="worlds-grid" style={{ marginTop: 16 }}>
