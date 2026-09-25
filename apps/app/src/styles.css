@@ -11,22 +11,22 @@
     sans-serif;
   color: #242523;
   background: #f7f6f2;
-  --ap-bg: #f7f6f2;
+  --ap-bg: #f7f7fb;
   --ap-surface: #ffffff;
-  --ap-surface-muted: #f0eee8;
-  --ap-text: #242523;
-  --ap-muted: #6f716d;
-  --ap-border: #e2dfd7;
-  --ap-primary: #2563eb;
-  --ap-primary-strong: #1d4ed8;
-  --ap-primary-soft: #eaf1ff;
-  --ap-sun: #fbcb24;
+  --ap-surface-muted: #eef1f7;
+  --ap-text: #20263a;
+  --ap-muted: #6b7280;
+  --ap-border: #dee3ee;
+  --ap-primary: #4f6ef7;
+  --ap-primary-strong: #3b55d9;
+  --ap-primary-soft: #eef1ff;
+  --ap-sun: #ffc83d;
   --ap-orange: #fb923c;
-  --ap-leaf: #22c55e;
-  --ap-coral: #f43f5e;
-  --ap-purple: #8b5cf6;
-  --ap-purple-soft: #f1ebff;
-  --ap-navy: #13203d;
+  --ap-leaf: #2fc98f;
+  --ap-coral: #ff6b6b;
+  --ap-purple: #8b6ff7;
+  --ap-purple-soft: #f1eeff;
+  --ap-navy: #17213d;
   --ap-shadow: 0 18px 50px rgba(36, 37, 35, 0.1);
   --ap-shadow-soft: 0 8px 28px rgba(36, 37, 35, 0.08);
   --ap-radius: 26px;
@@ -2001,5 +2001,393 @@ a {
     margin-inline: 0;
     padding-inline: 0;
     grid-auto-columns: minmax(250px, 300px);
+  }
+}
+
+
+/* Aprincar Brand v4 — Portal de Descoberta */
+:root {
+  --ap-shadow: 0 20px 55px rgba(23, 33, 61, 0.09);
+  --ap-shadow-soft: 0 9px 26px rgba(23, 33, 61, 0.07);
+  --ap-radius: 28px;
+}
+
+.app-bg {
+  background:
+    radial-gradient(circle at 88% 3%, rgba(79, 110, 247, 0.11), transparent 29%),
+    radial-gradient(circle at 4% 45%, rgba(255, 200, 61, 0.11), transparent 25%),
+    linear-gradient(180deg, #fbfbfe 0%, var(--ap-bg) 38%, #f4f6fb 100%);
+}
+
+.aprincar-topbar {
+  background: color-mix(in srgb, #fbfbfe 91%, transparent);
+  border-bottom-color: rgba(23, 33, 61, 0.07);
+}
+
+.aprincar-nav-link.active,
+.mobile-nav-link.active {
+  background: #eef1ff;
+  color: var(--ap-primary-strong);
+}
+
+.aprincar-panel {
+  border-color: rgba(23, 33, 61, 0.08);
+  box-shadow: var(--ap-shadow);
+}
+
+.child-hero {
+  min-height: 360px;
+  border: 0;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(23, 33, 61, 0.1);
+}
+
+.child-hero-main {
+  padding-right: clamp(28px, 4vw, 58px);
+}
+
+.child-eyebrow {
+  color: var(--ap-primary-strong);
+  letter-spacing: 0.105em;
+}
+
+.child-hero h1 {
+  color: var(--ap-navy);
+  max-width: 620px;
+}
+
+.hero-wave {
+  color: var(--ap-sun);
+  display: inline-block;
+  transform: rotate(9deg);
+}
+
+.hero-question {
+  color: var(--ap-primary-strong);
+  max-width: 620px;
+}
+
+.hero-description {
+  max-width: 590px;
+}
+
+.child-hero-side {
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 62% 23%, rgba(255, 255, 255, 0.96), transparent 22%),
+    radial-gradient(circle at 25% 73%, rgba(47, 201, 143, 0.17), transparent 25%),
+    linear-gradient(145deg, #eef1ff 0%, #f3efff 53%, #fff7d8 100%);
+}
+
+.child-hero-side::after {
+  width: 320px;
+  height: 320px;
+  left: 50%;
+  bottom: -172px;
+  transform: translateX(-50%);
+  border: 46px solid rgba(79, 110, 247, 0.08);
+  background: transparent;
+  border-radius: 50%;
+}
+
+.hero-star-mascot {
+  filter: drop-shadow(0 20px 22px rgba(23, 33, 61, 0.14));
+}
+
+.hero-orbit-chip {
+  position: absolute;
+  z-index: 3;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(23, 33, 61, 0.08);
+  box-shadow: 0 8px 22px rgba(23, 33, 61, 0.08);
+  backdrop-filter: blur(10px);
+  color: var(--ap-navy);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.hero-orbit-one {
+  left: 9%;
+  top: 23%;
+  color: #3b55d9;
+}
+
+.hero-orbit-two {
+  right: 8%;
+  top: 18%;
+  color: #168d65;
+}
+
+.hero-orbit-three {
+  right: 10%;
+  bottom: 22%;
+  color: #d84f5d;
+}
+
+.hero-spark {
+  display: none;
+}
+
+.child-card {
+  border: 1px solid rgba(23, 33, 61, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(23, 33, 61, 0.075);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+@media (hover: hover) {
+  .child-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--game-accent, var(--ap-primary)) 35%, #dfe3ee);
+    box-shadow: 0 18px 42px rgba(23, 33, 61, 0.12);
+  }
+}
+
+.game-card-main-link {
+  text-decoration: none;
+}
+
+.game-cover,
+.cover-math,
+.cover-letters,
+.cover-logic,
+.cover-colors,
+.cover-paint,
+.cover-memory,
+.cover-3d {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.82), transparent 20%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--game-accent, #4f6ef7) 13%, white),
+      color-mix(in srgb, var(--game-accent, #4f6ef7) 27%, white)
+    );
+}
+
+.game-cover::before {
+  content: '';
+  position: absolute;
+  width: 125px;
+  height: 125px;
+  border-radius: 36px;
+  right: -36px;
+  bottom: -42px;
+  transform: rotate(22deg);
+  background: color-mix(in srgb, var(--game-accent, #4f6ef7) 21%, transparent);
+}
+
+.game-cover::after {
+  content: '';
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border: 8px solid color-mix(in srgb, var(--game-accent, #4f6ef7) 25%, transparent);
+  border-radius: 50%;
+  left: 18px;
+  bottom: 18px;
+}
+
+.game-cover-family {
+  position: absolute;
+  top: 13px;
+  left: 14px;
+  z-index: 2;
+  max-width: calc(100% - 82px);
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(23, 33, 61, 0.06);
+  color: var(--ap-navy);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-cover-art {
+  position: relative;
+  z-index: 2;
+  color: color-mix(in srgb, var(--game-accent, #4f6ef7) 82%, var(--ap-navy));
+  font-size: clamp(35px, 5vw, 57px);
+  font-weight: 950;
+  letter-spacing: -0.08em;
+  text-shadow: none;
+}
+
+.game-cover-play {
+  z-index: 3;
+  color: var(--game-accent, var(--ap-primary));
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 20px rgba(23, 33, 61, 0.13);
+}
+
+.game-card-body {
+  background: #fff;
+}
+
+.game-title {
+  color: var(--ap-navy);
+  letter-spacing: -0.025em;
+}
+
+.game-meta .mantine-Badge-root {
+  background: #f2f4f9;
+  color: #596174;
+  border-color: transparent;
+}
+
+.world-card {
+  border-color: rgba(23, 33, 61, 0.08);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      #fff 0%,
+      color-mix(in srgb, var(--world-accent, #4f6ef7) 8%, #fff) 100%
+    );
+  min-height: 138px;
+}
+
+.world-card::before {
+  width: 5px;
+  height: 62%;
+  top: 19%;
+  left: 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.world-card-icon,
+.game-family-icon {
+  font-family:
+    ui-rounded,
+    'Arial Rounded MT Bold',
+    'Trebuchet MS',
+    system-ui,
+    sans-serif;
+  font-weight: 950;
+  letter-spacing: -0.07em;
+}
+
+.world-card-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--world-accent, var(--ap-primary));
+  font-size: 23px;
+  border: 1px solid rgba(23, 33, 61, 0.06);
+}
+
+.hub-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 86% 20%, rgba(255, 200, 61, 0.24), transparent 20%),
+    linear-gradient(135deg, #17213d 0%, #283969 58%, #4f6ef7 135%);
+  border: 0;
+  box-shadow: 0 22px 58px rgba(23, 33, 61, 0.18);
+}
+
+.hub-hero::after {
+  content: '';
+  position: absolute;
+  right: -60px;
+  bottom: -110px;
+  width: 260px;
+  height: 260px;
+  border: 44px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.hub-hero h1,
+.hub-hero p {
+  position: relative;
+  z-index: 1;
+}
+
+.hub-stat {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+}
+
+.game-family-filter-panel {
+  border-color: rgba(23, 33, 61, 0.07);
+  box-shadow: 0 10px 30px rgba(23, 33, 61, 0.055);
+}
+
+.filter-chip {
+  border-color: rgba(23, 33, 61, 0.08);
+  background: #fff;
+  color: #596174;
+}
+
+.filter-chip.active {
+  background: var(--ap-primary-soft);
+  color: var(--ap-primary-strong);
+  border-color: rgba(79, 110, 247, 0.18);
+}
+
+.game-family-heading {
+  padding: 4px 0;
+}
+
+.game-family-icon {
+  color: var(--ap-primary-strong);
+  background: linear-gradient(145deg, #fff, #f1f3ff);
+  border-color: rgba(79, 110, 247, 0.13);
+}
+
+.game-family-heading h2 {
+  color: var(--ap-navy);
+}
+
+.local-first-card {
+  border-color: rgba(47, 201, 143, 0.18);
+  background: linear-gradient(135deg, #fff, #effbf6);
+}
+
+.ap-primary {
+  background: linear-gradient(135deg, #4f6ef7, #3b55d9) !important;
+  box-shadow: 0 8px 20px rgba(79, 110, 247, 0.18);
+}
+
+.ap-secondary {
+  background: #eef1ff !important;
+  color: #3b55d9 !important;
+}
+
+@media (max-width: 767px) {
+  .child-hero-side {
+    min-height: 240px;
+  }
+
+  .hero-orbit-chip {
+    font-size: 10px;
+    padding: 6px 9px;
+  }
+
+  .game-cover-family {
+    max-width: calc(100% - 62px);
+  }
+
+  .world-card {
+    min-height: 0;
   }
 }
