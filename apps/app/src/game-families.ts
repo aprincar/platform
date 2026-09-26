@@ -23,9 +23,15 @@ export const GAME_FAMILIES: GameFamily[] = [
     title: 'Letras e Escrita',
     icon: 'Aa',
     color: '#4F6EF7',
-    summary: 'Encontre letras e depois pratique como elas são desenhadas.',
-    objective: 'Reconhecer símbolos e avançar da identificação para o traçado.',
-    gameIds: ['aprincar.letter-hunt', 'aprincar.write-a'],
+    summary: 'Reconheça letras e avance de caminhos de pré-escrita até letras de forma e cursiva.',
+    objective: 'Reconhecer letras e desenvolver controle gráfico da pré-escrita à cursiva.',
+    gameIds: [
+      'aprincar.letter-hunt',
+      'aprincar.prewriting-trails',
+      'aprincar.print-letters',
+      'aprincar.write-a',
+      'aprincar.cursive-letters',
+    ],
   },
   {
     id: 'logic',
@@ -43,7 +49,7 @@ export const GAME_FAMILIES: GameFamily[] = [
     color: '#2FC98F',
     summary: 'Combine cores e use o desenho para criar livremente.',
     objective: 'Explorar percepção visual, classificação e expressão gráfica.',
-    gameIds: ['aprincar.color-match', 'aprincar.paint-free'],
+    gameIds: ['aprincar.color-match', 'aprincar.guided-painting', 'aprincar.paint-free'],
   },
   {
     id: 'spatial',

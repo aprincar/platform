@@ -11,8 +11,12 @@ import { familyForGame } from '../game-families';
 function art(entry: RegistryEntry) {
   if (entry.id.includes('space-shapes')) return { glyph: '◇ ○', cls: 'cover-3d' };
   if (entry.id.includes('memory')) return { glyph: '◌ ◍', cls: 'cover-memory' };
+  if (entry.id.includes('cursive-letters')) return { glyph: 'a↝', cls: 'cover-letters' };
+  if (entry.id.includes('print-letters')) return { glyph: 'ABC', cls: 'cover-letters' };
+  if (entry.id.includes('prewriting-trails')) return { glyph: '⌁', cls: 'cover-letters' };
   if (entry.id.includes('write-a')) return { glyph: 'Aa', cls: 'cover-letters' };
   if (entry.id.includes('letter-hunt')) return { glyph: 'A · B', cls: 'cover-letters' };
+  if (entry.id.includes('guided-painting')) return { glyph: '● ■', cls: 'cover-paint' };
   if (entry.id.includes('paint-free')) return { glyph: '✦ ✎', cls: 'cover-paint' };
   if (entry.id.includes('color-match')) return { glyph: '● ▲ ■', cls: 'cover-colors' };
   if (entry.id.includes('pattern-play')) return { glyph: '○ △ ○', cls: 'cover-logic' };
