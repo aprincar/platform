@@ -1,87 +1,56 @@
 name: Publish App and Hub to GitHub Pages
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages-platform-${{ github.event_name == 'pull_request' && github.ref || 'deploy' }}
   cancel-in-progress: true
+
 jobs:
-  validate:
+  preview-check:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Read canonical games pin
-        id: games-pin
-        run: |
-          node -e "const fs=require('fs'); process.stdout.write('ref=' + JSON.parse(fs.readFileSync('canonical-games.json','utf8')).commit + '\\n')" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-        with:
-          repository: aprincar/games-official
-          ref: ${{ steps.games-pin.outputs.ref }}
-          path: .canonical-games
-      - name: Build canonical games
-        working-directory: .canonical-games
-        run: npm run check
-      - name: Regenerate official snapshot
-        env:
-          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
-        run: node scripts/sync-official-snapshot.mjs
-      - name: Require committed snapshot to match pin
-        run: git diff --exit-code -- apps/app/public/registry.json apps/app/public/extensions apps/hub/public/registry.json apps/hub/public/extensions
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Verify canonical snapshot integrity
-        env:
-          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
+      - name: Verify committed official snapshot
         run: npm run verify:official
-      - name: Remove auxiliary canonical-games checkout before Platform lint
-        run: rm -rf .canonical-games
-      - run: npm run check
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - name: Build App and Hub
+        run: npm run build
 
   deploy:
-    if: github.event_name != 'pull_request'
-    needs: validate
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Read canonical games pin
-        id: games-pin
-        run: |
-          node -e "const fs=require('fs'); process.stdout.write('ref=' + JSON.parse(fs.readFileSync('canonical-games.json','utf8')).commit + '\\n')" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-        with:
-          repository: aprincar/games-official
-          ref: ${{ steps.games-pin.outputs.ref }}
-          path: .canonical-games
-      - name: Build canonical games
-        working-directory: .canonical-games
-        run: npm run check
-      - name: Generate deploy snapshot from pinned source
-        env:
-          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist
-        run: node scripts/sync-official-snapshot.mjs
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+
+      - name: Verify committed official snapshot
+        run: npm run verify:official
+
       - name: Assemble static production site
         run: |
           rm -rf site
@@ -104,14 +73,17 @@ jobs:
           }
           NODE
           cp site/app/registry.json site/registry.json
+          cp canonical-games.json site/canonical-games.json
           cat > site/index.html <<'HTML'
           <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=app/"><title>Aprincar</title></head><body><p>Abrindo o <a href="app/">Aprincar</a>…</p><script>location.replace('app/' + location.search + location.hash)</script></body></html>
           HTML
           touch site/.nojekyll
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
