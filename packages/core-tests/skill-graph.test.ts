@@ -11,7 +11,6 @@ test('ships a unique, internally consistent 48-skill starter graph', () => {
       assert.ok(getSkill(prerequisite), `${skill.id} references missing ${prerequisite}`);
 });
 
-
 test('official game ages stay within the declared skill age envelope', () => {
   const registry = JSON.parse(
     fs.readFileSync(new URL('../../apps/app/public/registry.json', import.meta.url), 'utf8'),

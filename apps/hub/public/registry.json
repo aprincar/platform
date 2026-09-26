@@ -16,13 +16,14 @@
     "skills": [
       "math.counting.1-10"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/block-tower/manifest.json",
     "entryUrl": "/extensions/block-tower/game.html",
-    "integrity": "648880dc1316bcbb10cdf66663e1dcf40b8c713c189bb4196b887ba079191ea3",
+    "integrity": "8ba84f39955ff365b54da3af3f283a53a040978aec9bb64c3e80bfa8ee71a7bb",
     "tags": [
       "math",
       "counting",
@@ -59,13 +60,14 @@
     "skills": [
       "perception.colors.match"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 2,
-      "max": 6
+      "max": 5
     },
     "manifestUrl": "/extensions/color-match/manifest.json",
     "entryUrl": "/extensions/color-match/game.html",
-    "integrity": "06f2f365a7c918669c9bbccee84267cd3d4309ce89cd301c78001816a94aec35",
+    "integrity": "1df58db4ded0e346a71de95f9eade0761c957528be46337e16a350349b8ac15f",
     "tags": [
       "colors",
       "logic",
@@ -102,13 +104,14 @@
     "skills": [
       "math.counting.1-10"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/counting-animals/manifest.json",
     "entryUrl": "/extensions/counting-animals/game.html",
-    "integrity": "75790c6def76197067952b558f15ecc3d66d59bdbf41cbd38425094d886eddf3",
+    "integrity": "1c7bbb0126fbf800b1c97eb80b3a8c4de30546e55f63dc66b7eb8b2d3024bbc3",
     "tags": [
       "math",
       "counting",
@@ -129,6 +132,52 @@
     }
   },
   {
+    "id": "aprincar.cursive-letters",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Oficina de Cursiva"
+    },
+    "description": {
+      "pt-BR": "Acompanhe movimentos contínuos e pratique letras e ligações da escrita cursiva."
+    },
+    "objective": {
+      "pt-BR": "Praticar movimentos contínuos da cursiva e ligações simples entre letras."
+    },
+    "skills": [
+      "writing.cursive.trace"
+    ],
+    "secondarySkills": [
+      "writing.cursive.join"
+    ],
+    "ageGuidance": {
+      "min": 6,
+      "max": 9
+    },
+    "manifestUrl": "/extensions/cursive-letters/manifest.json",
+    "entryUrl": "/extensions/cursive-letters/game.html",
+    "integrity": "f3697fb27c1bf3051b027c34973bd16d7eefb811b0858e827884bdfef3af58d9",
+    "tags": [
+      "letters",
+      "writing",
+      "cursive"
+    ],
+    "experience": {
+      "fantasy": "Ateliê da cursiva",
+      "mechanic": "trace-cursive",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 8,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "pathCoverage",
+        "continuity"
+      ]
+    }
+  },
+  {
     "id": "aprincar.fruit-basket",
     "version": "1.1.0",
     "trust": "official",
@@ -145,13 +194,14 @@
     "skills": [
       "math.counting.1-10"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/fruit-basket/manifest.json",
     "entryUrl": "/extensions/fruit-basket/game.html",
-    "integrity": "26198dc386f5433635f5c80ba695ec1433c07c25149ee6bcd6c8878745a445cf",
+    "integrity": "6520b9bae10a6edfe1671cc525921781c0327cc791d6ef7ca5cc0dbc25707613",
     "tags": [
       "math",
       "counting",
@@ -172,6 +222,52 @@
     }
   },
   {
+    "id": "aprincar.guided-painting",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Pintura por Cores"
+    },
+    "description": {
+      "pt-BR": "Escolha tintas e pinte partes grandes seguindo cor e símbolo."
+    },
+    "objective": {
+      "pt-BR": "Combinar pistas visuais e cores enquanto pinta regiões grandes."
+    },
+    "skills": [
+      "perception.colors.match"
+    ],
+    "secondarySkills": [
+      "creativity.visual-expression"
+    ],
+    "ageGuidance": {
+      "min": 3,
+      "max": 5
+    },
+    "manifestUrl": "/extensions/guided-painting/manifest.json",
+    "entryUrl": "/extensions/guided-painting/game.html",
+    "integrity": "7ec6684a0795918cda55fb327c7c57798ca80488066ebee343c43ac8810c16d0",
+    "tags": [
+      "paint",
+      "colors",
+      "creative"
+    ],
+    "experience": {
+      "fantasy": "Livro de colorir",
+      "mechanic": "paint-regions",
+      "interaction": "tap",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "classification",
+        "visualChoice"
+      ]
+    }
+  },
+  {
     "id": "aprincar.letter-hunt",
     "version": "1.1.0",
     "trust": "official",
@@ -188,13 +284,14 @@
     "skills": [
       "literacy.letter.recognition"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/letter-hunt/manifest.json",
     "entryUrl": "/extensions/letter-hunt/game.html",
-    "integrity": "236351ef36a8c3156649211c2d6c2e5386e101e4b0703fa86628f52f5e602822",
+    "integrity": "8db41150d1ac3b027540e81251af8c617aed53ffbadbf336d98e215d9919cf2f",
     "tags": [
       "letters",
       "literacy"
@@ -230,13 +327,14 @@
     "skills": [
       "perception.visual.discrimination"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 3,
-      "max": 10
+      "max": 7
     },
     "manifestUrl": "/extensions/memory-animals/manifest.json",
     "entryUrl": "/extensions/memory-animals/game.html",
-    "integrity": "dbb8660557294c9056634856630b1b92569109c12d6a4853680f79cd65d6effd",
+    "integrity": "3ff29c89e59fc59f892f404cdb31f1fd5fd8b930484813f212a8084fa79158ad",
     "tags": [
       "memory",
       "animals",
@@ -273,13 +371,14 @@
     "skills": [
       "creativity.visual-expression"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 2,
       "max": 10
     },
     "manifestUrl": "/extensions/paint-free/manifest.json",
     "entryUrl": "/extensions/paint-free/game.html",
-    "integrity": "fe76010339aafb7362bc7555f3e08c69e7d9ed3b55b78e392e473aa699a8655f",
+    "integrity": "c26517cc873557dfa88ccc90ae0812ba79787c6d2c2050db6ab5506c4c69cb94",
     "tags": [
       "paint",
       "creative"
@@ -315,13 +414,16 @@
     "skills": [
       "logic.patterns.ab"
     ],
+    "secondarySkills": [
+      "logic.patterns.abc"
+    ],
     "ageGuidance": {
       "min": 4,
       "max": 8
     },
     "manifestUrl": "/extensions/pattern-play/manifest.json",
     "entryUrl": "/extensions/pattern-play/game.html",
-    "integrity": "aa49c07cafb9870cef95c70e5911816f7efe93dcf98729d25c01135fe12ec76f",
+    "integrity": "b30b90d0a7c9816568ee34f8e70298f60ec093fafb9b761153186b52e1fd60fc",
     "tags": [
       "logic",
       "patterns"
@@ -337,6 +439,98 @@
       "learningSignals": [
         "sequencing",
         "prediction"
+      ]
+    }
+  },
+  {
+    "id": "aprincar.prewriting-trails",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Caminhos da Escrita"
+    },
+    "description": {
+      "pt-BR": "Siga caminhos com o dedo para treinar linhas, curvas e movimentos da escrita."
+    },
+    "objective": {
+      "pt-BR": "Controlar traços básicos e curvas antes da escrita convencional."
+    },
+    "skills": [
+      "motor.prewriting.lines"
+    ],
+    "secondarySkills": [
+      "motor.prewriting.curves"
+    ],
+    "ageGuidance": {
+      "min": 3,
+      "max": 6
+    },
+    "manifestUrl": "/extensions/prewriting-trails/manifest.json",
+    "entryUrl": "/extensions/prewriting-trails/game.html",
+    "integrity": "7ab1a5b52973956d7f6b98452e8f1f1dc9cc029106a74d6afe944d1af512df42",
+    "tags": [
+      "writing",
+      "motor",
+      "tracing"
+    ],
+    "experience": {
+      "fantasy": "Trilhas do lápis",
+      "mechanic": "trace-path",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 6,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "pathCoverage",
+        "motorControl"
+      ]
+    }
+  },
+  {
+    "id": "aprincar.print-letters",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Letras de Forma"
+    },
+    "description": {
+      "pt-BR": "Trace letras de forma com guias grandes e pratique cada movimento."
+    },
+    "objective": {
+      "pt-BR": "Praticar o traçado de letras de forma com apoio visual progressivo."
+    },
+    "skills": [
+      "writing.trace-letter"
+    ],
+    "secondarySkills": [
+      "writing.copy-letter"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "manifestUrl": "/extensions/print-letters/manifest.json",
+    "entryUrl": "/extensions/print-letters/game.html",
+    "integrity": "5f11db76cd322e3e2738b3de61afc6027a443b8115516f24b9d4bb6960c16fd3",
+    "tags": [
+      "letters",
+      "writing",
+      "tracing"
+    ],
+    "experience": {
+      "fantasy": "Oficina das letras",
+      "mechanic": "trace-print-letter",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 6,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "pathCoverage",
+        "shape"
       ]
     }
   },
@@ -357,9 +551,10 @@
     "skills": [
       "math.geometry.solids"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 5,
-      "max": 10
+      "max": 9
     },
     "manifestUrl": "/extensions/space-shapes-3d/manifest.json",
     "entryUrl": "/extensions/space-shapes-3d/game.html",
@@ -400,13 +595,14 @@
     "skills": [
       "writing.trace-letter"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
-      "max": 8
+      "max": 7
     },
     "manifestUrl": "/extensions/write-a/manifest.json",
     "entryUrl": "/extensions/write-a/game.html",
-    "integrity": "e97867dc8bda5a695ceea34440b57cdc6150029b28a58027cdec107bccff789e",
+    "integrity": "84f30253f3e6f7669458e623ac398b6dfd361c363aea92c5868f4a047773ac72",
     "tags": [
       "letters",
       "writing"
