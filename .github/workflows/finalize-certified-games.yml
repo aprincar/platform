@@ -1,0 +1,110 @@
+name: Finalize certified games snapshot
+
+on:
+  push:
+    branches:
+      - chore/pin-certified-mobile-games
+    paths:
+      - .github/workflows/finalize-certified-games.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout platform branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout certified games source
+        uses: actions/checkout@v4
+        with:
+          repository: aprincar/games-official
+          ref: 664e54aa36c413d14de7bb721979e7f8dc21e89a
+          path: .canonical-games
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Build certified games and registry
+        working-directory: .canonical-games
+        run: |
+          npm ci
+          npm run build
+          npm run registry
+
+      - name: Update canonical pin
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const path = 'canonical-games.json';
+          const pin = JSON.parse(fs.readFileSync(path, 'utf8'));
+          pin.commit = '664e54aa36c413d14de7bb721979e7f8dc21e89a';
+          fs.writeFileSync(path, JSON.stringify(pin, null, 2) + '\n');
+          NODE
+
+      - name: Regenerate App and Hub snapshots
+        run: npm run sync:official
+
+      - name: Install platform dependencies
+        run: npm ci
+
+      - name: Format touched source and docs
+        run: |
+          npx prettier --write \
+            apps/app/src/app-store.tsx \
+            apps/app/src/components/GameCard.tsx \
+            apps/app/src/game-families.ts \
+            apps/app/src/layout.tsx \
+            apps/app/src/pages/Settings.tsx \
+            apps/app/src/styles.css \
+            apps/app/src/theme.ts \
+            packages/extension-contracts/src/types.ts \
+            packages/core-tests/visual-contract.test.ts \
+            docs/design/BRAND_GUIDELINES.md \
+            docs/design/DESIGN_SYSTEM.md \
+            docs/design/INFORMATION_ARCHITECTURE.md
+
+      - name: Validate static gates
+        run: |
+          npm run test
+          npm run typecheck
+          npm run lint
+          npm run format:check
+          npm run verify:official
+
+      - name: Commit final certified state
+        run: |
+          git config user.name "aprincar-ci"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            canonical-games.json \
+            apps/app/public/registry.json \
+            apps/app/public/extensions \
+            apps/hub/public/registry.json \
+            apps/hub/public/extensions \
+            apps/app/src/app-store.tsx \
+            apps/app/src/components/GameCard.tsx \
+            apps/app/src/game-families.ts \
+            apps/app/src/layout.tsx \
+            apps/app/src/pages/Settings.tsx \
+            apps/app/src/styles.css \
+            apps/app/src/theme.ts \
+            packages/extension-contracts/src/types.ts \
+            packages/core-tests/visual-contract.test.ts \
+            docs/design/BRAND_GUIDELINES.md \
+            docs/design/DESIGN_SYSTEM.md \
+            docs/design/INFORMATION_ARCHITECTURE.md
+          if git diff --cached --quiet; then
+            echo "Certified state already synchronized."
+            exit 0
+          fi
+          git commit -m "build: sync final certified Aprincar v4 state"
+          git push origin HEAD:chore/pin-certified-mobile-games
