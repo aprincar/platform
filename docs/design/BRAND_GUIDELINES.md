@@ -1,6 +1,6 @@
 # Aprincar — Brand Guidelines
 
-A identidade canônica da V1 é o **Brand System v3**. Este documento define como usar a marca sem criar variantes paralelas.
+A identidade canônica atual é o **Brand System v4 — Portal de Descoberta**.
 
 ## Essência
 
@@ -8,28 +8,32 @@ A identidade canônica da V1 é o **Brand System v3**. Este documento define com
 
 Tagline: **Aprender acontece brincando.**
 
-A marca deve parecer infantil sem ser infantilizada, tecnológica sem ser corporativa e educacional sem parecer uma escola tradicional.
+A marca deve parecer lúdica e contemporânea sem cair em estética de clipart ou de sistema escolar tradicional.
 
 ## Símbolo
 
-O símbolo é a estrela amarela amigável com rosto e pequeno acento de aprendizagem/lápis. Não redesenhe a estrela, não troque a expressão, não aplique efeitos 3D e não introduza gradientes como requisito de funcionamento.
+O símbolo combina três ideias em uma forma simples:
+
+- um **A** abstrato, ligado ao nome Aprincar;
+- um **portal/play**, representando começar, explorar e descobrir;
+- uma pequena luz amarela e um brilho coral, representando curiosidade e descoberta.
+
+O símbolo deve permanecer simples, legível em 24 px e reconhecível sem o wordmark.
 
 ## Wordmark
 
-A sequência canônica usa:
+O wordmark reduz o excesso de cores da v3:
 
-| Letra | Cor       |
-| ----- | --------- |
-| A     | `#2563EB` |
-| p     | `#FBCB24` |
-| r     | `#22C55E` |
-| i     | `#F43F5E` |
-| n     | `#2563EB` |
-| c     | `#FB923C` |
-| a     | `#22C55E` |
-| r     | `#8B5CF6` |
+- **Apr**: Navy `#17213D`
+- **incar**: Blue `#4F6EF7`
 
-O wordmark pode usar fallback rounded/system sem distribuir fonte proprietária. Não transforme a tipografia em dependência de um arquivo de fonte externo.
+Essa divisão mantém a ideia de Aprender + Brincar sem transformar cada letra em uma cor diferente.
+
+## Mascote
+
+O mascote v4 deriva do mesmo vocabulário do símbolo: corpo azul arredondado, play no centro, luz amarela e pequenos acentos coral/verde.
+
+Ele é uma personagem de apoio para hero, onboarding, loading e empty states. O mascote **não substitui o logo**.
 
 ## Assets canônicos
 
@@ -44,48 +48,50 @@ O wordmark pode usar fallback rounded/system sem distribuir fonte proprietária.
 | `aprincar-mark.svg`   | alias legado do símbolo                |
 | `aprincar-logo.svg`   | alias legado horizontal                |
 
-Os aliases antigos permanecem por compatibilidade; novos consumidores devem preferir os nomes canônicos.
-
 ## Cores
 
-- Background: `#F7F6F2`
+- Background: `#F7F7FB`
 - Surface: `#FFFFFF`
-- Text: `#242523`
-- Navy: `#13203D`
-- Blue: `#2563EB`
-- Sun: `#FBCB24`
-- Orange: `#FB923C`
-- Leaf: `#22C55E`
-- Coral: `#F43F5E`
-- Purple: `#8B5CF6`
+- Surface muted: `#EEF1F7`
+- Text/Navy: `#17213D`
+- Blue: `#4F6EF7`
+- Blue strong: `#3B55D9`
+- Sun: `#FFC83D`
+- Leaf: `#2FC98F`
+- Coral: `#FF6B6B`
+- Purple: `#8B6FF7`
+
+As famílias de jogos podem usar cores próprias como acento, mas o shell e a marca devem continuar ancorados em Navy + Blue.
 
 ## Espaço de proteção
 
-Use ao redor da marca um respiro mínimo equivalente a aproximadamente **25% da altura da estrela**. Em superfícies muito pequenas, prefira o símbolo isolado.
+Use ao redor da marca um respiro mínimo equivalente a aproximadamente **25% da altura do símbolo**.
 
 ## Tamanhos mínimos
 
 - símbolo: 24 CSS px;
-- favicon: usar o asset dedicado;
-- horizontal: 140 CSS px de largura;
-- stacked: 96 CSS px de largura.
-
-Abaixo desses limites, use o símbolo ou favicon em vez de comprimir a marca completa.
+- horizontal: 140 CSS px;
+- stacked: 96 CSS px.
 
 ## Fundos
 
-Preferir `#F7F6F2`, branco ou superfícies claras com contraste suficiente. Em fundos fotográficos ou muito coloridos, coloque a marca em uma superfície sólida. Para contextos de uma cor, use `monochrome.svg`.
+Priorize branco, `#F7F7FB` ou superfícies claras. Em fundos escuros, use a marca clara ou a versão monocromática adequada.
 
 ## Não fazer
 
-- não distorcer proporções;
-- não trocar as cores letra a letra;
-- não separar a estrela em um novo logo independente;
-- não adicionar sombra pesada, bevel, glow ou 3D;
-- não usar o mascote como substituto universal do logo;
-- não criar outro ícone para App, Hub ou jogos;
-- não embutir raster gerado por IA como fonte canônica da marca.
+- não voltar ao wordmark arco-íris da v3;
+- não reintroduzir a estrela como logo principal;
+- não adicionar bevel, 3D, glow pesado ou efeitos fotográficos;
+- não usar o mascote como substituto universal da marca;
+- não criar ícones alternativos para App, Hub e jogos;
+- não embutir raster gerado por IA como fonte canônica da identidade.
 
 ## Implementação
 
-A representação React canônica vive em `@aprincar/ui`. Os SVGs deste diretório são a distribuição estática da mesma identidade. PWA, App, Hub, templates e jogos oficiais devem consumir uma dessas duas superfícies, nunca redesenhar a marca localmente.
+A representação React canônica vive em `@aprincar/ui`. Os SVGs em `apps/app/public/brand` são a distribuição estática da mesma identidade.
+
+PWA, App, Hub, templates e jogos oficiais devem consumir a identidade canônica em vez de redesenhar a marca localmente.
+
+## Design System
+
+A implementação visual completa é definida em [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md). A marca permanece independente do mascote; temas, tokens, acessibilidade e componentes não devem redefinir a identidade.

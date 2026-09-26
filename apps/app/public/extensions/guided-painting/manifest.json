@@ -1,0 +1,55 @@
+{
+  "manifestVersion": 1,
+  "id": "aprincar.guided-painting",
+  "kind": "game",
+  "version": "1.1.0",
+  "publisher": "aprincar",
+  "name": {
+    "pt-BR": "Pintura por Cores"
+  },
+  "description": {
+    "pt-BR": "Escolha tintas e pinte partes grandes seguindo cor e símbolo."
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "perception.colors.match"
+    ],
+    "secondarySkills": [
+      "creativity.visual-expression"
+    ],
+    "ageGuidance": {
+      "min": 3,
+      "max": 5
+    },
+    "interests": [
+      "paint",
+      "colors",
+      "creative"
+    ],
+    "playType": "learning"
+  },
+  "experience": {
+    "fantasy": "Livro de colorir",
+    "mechanic": "paint-regions",
+    "interaction": "tap",
+    "progression": {
+      "maxLevel": 5,
+      "adaptive": true
+    },
+    "learningSignals": [
+      "classification",
+      "visualChoice"
+    ]
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}

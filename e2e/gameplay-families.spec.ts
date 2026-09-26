@@ -4,7 +4,7 @@ import {
   clickThreeTarget,
   completeOnboarding,
   dragCanvasTarget,
-  drawCanvasStroke,
+  drawCanvasStrokeInTarget,
   getGameState,
   openGame,
   type GameState,
@@ -68,9 +68,17 @@ async function exerciseReversibleCounting(page: Page, gameId: string, title: str
   await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 10000 }).toBe('failure');
   await waitForGameInput(frame);
 
-  await clickCanvasTarget(page, frame, toggles[answer]!);
+  const retryState = await getGameState(frame);
+  const selectedToggle = retryState.targets.find(
+    (target) => target.kind === 'toggle' && target.value === toggles[answer]!.value,
+  );
+  expect(selectedToggle).toBeTruthy();
+  await clickCanvasTarget(page, frame, selectedToggle!);
   await expect.poll(async () => (await getGameState(frame)).selectedCount, { timeout: 10000 }).toBe(answer);
-  await clickCanvasTarget(page, frame, action!);
+
+  const retryAction = targetByKind(await getGameState(frame), 'action', 'Conferir');
+  expect(retryAction).toBeTruthy();
+  await clickCanvasTarget(page, frame, retryAction!);
   await expect
     .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
     .toBeGreaterThan(initial.level);
@@ -169,17 +177,20 @@ test.describe('Semantic gameplay for every official game family', () => {
     const initial = await getGameState(frame);
     expect(initial.challenge.answer).toBe('A');
 
-    await drawCanvasStroke(page, frame, [
-      { x: 421, y: 477 },
-      { x: 510, y: 330 },
-      { x: 600, y: 183 },
-      { x: 690, y: 330 },
-      { x: 779, y: 477 },
+    const drawZone = targetByKind(initial, 'draw-zone', 'handwriting-zone');
+    expect(drawZone).toBeTruthy();
+
+    await drawCanvasStrokeInTarget(page, frame, drawZone!, [
+      { x: 0.2, y: 0.82 },
+      { x: 0.35, y: 0.5 },
+      { x: 0.5, y: 0.16 },
+      { x: 0.65, y: 0.5 },
+      { x: 0.8, y: 0.82 },
     ]);
-    await drawCanvasStroke(page, frame, [
-      { x: 497, y: 358 },
-      { x: 600, y: 358 },
-      { x: 703, y: 358 },
+    await drawCanvasStrokeInTarget(page, frame, drawZone!, [
+      { x: 0.34, y: 0.58 },
+      { x: 0.5, y: 0.58 },
+      { x: 0.66, y: 0.58 },
     ]);
     await expect.poll(async () => (await getGameState(frame)).strokeCount).toBe(2);
     const action = targetByKind(await getGameState(frame), 'action', 'Conferir');
@@ -193,11 +204,15 @@ test.describe('Semantic gameplay for every official game family', () => {
   test('paint stores a real drawing instead of only showing a success message', async ({ page }) => {
     await completeOnboarding(page, 'Ana');
     const { frame } = await openGame(page, 'aprincar.paint-free', 'Pintura Livre');
-    await drawCanvasStroke(page, frame, [
-      { x: 320, y: 270 },
-      { x: 430, y: 330 },
-      { x: 540, y: 260 },
-      { x: 650, y: 380 },
+    const initial = await getGameState(frame);
+    const drawZone = targetByKind(initial, 'draw-zone', 'paint-zone');
+    expect(drawZone).toBeTruthy();
+
+    await drawCanvasStrokeInTarget(page, frame, drawZone!, [
+      { x: 0.18, y: 0.3 },
+      { x: 0.36, y: 0.58 },
+      { x: 0.55, y: 0.28 },
+      { x: 0.76, y: 0.66 },
     ]);
     await expect.poll(async () => (await getGameState(frame)).paintStrokeCount ?? 0).toBeGreaterThan(0);
     const action = targetByKind(await getGameState(frame), 'action', 'Guardar desenho');

@@ -16,31 +16,30 @@ const guidelines = fs.readFileSync(new URL('../../docs/design/BRAND_GUIDELINES.m
 const icon192 = fs.readFileSync(new URL('../../apps/app/public/icons/icon-192.svg', import.meta.url), 'utf8');
 const icon512 = fs.readFileSync(new URL('../../apps/app/public/icons/icon-512.svg', import.meta.url), 'utf8');
 
-test('Brand System v3 uses the approved star identity and multicolor wordmark everywhere', () => {
-  assert.match(ui, /data-aprincar-brand=["']star-v3["']/);
+test('Brand System v4 uses the portal identity consistently', () => {
+  assert.match(ui, /data-aprincar-brand=["']portal-v4["']/);
   assert.match(ui, /AprincarMascot/);
   assert.match(ui, /aprincar-wordmark-letter/);
-  assert.match(ui, /#FBCB24/i);
-  assert.match(ui, /#2563EB/i);
-  assert.doesNotMatch(ui, /aprincar-mark-pieces/);
+  assert.match(ui, /#4F6EF7/i);
+  assert.match(ui, /#FFC83D/i);
+  assert.doesNotMatch(ui, /data-aprincar-brand=["']star-v3["']/);
 
   for (const asset of [mark, logo, symbol, horizontal, stacked, appIcon, favicon, icon192, icon512]) {
-    assert.match(asset, /data-brand-version=["']3["']/);
-    assert.match(asset, /aprincar-star/i);
-    assert.match(asset, /#FBCB24/i);
+    assert.match(asset, /data-brand-version=["']4["']/);
+    assert.match(asset, /aprincar-portal/i);
+    assert.match(asset, /#4F6EF7/i);
   }
 
   for (const asset of [logo, horizontal, stacked]) {
     assert.match(asset, /Aprincar/);
-    assert.match(asset, /#2563EB/i);
-    assert.match(asset, /#22C55E/i);
-    assert.match(asset, /#F43F5E/i);
+    assert.match(asset, /#17213D/i);
+    assert.match(asset, /#4F6EF7/i);
   }
 
-  assert.match(monochrome, /data-brand-version=["']3["']/);
-  assert.match(monochrome, /aprincar-star/i);
-  assert.match(monochrome, /#13203D/i);
-  assert.doesNotMatch(monochrome, /#FBCB24/i);
+  assert.match(monochrome, /data-brand-version=["']4["']/);
+  assert.match(monochrome, /aprincar-portal/i);
+  assert.match(monochrome, /#17213D/i);
+  assert.doesNotMatch(monochrome, /#FFC83D/i);
 
   for (const required of [
     'logo-symbol.svg',

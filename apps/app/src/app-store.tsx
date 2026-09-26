@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { db, extensionCacheAdapter, persistStorage, type ChildProfile } from '@aprincar/storage';
 import { ExtensionManager } from '@aprincar/extension-manager';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
+import { normalizeThemePreference, observeThemePreference, type AprincarThemePreference } from './theme';
 import { mergeRegistries, visibleForChild } from '@aprincar/extension-registry';
 
 export interface CreateProfileInput {
@@ -28,6 +29,8 @@ export interface AppStore {
   libraryIds: Set<string>;
   allowCommunity: boolean;
   setAllowCommunity(value: boolean): Promise<void>;
+  themePreference: AprincarThemePreference;
+  setThemePreference(value: AprincarThemePreference): Promise<void>;
   refresh(): Promise<void>;
 }
 
@@ -61,11 +64,16 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [registry, setRegistry] = useState<RegistryEntry[]>([]);
   const [libraryIds, setLibraryIds] = useState(new Set<string>());
   const [allowCommunity, setAllowCommunityState] = useState(false);
+  const [themePreference, setThemePreferenceState] = useState<AprincarThemePreference>('system');
   const [loading, setLoading] = useState(true);
 
   const refresh = async () => {
-    const savedTheme = String((await db.settings.get('theme'))?.value ?? 'standard');
-    document.documentElement.dataset.aprincarTheme = savedTheme;
+    const storedTheme = (await db.settings.get('theme'))?.value;
+    const savedTheme = normalizeThemePreference(storedTheme);
+    setThemePreferenceState(savedTheme);
+    if (storedTheme !== savedTheme) {
+      await db.settings.put({ key: 'theme', value: savedTheme });
+    }
     const ps = await db.profiles.toArray();
     setProfiles(ps);
     const selected = String((await db.settings.get('selectedProfile'))?.value ?? '');
@@ -85,6 +93,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     refresh();
   }, []);
 
+  useEffect(() => observeThemePreference(themePreference), [themePreference]);
+
   const value = useMemo<AppStore>(
     () => ({
       profile,
@@ -94,6 +104,12 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       initialized: !loading,
       libraryIds,
       allowCommunity,
+      themePreference,
+      async setThemePreference(value) {
+        const normalized = normalizeThemePreference(value);
+        await db.settings.put({ key: 'theme', value: normalized });
+        setThemePreferenceState(normalized);
+      },
       async setAllowCommunity(value) {
         await db.settings.put({ key: 'allowCommunity', value });
         await refresh();
@@ -147,7 +163,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         await refresh();
       },
     }),
-    [profile, profiles, registry, loading, libraryIds, allowCommunity],
+    [profile, profiles, registry, loading, libraryIds, allowCommunity, themePreference],
   );
 
   return <C.Provider value={value}>{children}</C.Provider>;

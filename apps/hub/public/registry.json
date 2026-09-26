@@ -10,16 +10,20 @@
     "description": {
       "pt-BR": "Monte torres com a quantidade certa de blocos."
     },
+    "objective": {
+      "pt-BR": "Construir uma coleção com quantidade exata e acompanhar a contagem."
+    },
     "skills": [
       "math.counting.1-10"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/block-tower/manifest.json",
     "entryUrl": "/extensions/block-tower/game.html",
-    "integrity": "2c72f804ee30b3f2e67d7d695628e2d2511414407d46d1249d35fc80b86b22c4",
+    "integrity": "8ba84f39955ff365b54da3af3f283a53a040978aec9bb64c3e80bfa8ee71a7bb",
     "tags": [
       "math",
       "counting",
@@ -50,16 +54,20 @@
     "description": {
       "pt-BR": "Leve cada peça até a cor correspondente."
     },
+    "objective": {
+      "pt-BR": "Classificar visualmente objetos por cor."
+    },
     "skills": [
       "perception.colors.match"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 2,
-      "max": 6
+      "max": 5
     },
     "manifestUrl": "/extensions/color-match/manifest.json",
     "entryUrl": "/extensions/color-match/game.html",
-    "integrity": "0d88085c1ca43a989c7889266d6f182b7477848aa3a07a5aa960e9fd72e7609c",
+    "integrity": "1df58db4ded0e346a71de95f9eade0761c957528be46337e16a350349b8ac15f",
     "tags": [
       "colors",
       "logic",
@@ -90,16 +98,20 @@
     "description": {
       "pt-BR": "Conte bichos animados e escolha a quantidade correta."
     },
+    "objective": {
+      "pt-BR": "Perceber uma quantidade, contar e relacionar o total ao numeral correto."
+    },
     "skills": [
       "math.counting.1-10"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/counting-animals/manifest.json",
     "entryUrl": "/extensions/counting-animals/game.html",
-    "integrity": "c8e39e31f80a7b7f4e7386fa6c147f0c1b77ef375b97c429d448e82ffd67cbdf",
+    "integrity": "1c7bbb0126fbf800b1c97eb80b3a8c4de30546e55f63dc66b7eb8b2d3024bbc3",
     "tags": [
       "math",
       "counting",
@@ -120,6 +132,52 @@
     }
   },
   {
+    "id": "aprincar.cursive-letters",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Oficina de Cursiva"
+    },
+    "description": {
+      "pt-BR": "Acompanhe movimentos contínuos e pratique letras e ligações da escrita cursiva."
+    },
+    "objective": {
+      "pt-BR": "Praticar movimentos contínuos da cursiva e ligações simples entre letras."
+    },
+    "skills": [
+      "writing.cursive.trace"
+    ],
+    "secondarySkills": [
+      "writing.cursive.join"
+    ],
+    "ageGuidance": {
+      "min": 6,
+      "max": 9
+    },
+    "manifestUrl": "/extensions/cursive-letters/manifest.json",
+    "entryUrl": "/extensions/cursive-letters/game.html",
+    "integrity": "f3697fb27c1bf3051b027c34973bd16d7eefb811b0858e827884bdfef3af58d9",
+    "tags": [
+      "letters",
+      "writing",
+      "cursive"
+    ],
+    "experience": {
+      "fantasy": "Ateliê da cursiva",
+      "mechanic": "trace-cursive",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 8,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "pathCoverage",
+        "continuity"
+      ]
+    }
+  },
+  {
     "id": "aprincar.fruit-basket",
     "version": "1.1.0",
     "trust": "official",
@@ -130,16 +188,20 @@
     "description": {
       "pt-BR": "Escolha a quantidade pedida e leve as frutas até a cesta."
     },
+    "objective": {
+      "pt-BR": "Formar uma quantidade pedida manipulando objetos concretos."
+    },
     "skills": [
       "math.counting.1-10"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/fruit-basket/manifest.json",
     "entryUrl": "/extensions/fruit-basket/game.html",
-    "integrity": "5c563848aaf1749589110fb31bc82c0ff09e95ae329f1bce8342382adc9440e2",
+    "integrity": "6520b9bae10a6edfe1671cc525921781c0327cc791d6ef7ca5cc0dbc25707613",
     "tags": [
       "math",
       "counting",
@@ -160,6 +222,52 @@
     }
   },
   {
+    "id": "aprincar.guided-painting",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Pintura por Cores"
+    },
+    "description": {
+      "pt-BR": "Escolha tintas e pinte partes grandes seguindo cor e símbolo."
+    },
+    "objective": {
+      "pt-BR": "Combinar pistas visuais e cores enquanto pinta regiões grandes."
+    },
+    "skills": [
+      "perception.colors.match"
+    ],
+    "secondarySkills": [
+      "creativity.visual-expression"
+    ],
+    "ageGuidance": {
+      "min": 3,
+      "max": 5
+    },
+    "manifestUrl": "/extensions/guided-painting/manifest.json",
+    "entryUrl": "/extensions/guided-painting/game.html",
+    "integrity": "7ec6684a0795918cda55fb327c7c57798ca80488066ebee343c43ac8810c16d0",
+    "tags": [
+      "paint",
+      "colors",
+      "creative"
+    ],
+    "experience": {
+      "fantasy": "Livro de colorir",
+      "mechanic": "paint-regions",
+      "interaction": "tap",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "classification",
+        "visualChoice"
+      ]
+    }
+  },
+  {
     "id": "aprincar.letter-hunt",
     "version": "1.1.0",
     "trust": "official",
@@ -170,16 +278,20 @@
     "description": {
       "pt-BR": "Encontre letras em movimento e avance por desafios."
     },
+    "objective": {
+      "pt-BR": "Reconhecer visualmente uma letra entre alternativas."
+    },
     "skills": [
       "literacy.letter.recognition"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
       "max": 7
     },
     "manifestUrl": "/extensions/letter-hunt/manifest.json",
     "entryUrl": "/extensions/letter-hunt/game.html",
-    "integrity": "612decb686cbfc1716f6fc4256a5b559b3f06e362d4c2d39ae75a4192a6d44c0",
+    "integrity": "8db41150d1ac3b027540e81251af8c617aed53ffbadbf336d98e215d9919cf2f",
     "tags": [
       "letters",
       "literacy"
@@ -209,16 +321,20 @@
     "description": {
       "pt-BR": "Encontre pares em tabuleiros que crescem automaticamente."
     },
+    "objective": {
+      "pt-BR": "Usar memória visual para localizar pares."
+    },
     "skills": [
       "perception.visual.discrimination"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 3,
-      "max": 10
+      "max": 7
     },
     "manifestUrl": "/extensions/memory-animals/manifest.json",
     "entryUrl": "/extensions/memory-animals/game.html",
-    "integrity": "5336128f0ed183aa765889a6590f95f27b6ab19f3092fec1132973fa89379488",
+    "integrity": "3ff29c89e59fc59f892f404cdb31f1fd5fd8b930484813f212a8084fa79158ad",
     "tags": [
       "memory",
       "animals",
@@ -249,16 +365,20 @@
     "description": {
       "pt-BR": "Desenhe, pinte e experimente sem resposta certa ou errada."
     },
+    "objective": {
+      "pt-BR": "Explorar expressão visual sem resposta única."
+    },
     "skills": [
       "creativity.visual-expression"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 2,
       "max": 10
     },
     "manifestUrl": "/extensions/paint-free/manifest.json",
     "entryUrl": "/extensions/paint-free/game.html",
-    "integrity": "a02a6e59b2610224fa35a3b11192f8f15faa5aebb83bf3b09700a06eb97f1c32",
+    "integrity": "c26517cc873557dfa88ccc90ae0812ba79787c6d2c2050db6ab5506c4c69cb94",
     "tags": [
       "paint",
       "creative"
@@ -288,8 +408,14 @@
     "description": {
       "pt-BR": "Descubra qual peça continua cada sequência."
     },
+    "objective": {
+      "pt-BR": "Identificar a regra de uma sequência e prever o próximo elemento."
+    },
     "skills": [
       "logic.patterns.ab"
+    ],
+    "secondarySkills": [
+      "logic.patterns.abc"
     ],
     "ageGuidance": {
       "min": 4,
@@ -297,7 +423,7 @@
     },
     "manifestUrl": "/extensions/pattern-play/manifest.json",
     "entryUrl": "/extensions/pattern-play/game.html",
-    "integrity": "be11b41a4b7b9c47bb0c51c9dd8ef9fb606eb2ce5f8a820c280b4c1d525a1936",
+    "integrity": "b30b90d0a7c9816568ee34f8e70298f60ec093fafb9b761153186b52e1fd60fc",
     "tags": [
       "logic",
       "patterns"
@@ -317,6 +443,98 @@
     }
   },
   {
+    "id": "aprincar.prewriting-trails",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Caminhos da Escrita"
+    },
+    "description": {
+      "pt-BR": "Siga caminhos com o dedo para treinar linhas, curvas e movimentos da escrita."
+    },
+    "objective": {
+      "pt-BR": "Controlar traços básicos e curvas antes da escrita convencional."
+    },
+    "skills": [
+      "motor.prewriting.lines"
+    ],
+    "secondarySkills": [
+      "motor.prewriting.curves"
+    ],
+    "ageGuidance": {
+      "min": 3,
+      "max": 6
+    },
+    "manifestUrl": "/extensions/prewriting-trails/manifest.json",
+    "entryUrl": "/extensions/prewriting-trails/game.html",
+    "integrity": "7ab1a5b52973956d7f6b98452e8f1f1dc9cc029106a74d6afe944d1af512df42",
+    "tags": [
+      "writing",
+      "motor",
+      "tracing"
+    ],
+    "experience": {
+      "fantasy": "Trilhas do lápis",
+      "mechanic": "trace-path",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 6,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "pathCoverage",
+        "motorControl"
+      ]
+    }
+  },
+  {
+    "id": "aprincar.print-letters",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Letras de Forma"
+    },
+    "description": {
+      "pt-BR": "Trace letras de forma com guias grandes e pratique cada movimento."
+    },
+    "objective": {
+      "pt-BR": "Praticar o traçado de letras de forma com apoio visual progressivo."
+    },
+    "skills": [
+      "writing.trace-letter"
+    ],
+    "secondarySkills": [
+      "writing.copy-letter"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "manifestUrl": "/extensions/print-letters/manifest.json",
+    "entryUrl": "/extensions/print-letters/game.html",
+    "integrity": "5f11db76cd322e3e2738b3de61afc6027a443b8115516f24b9d4bb6960c16fd3",
+    "tags": [
+      "letters",
+      "writing",
+      "tracing"
+    ],
+    "experience": {
+      "fantasy": "Oficina das letras",
+      "mechanic": "trace-print-letter",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 6,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "pathCoverage",
+        "shape"
+      ]
+    }
+  },
+  {
     "id": "aprincar.space-shapes-3d",
     "version": "1.1.0",
     "trust": "official",
@@ -327,16 +545,20 @@
     "description": {
       "pt-BR": "Gire sólidos em 3D e reconheça suas formas."
     },
+    "objective": {
+      "pt-BR": "Reconhecer sólidos a partir de diferentes pontos de vista."
+    },
     "skills": [
       "math.geometry.solids"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 5,
-      "max": 10
+      "max": 9
     },
     "manifestUrl": "/extensions/space-shapes-3d/manifest.json",
     "entryUrl": "/extensions/space-shapes-3d/game.html",
-    "integrity": "c0a9a2097c8226753acb8fa7eb5e1dec17b6d2d37b357c89af840696d6b2ac4f",
+    "integrity": "24f672fcba8f937167900258b27387653fab6cef739053653994670975be1853",
     "tags": [
       "geometry",
       "3d",
@@ -367,16 +589,20 @@
     "description": {
       "pt-BR": "Desenhe letras com apoio visual que diminui conforme você avança."
     },
+    "objective": {
+      "pt-BR": "Praticar o formato gráfico de letras com apoio visual progressivo."
+    },
     "skills": [
       "writing.trace-letter"
     ],
+    "secondarySkills": [],
     "ageGuidance": {
       "min": 4,
-      "max": 8
+      "max": 7
     },
     "manifestUrl": "/extensions/write-a/manifest.json",
     "entryUrl": "/extensions/write-a/game.html",
-    "integrity": "7e3de21f7439cc0bb511ba42780c8f094e6dbd50ba85f9afaa1c43625fa01c18",
+    "integrity": "84f30253f3e6f7669458e623ac398b6dfd361c363aea92c5868f4a047773ac72",
     "tags": [
       "letters",
       "writing"

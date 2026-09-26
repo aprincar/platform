@@ -1,0 +1,55 @@
+{
+  "manifestVersion": 1,
+  "id": "aprincar.cursive-letters",
+  "kind": "game",
+  "version": "1.1.0",
+  "publisher": "aprincar",
+  "name": {
+    "pt-BR": "Oficina de Cursiva"
+  },
+  "description": {
+    "pt-BR": "Acompanhe movimentos contínuos e pratique letras e ligações da escrita cursiva."
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "writing.cursive.trace"
+    ],
+    "secondarySkills": [
+      "writing.cursive.join"
+    ],
+    "ageGuidance": {
+      "min": 6,
+      "max": 9
+    },
+    "interests": [
+      "letters",
+      "writing",
+      "cursive"
+    ],
+    "playType": "practice"
+  },
+  "experience": {
+    "fantasy": "Ateliê da cursiva",
+    "mechanic": "trace-cursive",
+    "interaction": "draw",
+    "progression": {
+      "maxLevel": 8,
+      "adaptive": true
+    },
+    "learningSignals": [
+      "pathCoverage",
+      "continuity"
+    ]
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}
