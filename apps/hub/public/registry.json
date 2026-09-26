@@ -10,6 +10,9 @@
     "description": {
       "pt-BR": "Monte torres com a quantidade certa de blocos."
     },
+    "objective": {
+      "pt-BR": "Construir uma coleção com quantidade exata e acompanhar a contagem."
+    },
     "skills": [
       "math.counting.1-10"
     ],
@@ -49,6 +52,9 @@
     },
     "description": {
       "pt-BR": "Leve cada peça até a cor correspondente."
+    },
+    "objective": {
+      "pt-BR": "Classificar visualmente objetos por cor."
     },
     "skills": [
       "perception.colors.match"
@@ -90,6 +96,9 @@
     "description": {
       "pt-BR": "Conte bichos animados e escolha a quantidade correta."
     },
+    "objective": {
+      "pt-BR": "Perceber uma quantidade, contar e relacionar o total ao numeral correto."
+    },
     "skills": [
       "math.counting.1-10"
     ],
@@ -129,6 +138,9 @@
     },
     "description": {
       "pt-BR": "Escolha a quantidade pedida e leve as frutas até a cesta."
+    },
+    "objective": {
+      "pt-BR": "Formar uma quantidade pedida manipulando objetos concretos."
     },
     "skills": [
       "math.counting.1-10"
@@ -170,6 +182,9 @@
     "description": {
       "pt-BR": "Encontre letras em movimento e avance por desafios."
     },
+    "objective": {
+      "pt-BR": "Reconhecer visualmente uma letra entre alternativas."
+    },
     "skills": [
       "literacy.letter.recognition"
     ],
@@ -208,6 +223,9 @@
     },
     "description": {
       "pt-BR": "Encontre pares em tabuleiros que crescem automaticamente."
+    },
+    "objective": {
+      "pt-BR": "Usar memória visual para localizar pares."
     },
     "skills": [
       "perception.visual.discrimination"
@@ -249,6 +267,9 @@
     "description": {
       "pt-BR": "Desenhe, pinte e experimente sem resposta certa ou errada."
     },
+    "objective": {
+      "pt-BR": "Explorar expressão visual sem resposta única."
+    },
     "skills": [
       "creativity.visual-expression"
     ],
@@ -287,6 +308,9 @@
     },
     "description": {
       "pt-BR": "Descubra qual peça continua cada sequência."
+    },
+    "objective": {
+      "pt-BR": "Identificar a regra de uma sequência e prever o próximo elemento."
     },
     "skills": [
       "logic.patterns.ab"
@@ -327,6 +351,9 @@
     "description": {
       "pt-BR": "Gire sólidos em 3D e reconheça suas formas."
     },
+    "objective": {
+      "pt-BR": "Reconhecer sólidos a partir de diferentes pontos de vista."
+    },
     "skills": [
       "math.geometry.solids"
     ],
@@ -366,6 +393,9 @@
     },
     "description": {
       "pt-BR": "Desenhe letras com apoio visual que diminui conforme você avança."
+    },
+    "objective": {
+      "pt-BR": "Praticar o formato gráfico de letras com apoio visual progressivo."
     },
     "skills": [
       "writing.trace-letter"
