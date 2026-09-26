@@ -53,6 +53,9 @@ jobs:
       - name: Regenerate App and Hub snapshots
         run: npm run sync:official
 
+      - name: Remove canonical checkout before platform lint
+        run: rm -rf .canonical-games
+
       - name: Install platform dependencies
         run: npm ci
 
