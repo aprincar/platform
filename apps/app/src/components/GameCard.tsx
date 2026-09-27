@@ -83,6 +83,7 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
   const primarySkill = entry.skills[0] ? getSkill(entry.skills[0]) : undefined;
   const name = entry.name['pt-BR'] ?? entry.id.split('.').at(-1)?.replaceAll('-', ' ');
   const skill = primarySkill?.label['pt-BR'] ?? family?.title ?? 'Aprender brincando';
+  const objective = entry.objective?.['pt-BR'] ?? entry.description?.['pt-BR'];
 
   return (
     <article className={`approved-game-card ${compact ? 'compact' : ''}`} data-game-id={entry.id}>
@@ -92,6 +93,7 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
       <div className="approved-game-card-content">
         <div className="approved-game-card-copy">
           <strong>{name}</strong>
+          {objective && <span className="sr-only">{objective}</span>}
           <span>{family?.title ?? skill}</span>
           <small>{entry.ageGuidance?.min ?? 2}–{entry.ageGuidance?.max ?? 10} anos</small>
         </div>

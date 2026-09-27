@@ -71,7 +71,7 @@ const letters = [
 
 export function Brand({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
   return (
-    <Group gap={9} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="portal-v4">
+    <Group gap={9} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v1">
       <BrandMark size={compact ? 38 : 48} />
       <div className="aprincar-brand-copy">
         <span
@@ -110,90 +110,22 @@ export function Brand({ compact = false, light = false }: { compact?: boolean; l
 export function AprincarMascot({
   size = 240,
   className,
-  withPencil = true,
 }: {
   size?: number;
   className?: string;
   withPencil?: boolean;
 }) {
   return (
-    <svg
-      viewBox="0 0 260 270"
+    <img
+      src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
       width={size}
-      height={Math.round(size * 1.04)}
+      height={Math.round(size * 1.34)}
       className={className}
+      alt=""
       aria-hidden="true"
-      data-aprincar-brand="portal-v4"
-    >
-      <g id="aprincar-portal-mascot">
-        <ellipse cx="130" cy="244" rx="70" ry="12" fill={APRINCAR_COLORS.navy} opacity=".1" />
-        <path
-          d="M62 142c0-58 26-101 68-101s68 43 68 101v35c0 39-29 67-68 67s-68-28-68-67v-35Z"
-          fill={APRINCAR_COLORS.blue}
-        />
-        <path
-          d="M82 143c0-35 19-60 48-60s48 25 48 60v23c0 30-19 49-48 49s-48-19-48-49v-23Z"
-          fill="#FFFFFF"
-          opacity=".96"
-        />
-        <circle cx="109" cy="127" r="7" fill={APRINCAR_COLORS.navy} />
-        <circle cx="151" cy="127" r="7" fill={APRINCAR_COLORS.navy} />
-        <circle cx="111.5" cy="124.5" r="2.1" fill="#FFFFFF" />
-        <circle cx="153.5" cy="124.5" r="2.1" fill="#FFFFFF" />
-        <path
-          d="M112 148c12 12 24 12 36 0"
-          fill="none"
-          stroke={APRINCAR_COLORS.navy}
-          strokeWidth="4.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M115 167c0-3 3.3-4.8 5.9-3.2l22.2 13.8a3.8 3.8 0 0 1 0 6.4l-22.2 13.8c-2.6 1.6-5.9-.2-5.9-3.2V167Z"
-          fill={APRINCAR_COLORS.blue}
-        />
-        <circle cx="174" cy="48" r="13" fill={APRINCAR_COLORS.sun} />
-        <path
-          d="m79 53 4.2 7.6 7.6 4.2-7.6 4.2-4.2 7.6-4.2-7.6-7.6-4.2 7.6-4.2 4.2-7.6Z"
-          fill={APRINCAR_COLORS.coral}
-        />
-        <path
-          d="M62 155c-19 2-31 11-39 26"
-          fill="none"
-          stroke={APRINCAR_COLORS.coral}
-          strokeWidth="13"
-          strokeLinecap="round"
-        />
-        <path
-          d="M198 155c19 2 31 11 39 26"
-          fill="none"
-          stroke={APRINCAR_COLORS.leaf}
-          strokeWidth="13"
-          strokeLinecap="round"
-        />
-        <path
-          d="M100 232c-6 10-14 17-25 21"
-          fill="none"
-          stroke={APRINCAR_COLORS.navy}
-          strokeWidth="12"
-          strokeLinecap="round"
-        />
-        <path
-          d="M160 232c6 10 14 17 25 21"
-          fill="none"
-          stroke={APRINCAR_COLORS.navy}
-          strokeWidth="12"
-          strokeLinecap="round"
-        />
-        {withPencil && (
-          <g transform="translate(211 108) rotate(18)">
-            <rect x="0" y="0" width="13" height="76" rx="6.5" fill={APRINCAR_COLORS.sun} />
-            <rect x="0" y="0" width="13" height="17" rx="6.5" fill={APRINCAR_COLORS.coral} />
-            <path d="M0 76h13L6.5 89Z" fill="#E7B887" />
-            <path d="m4 84 2.5 5 2.5-5Z" fill={APRINCAR_COLORS.navy} />
-          </g>
-        )}
-      </g>
-    </svg>
+      data-aprincar-brand="approved-v1"
+      style={{ objectFit: 'contain' }}
+    />
   );
 }
 
