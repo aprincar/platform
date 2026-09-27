@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 92" role="img" aria-labelledby="title" data-brand-version="4">
-  <title id="title">Aprincar — Aprender acontece brincando.</title>
-  <g transform="translate(8 14) scale(.94)" id="aprincar-portal">
-    <path d="M12.8 48.6 26.1 16.2c2.1-5.1 9.3-5.1 11.4 0l13.7 32.4c2.3 5.5-1.7 11.4-7.7 11.4H20.6c-6 0-10.1-5.9-7.8-11.4Z" fill="#4F6EF7"/>
-    <path d="M27.1 28.3c0-1.4 1.6-2.2 2.8-1.5l13.2 8.3a1.8 1.8 0 0 1 0 3L30 46.3a1.8 1.8 0 0 1-2.8-1.5V28.3Z" fill="#fff"/>
-    <circle cx="47.2" cy="15.5" r="6.3" fill="#FFC83D"/>
-    <path d="m14 18.2 2.3 4.3 4.4 2.2-4.4 2.2-2.3 4.3-2.2-4.3-4.4-2.2 4.4-2.2 2.2-4.3Z" fill="#FF6B6B"/>
-  </g>
-  <text x="82" y="56" font-family="Trebuchet MS, Arial Rounded MT Bold, system-ui, sans-serif" font-size="46" font-weight="900" letter-spacing="-2.2">
-    <tspan fill="#17213D">Apr</tspan><tspan fill="#4F6EF7">incar</tspan>
-  </text>
-  <text x="84" y="76" font-family="Arial, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6B7280">Aprender acontece brincando.</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 104" role="img" data-brand-version="approved-v1"><title>Aprincar — Brincar hoje. Descobrir sempre.</title><defs><linearGradient id="a" x1="8" y1="8" x2="70" y2="82"><stop stop-color="#0EA5E9"/><stop offset=".52" stop-color="#2563EB"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs><g id="aprincar-approved" transform="translate(8 5)"><path d="M8 72C11 39 23 16 37 16s26 23 29 56" fill="none" stroke="url(#a)" stroke-width="17" stroke-linecap="round"/><path d="M31 41c0-2.5 2.8-4 4.9-2.6l15 9.6c2 1.3 2 4.2 0 5.5l-15 9.6c-2.1 1.4-4.9-.1-4.9-2.6V41Z" fill="#FBBF24"/></g><text x="90" y="58" font-family="Poppins,Arial,sans-serif" font-size="45" font-weight="800" letter-spacing="-2"><tspan fill="#0F172A">Apr</tspan><tspan fill="#2563EB">incar</tspan></text><text x="93" y="82" font-family="Poppins,Arial,sans-serif" font-size="10" font-weight="700" letter-spacing="2.1" fill="#0F172A">BRINCAR HOJE. DESCOBRIR SEMPRE.</text></svg>

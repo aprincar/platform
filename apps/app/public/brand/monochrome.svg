@@ -1,8 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 82" role="img" aria-labelledby="title" data-brand-version="4">
-  <title id="title">Aprincar — versão monocromática</title>
-  <g transform="translate(6 10) scale(.9)" id="aprincar-portal">
-    <path d="M12.8 48.6 26.1 16.2c2.1-5.1 9.3-5.1 11.4 0l13.7 32.4c2.3 5.5-1.7 11.4-7.7 11.4H20.6c-6 0-10.1-5.9-7.8-11.4Z" fill="#17213D"/>
-    <path d="M27.1 28.3c0-1.4 1.6-2.2 2.8-1.5l13.2 8.3a1.8 1.8 0 0 1 0 3L30 46.3a1.8 1.8 0 0 1-2.8-1.5V28.3Z" fill="#fff"/>
-  </g>
-  <text x="72" y="54" font-family="Trebuchet MS, Arial Rounded MT Bold, system-ui, sans-serif" font-size="45" font-weight="900" letter-spacing="-2" fill="#17213D">Aprincar</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 92" role="img" data-brand-version="approved-v1"><title>Aprincar monocromático</title><g id="aprincar-approved"><path d="M18 67C21 40 31 20 42 20s21 20 24 47" fill="none" stroke="#0F172A" stroke-width="15" stroke-linecap="round"/><path d="M37 40l18 12-18 12Z" fill="#0F172A"/><text x="88" y="59" font-family="Poppins,Arial,sans-serif" font-size="45" font-weight="800" fill="#0F172A">Aprincar</text></g></svg>
