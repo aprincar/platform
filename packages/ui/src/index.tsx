@@ -22,50 +22,38 @@ import {
 } from 'lucide-react';
 
 export const APRINCAR_COLORS = {
-  bg: '#F7F7FB',
+  bg: '#F8FBFF',
   surface: '#FFFFFF',
-  surfaceMuted: '#EEF1F7',
-  text: '#20263A',
-  muted: '#6B7280',
-  border: '#DEE3EE',
-  blue: '#4F6EF7',
-  blueStrong: '#3B55D9',
-  sun: '#FFC83D',
-  yellow: '#FFC83D',
-  orange: '#FF9F43',
-  leaf: '#2FC98F',
-  coral: '#FF6B6B',
-  purple: '#8B6FF7',
-  purpleSoft: '#F1EEFF',
-  navy: '#17213D',
-  dark: '#111827',
+  surfaceMuted: '#EFF6FF',
+  text: '#0F172A',
+  muted: '#64748B',
+  border: '#DCE8F7',
+  blue: '#2563EB',
+  blueStrong: '#1D4ED8',
+  secondary: '#0EA5E9',
+  sun: '#FBBF24',
+  yellow: '#FBBF24',
+  orange: '#F59E0B',
+  leaf: '#10B981',
+  coral: '#EF4444',
+  purple: '#7C3AED',
+  purpleSoft: '#F3E8FF',
+  navy: '#0F172A',
+  dark: '#07142E',
 } as const;
 
 export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProperties }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      aria-hidden="true"
-      style={style}
-      data-aprincar-brand="portal-v4"
-    >
-      <g id="aprincar-portal">
-        <path
-          d="M12.8 48.6 26.1 16.2c2.1-5.1 9.3-5.1 11.4 0l13.7 32.4c2.3 5.5-1.7 11.4-7.7 11.4H20.6c-6 0-10.1-5.9-7.8-11.4Z"
-          fill={APRINCAR_COLORS.blue}
-        />
-        <path
-          d="M27.1 28.3c0-1.4 1.6-2.2 2.8-1.5l13.2 8.3a1.8 1.8 0 0 1 0 3L30 46.3a1.8 1.8 0 0 1-2.8-1.5V28.3Z"
-          fill="#FFFFFF"
-        />
-        <circle cx="47.2" cy="15.5" r="6.3" fill={APRINCAR_COLORS.sun} />
-        <path
-          d="m14 18.2 2.3 4.3 4.4 2.2-4.4 2.2-2.3 4.3-2.2-4.3-4.4-2.2 4.4-2.2 2.2-4.3Z"
-          fill={APRINCAR_COLORS.coral}
-        />
-      </g>
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" style={style} data-aprincar-brand="approved-v1">
+      <defs>
+        <linearGradient id="aprincar-a" x1="10" y1="10" x2="55" y2="58" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#0EA5E9" />
+          <stop offset=".48" stopColor="#2563EB" />
+          <stop offset="1" stopColor="#1D4ED8" />
+        </linearGradient>
+      </defs>
+      <path d="M12 52C14.5 28 23 12 32 12s17.5 16 20 40" fill="none" stroke="url(#aprincar-a)" strokeWidth="13" strokeLinecap="round" />
+      <path d="M27 29.8c0-2.2 2.4-3.5 4.2-2.3l12.4 8c1.7 1.1 1.7 3.6 0 4.7l-12.4 8A2.8 2.8 0 0 1 27 45.9V29.8Z" fill="#FBBF24" />
     </svg>
   );
 }
@@ -91,7 +79,7 @@ export function Brand({ compact = false, light = false }: { compact?: boolean; l
           style={{
             display: 'inline-flex',
             alignItems: 'baseline',
-            fontFamily: 'ui-rounded, "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif',
+            fontFamily: '"Poppins", Inter, system-ui, sans-serif',
             fontSize: compact ? 23 : 29,
             fontWeight: 950,
             lineHeight: 1,
@@ -111,7 +99,7 @@ export function Brand({ compact = false, light = false }: { compact?: boolean; l
         </span>
         {!compact && (
           <Text size="xs" c={light ? 'gray.2' : 'dimmed'} mt={3} fw={650}>
-            Aprender acontece brincando.
+            Brincar hoje. Descobrir sempre.
           </Text>
         )}
       </div>
