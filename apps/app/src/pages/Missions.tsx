@@ -1,90 +1,48 @@
-import { Button, Group, Text } from '@mantine/core';
-import { ArrowLeft, Check, Sparkles, Trophy } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
+import { Button } from '@mantine/core';
+import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
-import { MISSIONS, type MissionItem } from '../worlds';
+import { GAME_FAMILIES } from '../game-families';
+import { MISSIONS } from '../worlds';
 import { MissionCard } from '@aprincar/ui';
 
 export function Missions() {
   const [filter, setFilter] = useState('all');
   const [completed, setCompleted] = useState<Set<string>>(new Set());
-
-  const filteredMissions = MISSIONS.filter((m) => filter === 'all' || m.worldId === filter);
-
-  const toggleComplete = (id: string) => {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const categories = [
-    { id: 'all', label: 'Todas as missões', icon: '🌟' },
-    { id: 'colors-shapes', label: 'Cores e Formas', icon: '🎨' },
-    { id: 'math', label: 'Matemática', icon: '🔢' },
-    { id: 'logic', label: 'Lógica', icon: '🧩' },
-    { id: 'language', label: 'Linguagem', icon: '🔤' },
-    { id: 'writing', label: 'Escrita', icon: '✍️' },
-    { id: 'construction', label: 'Construção', icon: '🏗️' },
-    { id: 'computing', label: 'Pensamento Comp.', icon: '🤖' },
-    { id: 'practical-life', label: 'Vida Prática', icon: '🏠' },
-  ];
+  const visible = MISSIONS.filter((mission) => filter === 'all' || mission.worldId === filter);
+  const toggle = (id: string) => setCompleted((current) => {
+    const next = new Set(current);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    return next;
+  });
 
   return (
-    <div className="aprincar-page">
-      <section className="hub-hero" style={{ background: 'linear-gradient(135deg, #1d4ed8, #4338ca)' }}>
-        <div>
-          <div className="child-eyebrow" style={{ color: '#fed7aa' }}>
-            Mundo Real & Família
-          </div>
-          <h1>Missões fora da tela</h1>
-          <p>
-            Aprender também acontece longe da tela! Realize desafios práticos em casa, com objetos reais,
-            brincando e conversando com a família.
-          </p>
-        </div>
-        <div className="hub-stat">
-          <strong>{completed.size}</strong>
-          <span>missões realizadas 🎉</span>
-        </div>
+    <div className="aprincar-page approved-missions-page">
+      <section className="approved-catalog-header">
+        <span className="approved-kicker">Mundo real & família</span>
+        <h1>Missões fora da tela</h1>
+        <p>Pequenos desafios para explorar a casa e conversar em família, sem câmera e sem upload.</p>
       </section>
 
-      {/* Filter chips */}
-      <section className="aprincar-panel" style={{ padding: 16 }}>
-        <div className="filter-row">
-          {categories.map((c) => (
-            <button
-              key={c.id}
-              className={`filter-chip ${filter === c.id ? 'active' : ''}`}
-              onClick={() => setFilter(c.id)}
-            >
-              <span>{c.icon}</span> {c.label}
+      <section className="approved-catalog-tools">
+        <div className="approved-chip-row">
+          <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>Todas</button>
+          {GAME_FAMILIES.map((family) => (
+            <button key={family.id} className={filter === family.id ? 'active' : ''} onClick={() => setFilter(family.id)}>
+              {family.title}
             </button>
           ))}
         </div>
       </section>
 
-      {/* Mission list */}
-      <section>
-        <div className="section-head">
-          <div>
-            <h2>{filteredMissions.length} missões para brincar</h2>
-            <p>Não precisa de câmera nem fotos. Basta fazer a brincadeira e comemorar!</p>
-          </div>
+      <section className="approved-section">
+        <div className="approved-section-head">
+          <div><span>{completed.size} concluídas</span><h2>{visible.length} missões para brincar</h2></div>
+          <Button variant="subtle" className="approved-text-action" leftSection={<Sparkles size={16}/>}>Sem tela</Button>
         </div>
-        <div className="missions-grid" style={{ marginTop: 16 }}>
-          {filteredMissions.map((m) => (
-            <MissionCard
-              key={m.id}
-              id={m.id}
-              title={m.title}
-              prompt={m.prompt}
-              category={m.category}
-              completed={completed.has(m.id)}
-              onComplete={() => toggleComplete(m.id)}
-            />
+        <div className="approved-missions-grid">
+          {visible.map((mission) => (
+            <MissionCard key={mission.id} id={mission.id} title={mission.title} prompt={mission.prompt}
+              category={mission.category} completed={completed.has(mission.id)} onComplete={() => toggle(mission.id)} />
           ))}
         </div>
       </section>
