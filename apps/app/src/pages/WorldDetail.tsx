@@ -28,7 +28,7 @@ export function WorldDetail() {
       </section>
 
       <section className="approved-trail-card">
-        <div className="approved-settings-title"><Sparkles size={21}/><div><strong>O que você vai praticar</strong><span>{world.objective ?? world.description}</span></div></div>
+        <div className="approved-settings-title"><Sparkles size={21}/><div><strong>O que você vai praticar</strong><span>{world.description}</span></div></div>
         <div className="approved-trail">
           {world.trail.map((step, index) => (
             <div key={step} className="approved-trail-step"><span>{index + 1}</span><strong>{step}</strong></div>
