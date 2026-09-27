@@ -2921,3 +2921,73 @@ a {
     box-shadow: none;
   }
 }
+
+
+/* APPROVED PARENT AREA */
+.approved-parent-page {
+  gap: 22px;
+}
+.approved-parent-header {
+  padding: 22px 24px;
+  border: 1px solid var(--ap-border);
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--ap-surface), var(--ap-surface-muted));
+  box-shadow: var(--ap-shadow-soft);
+}
+.approved-parent-header h2 {
+  color: var(--ap-navy);
+  font-weight: 800;
+}
+.approved-parent-sidebar {
+  border-radius: 20px;
+  box-shadow: var(--ap-shadow-soft);
+}
+.approved-parent-sidebar a {
+  border-radius: 14px;
+  font-weight: 600;
+}
+.approved-parent-sidebar a.active {
+  background: var(--ap-primary-soft);
+  color: var(--ap-primary-strong);
+}
+.approved-parent-card {
+  border-radius: 20px;
+  box-shadow: var(--ap-shadow-soft);
+}
+.approved-parent-card h3 {
+  color: var(--ap-navy);
+  font-weight: 700;
+}
+.approved-parent-page .mantine-Button-root {
+  font-family: 'Poppins', Inter, system-ui, sans-serif;
+  border-radius: 14px;
+}
+.approved-parent-page .mantine-Input-input {
+  font-family: 'Poppins', Inter, system-ui, sans-serif;
+  border-radius: 14px;
+}
+:root[data-aprincar-theme='dark'] .approved-parent-header h2,
+:root[data-aprincar-theme='dark'] .approved-parent-card h3 {
+  color: var(--ap-text);
+}
+@media (max-width: 900px) {
+  .approved-parent-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+  .parent-layout {
+    grid-template-columns: 1fr;
+  }
+  .approved-parent-sidebar {
+    position: static;
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+    padding: 10px;
+  }
+  .approved-parent-sidebar a,
+  .approved-parent-sidebar span {
+    white-space: nowrap;
+  }
+}

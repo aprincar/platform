@@ -135,8 +135,8 @@ export function Parent() {
 
   if (pinRequired && !unlocked) {
     return (
-      <div className="aprincar-page" style={{ alignItems: 'center', paddingTop: 40 }}>
-        <div className="parent-card" style={{ maxWidth: 440, width: '100%' }}>
+      <div className="aprincar-page approved-parent-page" style={{ alignItems: 'center', paddingTop: 40 }}>
+        <div className="parent-card approved-parent-card" style={{ maxWidth: 440, width: '100%' }}>
           <div className="aprincar-principle-icon">
             <LockKeyhole size={20} />
           </div>
@@ -162,8 +162,8 @@ export function Parent() {
 
   if (!pinRequired && !unlocked) {
     return (
-      <div className="aprincar-page" style={{ alignItems: 'center', paddingTop: 40 }}>
-        <div className="parent-card" style={{ maxWidth: 440, width: '100%' }}>
+      <div className="aprincar-page approved-parent-page" style={{ alignItems: 'center', paddingTop: 40 }}>
+        <div className="parent-card approved-parent-card" style={{ maxWidth: 440, width: '100%' }}>
           <div className="aprincar-principle-icon">
             <ShieldCheck size={20} />
           </div>
@@ -192,11 +192,11 @@ export function Parent() {
   const exploringCount = states.filter((s) => s.state === 'exploring').length;
 
   return (
-    <div className="aprincar-page">
-      <section className="section-head">
+    <div className="aprincar-page approved-parent-page">
+      <section className="section-head approved-parent-header">
         <div>
-          <div className="child-eyebrow">Modo Responsável</div>
-          <h2 style={{ fontSize: 36 }}>Olá, responsável! 👋</h2>
+          <div className="approved-kicker">Modo responsável</div>
+          <h2 style={{ fontSize: 36 }}>Painel do responsável</h2>
           <p>Acompanhe o desenvolvimento lúdico sem transformar brincadeira em boletim ou ranking.</p>
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -215,7 +215,7 @@ export function Parent() {
 
       <div className="parent-layout">
         {/* Sidebar navigation */}
-        <aside className="aprincar-panel parent-sidebar">
+        <aside className="aprincar-panel parent-sidebar approved-parent-sidebar">
           <a
             className={activeTab === 'overview' ? 'active' : ''}
             onClick={() => setActiveTab('overview')}
@@ -278,7 +278,7 @@ export function Parent() {
           {activeTab === 'overview' && (
             <>
               <div className="parent-kpis">
-                <div className="parent-card">
+                <div className="parent-card approved-parent-card">
                   <Text size="sm" c="dimmed">
                     Perfil Selecionado
                   </Text>
@@ -290,7 +290,7 @@ export function Parent() {
                   </Text>
                 </div>
 
-                <div className="parent-card">
+                <div className="parent-card approved-parent-card">
                   <Text size="sm" c="dimmed">
                     Tempo Brincando Hoje
                   </Text>
@@ -302,7 +302,7 @@ export function Parent() {
                   </Text>
                 </div>
 
-                <div className="parent-card">
+                <div className="parent-card approved-parent-card">
                   <Text size="sm" c="dimmed">
                     Habilidades em Exploração
                   </Text>
@@ -316,7 +316,7 @@ export function Parent() {
               </div>
 
               {/* Observed skills list preview */}
-              <div className="parent-card">
+              <div className="parent-card approved-parent-card">
                 <div className="section-head" style={{ marginBottom: 12 }}>
                   <div>
                     <h3 style={{ margin: 0 }}>Habilidades Observadas Recentemente</h3>
@@ -362,7 +362,7 @@ export function Parent() {
                   gap: 14,
                 }}
               >
-                <div className="parent-card">
+                <div className="parent-card approved-parent-card">
                   <h3>Tempo de tela & Limites</h3>
                   <Text size="sm" c="dimmed" mb="md">
                     Defina um limite diário de uso para {profile?.name ?? 'a criança'} neste aparelho.
@@ -378,14 +378,14 @@ export function Parent() {
                   />
                 </div>
 
-                <div className="parent-card" style={{ background: 'var(--ap-purple-soft)' }}>
+                <div className="parent-card approved-parent-card" style={{ background: 'var(--ap-purple-soft)' }}>
                   <h3>Missões em Família</h3>
                   <Text size="sm">
                     Incentive atividades fora da tela para conectar o aprendizado digital com objetos e
                     situações do mundo real.
                   </Text>
                   <Button component={Link} to="/missions" className="ap-primary" size="sm" mt="md">
-                    Explorar Missões Fora da Tela ✨
+                    Explorar missões fora da tela
                   </Button>
                 </div>
               </div>
@@ -394,7 +394,7 @@ export function Parent() {
 
           {/* Tab 2: Skills Graph */}
           {activeTab === 'skills' && (
-            <div className="parent-card">
+            <div className="parent-card approved-parent-card">
               <div className="section-head" style={{ marginBottom: 14 }}>
                 <div>
                   <h3 style={{ margin: 0 }}>Mapa de Habilidades Pedagógicas</h3>
@@ -422,7 +422,7 @@ export function Parent() {
 
           {/* Tab 3: Profiles */}
           {activeTab === 'profiles' && (
-            <div className="parent-card">
+            <div className="parent-card approved-parent-card">
               <div className="section-head" style={{ marginBottom: 16 }}>
                 <div>
                   <h3 style={{ margin: 0 }}>Perfis Infantis Cadastrados</h3>
@@ -471,7 +471,7 @@ export function Parent() {
 
           {/* Tab 4: History / Timeline */}
           {activeTab === 'history' && (
-            <div className="parent-card">
+            <div className="parent-card approved-parent-card">
               <h3 style={{ marginBottom: 14 }}>Linha do Tempo de Brincadeiras</h3>
               {sessions.length === 0 ? (
                 <div className="empty-state">Nenhuma sessão registrada recentemente.</div>
@@ -513,7 +513,7 @@ export function Parent() {
                 gap: 14,
               }}
             >
-              <div className="parent-card">
+              <div className="parent-card approved-parent-card">
                 <h3>PIN de Segurança do Adulto</h3>
                 <Text size="sm" c="dimmed" mb="md">
                   Proteja a área do responsável contra acessos acidentais.
@@ -556,7 +556,7 @@ export function Parent() {
                 </Group>
               </div>
 
-              <div className="parent-card">
+              <div className="parent-card approved-parent-card">
                 <h3>Extensões da Comunidade</h3>
                 <Switch
                   checked={allowCommunity}
@@ -567,7 +567,7 @@ export function Parent() {
                 />
               </div>
 
-              <div className="parent-card">
+              <div className="parent-card approved-parent-card">
                 <h3>Backup e Exportação</h3>
                 <Text size="sm" c="dimmed" mb="md">
                   Exporte todo o histórico de perfis e progresso para um arquivo JSON seguro.
