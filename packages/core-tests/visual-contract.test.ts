@@ -17,7 +17,7 @@ test('approved child experience follows the locked mobile-first hierarchy', () =
   assert.match(home, /approved-home-hero/);
   assert.match(home, /Descobrir é uma grande aventura!/);
   assert.match(home, /Explorar jogos/);
-  assert.match(home, /mascot-approved\.webp/);
+  assert.match(home, /AprincarMascot/);
   assert.match(play, /game-runtime/);
   assert.match(styles, /--ap-bg:\s*#f8fbff/i);
   assert.match(styles, /--ap-primary:\s*#2563eb/i);
