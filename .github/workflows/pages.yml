@@ -23,13 +23,6 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-
-      - name: Checkout approved UI preview
-        uses: actions/checkout@v4
-        with:
-          ref: feat/approved-ui-1to1
-          path: .preview-approved-ui
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -46,13 +39,21 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+
+      - name: Checkout approved UI preview
+        uses: actions/checkout@v4
+        with:
+          ref: feat/approved-ui-1to1
+          path: .preview-approved-ui
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+
       - run: npm ci
 
       - name: Verify committed official snapshot
@@ -80,6 +81,7 @@ jobs:
           cp -R apps/hub/dist/. site/hub/
           cp -R apps/app/public/extensions/. site/extensions/
           cp -R .preview-approved-ui/apps/app/dist/. site/preview/approved-ui/
+
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           for (const file of [
@@ -96,14 +98,18 @@ jobs:
             fs.writeFileSync(file, `${JSON.stringify(entries, null, 2)}\n`);
           }
           NODE
+
           cp site/app/registry.json site/registry.json
           cp canonical-games.json site/canonical-games.json
+
           cat > site/index.html <<'HTML'
           <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=app/"><title>Aprincar</title></head><body><p>Abrindo o <a href="app/">Aprincar</a>…</p><script>location.replace('app/' + location.search + location.hash)</script></body></html>
           HTML
+
           touch site/.nojekyll
 
       - uses: actions/configure-pages@v5
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
