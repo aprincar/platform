@@ -4319,3 +4319,28 @@ a {
     font-size: 10px;
   }
 }
+
+
+/* APPROVED BOARD — canonical mascot is vector and shared across surfaces */
+.approved-hero-visual .approved-mascot,
+.approved-onboarding-mobile-mascot,
+.onboarding-mascot,
+.approved-game-limit-mascot,
+.loading-mascot {
+  display: block;
+  overflow: visible;
+}
+.approved-hero-visual .approved-mascot {
+  transform-origin: bottom center;
+}
+@media (max-width: 767px) {
+  .approved-hero-visual .approved-mascot {
+    height: 300px;
+    width: auto;
+    margin-right: -4px;
+  }
+  .approved-onboarding-mobile-mascot {
+    height: 184px !important;
+    width: 118px !important;
+  }
+}

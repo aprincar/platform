@@ -126,22 +126,137 @@ export function Brand({ compact = false, light = false }: { compact?: boolean; l
 export function AprincarMascot({
   size = 240,
   className,
+  withPencil = false,
 }: {
   size?: number;
   className?: string;
   withPencil?: boolean;
 }) {
+  const height = Math.round(size * 1.55);
   return (
-    <img
-      src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
+    <svg
       width={size}
-      height={Math.round(size * 1.34)}
+      height={height}
+      viewBox="0 0 260 404"
       className={className}
-      alt=""
-      aria-hidden="true"
+      role="img"
+      aria-label="Mascote Aprincar: menino sorrindo e acenando"
       data-aprincar-brand="approved-v1"
-      style={{ objectFit: 'contain' }}
-    />
+    >
+      <defs>
+        <linearGradient id="mascot-shirt-blue" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#0EA5E9" />
+          <stop offset="1" stopColor="#2563EB" />
+        </linearGradient>
+        <linearGradient id="mascot-shorts-blue" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#2563EB" />
+          <stop offset="1" stopColor="#1D4ED8" />
+        </linearGradient>
+        <linearGradient id="mascot-hair" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#6B2E14" />
+          <stop offset=".55" stopColor="#3F1B0E" />
+          <stop offset="1" stopColor="#24100A" />
+        </linearGradient>
+        <radialGradient id="mascot-skin" cx=".42" cy=".32" r=".72">
+          <stop stopColor="#FFD8BE" />
+          <stop offset=".75" stopColor="#FFB68E" />
+          <stop offset="1" stopColor="#F39A72" />
+        </radialGradient>
+        <filter id="mascot-shadow" x="-25%" y="-20%" width="150%" height="160%">
+          <feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="#1D4ED8" floodOpacity=".16" />
+        </filter>
+      </defs>
+
+      <g filter="url(#mascot-shadow)">
+        <ellipse cx="126" cy="390" rx="86" ry="11" fill="#1D4ED8" opacity=".12" />
+        <circle cx="229" cy="54" r="10" fill="#FBBF24" />
+        <path d="M230 27l7-14 8 13-7 6Z" fill="#FBBF24" />
+        <path d="M25 84l8-15 8 15-8 7Z" fill="#FBBF24" opacity=".95" />
+
+        <g>
+          <rect x="54" y="177" width="57" height="116" rx="25" fill="#1D4ED8" />
+          <rect x="46" y="188" width="23" height="88" rx="11" fill="#2563EB" />
+          <rect x="51" y="216" width="14" height="31" rx="7" fill="#FBBF24" />
+          <path d="M87 190c18 17 25 44 24 76" fill="none" stroke="#0F4EBC" strokeWidth="11" strokeLinecap="round" />
+        </g>
+
+        <g>
+          <path d="M84 314c-5 24-7 39-6 53l33 1 8-54Z" fill="url(#mascot-shorts-blue)" />
+          <path d="M139 313c3 22 8 40 12 54l31-5-12-51Z" fill="url(#mascot-shorts-blue)" />
+          <rect x="81" y="356" width="24" height="25" rx="11" fill="url(#mascot-skin)" />
+          <rect x="153" y="351" width="24" height="28" rx="11" fill="url(#mascot-skin)" />
+          <g transform="rotate(-5 91 381)">
+            <path d="M57 374c10-11 32-13 46-3l11 16c2 4-1 9-6 9H61c-10 0-13-13-4-22Z" fill="#2563EB" />
+            <path d="M61 385h47" stroke="#FBBF24" strokeWidth="5" strokeLinecap="round" />
+            <path d="M72 372l8 9m4-11 8 10" stroke="#FFF" strokeWidth="3" strokeLinecap="round" />
+            <path d="M60 394h53" stroke="#E5E7EB" strokeWidth="6" strokeLinecap="round" />
+          </g>
+          <g transform="rotate(7 170 380)">
+            <path d="M145 371c12-10 33-9 45 1l12 14c3 4 0 10-6 10h-48c-10 0-13-15-3-25Z" fill="#2563EB" />
+            <path d="M149 384h47" stroke="#FBBF24" strokeWidth="5" strokeLinecap="round" />
+            <path d="M159 372l8 9m5-9 8 9" stroke="#FFF" strokeWidth="3" strokeLinecap="round" />
+            <path d="M148 394h53" stroke="#E5E7EB" strokeWidth="6" strokeLinecap="round" />
+          </g>
+        </g>
+
+        <path d="M74 244c-4 29 1 59 15 78 19 9 63 10 86-1 13-23 16-52 8-80-19-16-88-16-109 3Z" fill="#fff" />
+        <path d="M83 249c13-10 26-13 48-13 22 0 39 4 52 14l-6 28H78Z" fill="#F8FAFC" />
+        <path d="M93 238c-14-17-31-24-45-16-13 7-14 25-2 35 10 8 24 8 37 2Z" fill="url(#mascot-skin)" />
+        <path d="M177 239c14-11 27-13 39-5 10 7 12 21 4 30-9 11-27 12-44 2Z" fill="url(#mascot-skin)" />
+        <path d="M207 244c13-16 18-29 17-39-1-12 8-17 14-9 4 5 3 15 1 23 6-7 10-16 11-25 1-9 10-11 14-4 4 8-3 28-11 41-10 15-23 27-36 32Z" fill="url(#mascot-skin)" />
+        <circle cx="235" cy="191" r="7" fill="url(#mascot-skin)" />
+        <path d="M59 224c6 2 15 8 22 16" fill="none" stroke="#F39A72" strokeWidth="3" strokeLinecap="round" />
+
+        <g>
+          <path d="M109 264c8-15 15-22 22-22 8 0 15 7 23 22" fill="none" stroke="url(#mascot-shirt-blue)" strokeWidth="14" strokeLinecap="round" />
+          <path d="M129 252l19 12-19 12Z" fill="#FBBF24" />
+        </g>
+
+        <rect x="112" y="198" width="39" height="38" rx="18" fill="url(#mascot-skin)" />
+
+        <g>
+          <ellipse cx="131" cy="136" rx="74" ry="70" fill="url(#mascot-skin)" />
+          <ellipse cx="58" cy="144" rx="17" ry="22" fill="url(#mascot-skin)" />
+          <ellipse cx="202" cy="144" rx="17" ry="22" fill="url(#mascot-skin)" />
+          <ellipse cx="60" cy="145" rx="8" ry="11" fill="#F09C78" opacity=".55" />
+          <ellipse cx="200" cy="145" rx="8" ry="11" fill="#F09C78" opacity=".55" />
+
+          <path d="M65 113c-3-33 20-65 55-70-5-15 9-28 28-27 12 1 23 6 32 17 9-7 24-4 30 7-12 0-20 4-23 11 20 4 31 18 34 36-12-7-23-8-32-4 10 7 15 18 15 31-16-13-29-15-40-8-14-15-30-19-45-10-17 10-32 16-54 17Z" fill="url(#mascot-hair)" />
+          <path d="M82 74c14 6 25 5 34-4m15-29c12 5 24 4 33-2m16 17c9 2 18 8 23 16" fill="none" stroke="#7A3717" strokeWidth="7" strokeLinecap="round" opacity=".8" />
+
+          <path d="M82 118c10-8 22-8 31 0" fill="none" stroke="#4A210F" strokeWidth="6" strokeLinecap="round" />
+          <path d="M149 118c11-8 23-8 32 0" fill="none" stroke="#4A210F" strokeWidth="6" strokeLinecap="round" />
+
+          <ellipse cx="98" cy="139" rx="21" ry="25" fill="#fff" />
+          <ellipse cx="164" cy="139" rx="21" ry="25" fill="#fff" />
+          <ellipse cx="100" cy="142" rx="12" ry="16" fill="#6B351C" />
+          <ellipse cx="162" cy="142" rx="12" ry="16" fill="#6B351C" />
+          <ellipse cx="101" cy="144" rx="7" ry="11" fill="#160D09" />
+          <ellipse cx="161" cy="144" rx="7" ry="11" fill="#160D09" />
+          <circle cx="105" cy="136" r="4" fill="#fff" />
+          <circle cx="165" cy="136" r="4" fill="#fff" />
+
+          <ellipse cx="130" cy="160" rx="7" ry="5" fill="#EE8B6E" opacity=".75" />
+          <ellipse cx="82" cy="163" rx="14" ry="8" fill="#FF8F8F" opacity=".25" />
+          <ellipse cx="179" cy="163" rx="14" ry="8" fill="#FF8F8F" opacity=".25" />
+
+          <path d="M103 171c9 20 45 24 58 0-17 5-39 5-58 0Z" fill="#8B1E25" />
+          <path d="M111 174c13 5 29 5 42 0" stroke="#fff" strokeWidth="6" strokeLinecap="round" />
+          <path d="M118 190c9 5 19 5 28 0" stroke="#FF6476" strokeWidth="6" strokeLinecap="round" />
+        </g>
+
+        <path d="M87 234c0-18 3-33 12-43m69 43c-1-17-5-31-13-42" fill="none" stroke="#1D4ED8" strokeWidth="10" strokeLinecap="round" />
+        <path d="M93 239c-13 11-18 28-16 51m96-52c10 14 13 31 8 51" fill="none" stroke="#2563EB" strokeWidth="8" strokeLinecap="round" opacity=".9" />
+
+        {withPencil && (
+          <g transform="translate(194 243) rotate(14)">
+            <rect x="0" y="0" width="10" height="74" rx="5" fill="#FBBF24" />
+            <rect x="0" y="0" width="10" height="18" rx="5" fill="#EF4444" />
+            <path d="M0 74h10l-5 11Z" fill="#D29A65" />
+          </g>
+        )}
+      </g>
+    </svg>
   );
 }
 

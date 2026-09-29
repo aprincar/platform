@@ -1,6 +1,7 @@
 import { Button } from '@mantine/core';
 import { ArrowRight, BarChart3, Gamepad2 } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
+import { AprincarMascot } from '@aprincar/ui';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
 import { GAME_FAMILIES } from '../game-families';
@@ -41,11 +42,7 @@ export function Home() {
           <span className="approved-blob approved-blob-one" />
           <span className="approved-blob approved-blob-two" />
           <span className="approved-blob approved-blob-three" />
-          <img
-            src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
-            alt="Mascote Aprincar sorrindo e acenando"
-            className="approved-mascot"
-          />
+          <AprincarMascot size={230} className="approved-mascot" />
         </div>
       </section>
 

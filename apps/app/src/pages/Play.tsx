@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { GameHost } from '@aprincar/extension-host';
 import type { ResolvedExtension } from '@aprincar/extension-contracts';
-import { BrandMark, GameError, GameExitDialog, GameLoading } from '@aprincar/ui';
+import { AprincarMascot, BrandMark, GameError, GameExitDialog, GameLoading } from '@aprincar/ui';
 import { extensionManager, useAppStore } from '../app-store';
 import { createGameServices } from '../game-services';
 import { db, sumUsageSecondsForDay } from '@aprincar/storage';
@@ -72,12 +72,7 @@ export function Play() {
           <span aria-hidden="true" />
         </header>
         <main className="approved-game-limit">
-          <img
-            src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
-            alt=""
-            aria-hidden="true"
-            className="approved-game-limit-mascot"
-          />
+          <AprincarMascot size={190} className="approved-game-limit-mascot" />
           <span className="approved-kicker">Hora de descansar os olhos</span>
           <h1>Você já brincou bastante hoje.</h1>
           <p>
