@@ -23,6 +23,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
+      - name: Checkout approved UI preview
+        uses: actions/checkout@v4
+        with:
+          ref: feat/approved-ui-1to1
+          path: .preview-approved-ui
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -51,18 +58,35 @@ jobs:
       - name: Verify committed official snapshot
         run: npm run verify:official
 
+      - name: Install approved UI preview dependencies
+        working-directory: .preview-approved-ui
+        run: npm ci
+
+      - name: Verify approved UI preview snapshot
+        working-directory: .preview-approved-ui
+        run: npm run verify:official
+
+      - name: Build approved UI preview
+        working-directory: .preview-approved-ui
+        run: VITE_BASE_PATH=/platform/preview/approved-ui/ npm run build -w @aprincar/app
+
       - name: Assemble static production site
         run: |
           rm -rf site
-          mkdir -p site/app site/hub site/extensions
+          mkdir -p site/app site/hub site/extensions site/preview/approved-ui
           VITE_BASE_PATH=/platform/app/ npm run build -w @aprincar/app
           VITE_BASE_PATH=/platform/hub/ VITE_APRINCAR_APP_URL=/platform/app npm run build -w @aprincar/hub
           cp -R apps/app/dist/. site/app/
           cp -R apps/hub/dist/. site/hub/
           cp -R apps/app/public/extensions/. site/extensions/
+          cp -R .preview-approved-ui/apps/app/dist/. site/preview/approved-ui/
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          for (const file of ['site/app/registry.json', 'site/hub/registry.json']) {
+          for (const file of [
+            'site/app/registry.json',
+            'site/hub/registry.json',
+            'site/preview/approved-ui/registry.json',
+          ]) {
             const entries = JSON.parse(fs.readFileSync(file, 'utf8'));
             for (const entry of entries) {
               for (const key of ['manifestUrl', 'entryUrl']) {
