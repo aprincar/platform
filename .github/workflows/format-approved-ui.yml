@@ -1,0 +1,61 @@
+name: Format approved UI branch
+
+on:
+  push:
+    branches:
+      - feat/approved-ui-1to1
+    paths:
+      - .github/workflows/format-approved-ui.yml
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/approved-ui-1to1
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Apply repository formatting
+        run: |
+          npx prettier --write \
+            apps/app/src/components/GameCard.tsx \
+            apps/app/src/layout.tsx \
+            apps/app/src/pages/Discover.tsx \
+            apps/app/src/pages/Home.tsx \
+            apps/app/src/pages/Library.tsx \
+            apps/app/src/pages/Missions.tsx \
+            apps/app/src/pages/More.tsx \
+            apps/app/src/pages/Onboarding.tsx \
+            apps/app/src/pages/Parent.tsx \
+            apps/app/src/pages/Play.tsx \
+            apps/app/src/pages/Progress.tsx \
+            apps/app/src/pages/Settings.tsx \
+            apps/app/src/pages/WorldDetail.tsx \
+            apps/app/src/pages/Worlds.tsx \
+            apps/app/src/router.tsx \
+            apps/app/src/styles.css \
+            packages/core-tests/brand-system.test.ts \
+            packages/core-tests/visual-contract.test.ts \
+            packages/ui/src/index.tsx
+      - name: Verify formatting
+        run: npm run format:check
+      - name: Commit formatted UI
+        run: |
+          if git diff --quiet; then
+            echo "No formatting changes."
+            exit 0
+          fi
+          git config user.name "aprincar-ci"
+          git config user.email "actions@users.noreply.github.com"
+          git add .
+          git commit -m "style: apply approved UI formatting"
+          git push origin HEAD:feat/approved-ui-1to1
