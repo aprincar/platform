@@ -1,0 +1,62 @@
+name: Sync validated visual games preview
+
+on:
+  push:
+    branches:
+      - feat/approved-ui-1to1
+    paths:
+      - .github/workflows/sync-validated-visual-games.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          repository: aprincar/games-official
+          ref: 73f530922b668078954f1d2330ee6efd9ed0cf5b
+          path: .visual-games
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Build validated visual games
+        working-directory: .visual-games
+        run: |
+          npm ci
+          npm run build
+          npm run registry
+
+      - name: Update preview pin and snapshots
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'canonical-games.json';
+          const pin = JSON.parse(fs.readFileSync(path, 'utf8'));
+          pin.commit = '73f530922b668078954f1d2330ee6efd9ed0cf5b';
+          fs.writeFileSync(path, JSON.stringify(pin, null, 2) + '\n');
+          NODE
+          APRINCAR_CANONICAL_GAMES_DIR=.visual-games/dist npm run sync:official
+          npm run verify:official
+
+      - name: Commit validated preview snapshot
+        run: |
+          git config user.name "aprincar-preview"
+          git config user.email "actions@users.noreply.github.com"
+          git add canonical-games.json apps/app/public/registry.json apps/app/public/extensions apps/hub/public/registry.json apps/hub/public/extensions
+          if git diff --cached --quiet; then
+            echo "Preview snapshot already synchronized."
+            exit 0
+          fi
+          git commit -m "build(games): sync validated approved visual snapshot"
+          git push origin HEAD:feat/approved-ui-1to1
