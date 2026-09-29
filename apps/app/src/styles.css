@@ -1,39 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 :root {
-  font-family:
-    ui-rounded,
-    'Arial Rounded MT Bold',
-    'Trebuchet MS',
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
-  color: #20263a;
-  background: #f7f7fb;
-  --ap-bg: #f7f7fb;
+  font-family: 'Poppins', Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #0f172a;
+  background: #f8fbff;
+  --ap-bg: #f8fbff;
   --ap-surface: #ffffff;
-  --ap-surface-muted: #eef1f7;
-  --ap-text: #20263a;
-  --ap-muted: #6b7280;
-  --ap-border: #dee3ee;
-  --ap-primary: #4f6ef7;
-  --ap-primary-strong: #3b55d9;
-  --ap-primary-soft: #eef1ff;
-  --ap-action-bg: #3b55d9;
-  --ap-action-bg-hover: #2f45b8;
+  --ap-surface-muted: #eff6ff;
+  --ap-text: #0f172a;
+  --ap-muted: #64748b;
+  --ap-border: #dce8f7;
+  --ap-primary: #2563eb;
+  --ap-primary-strong: #1d4ed8;
+  --ap-primary-soft: #eff6ff;
+  --ap-action-bg: #2563eb;
+  --ap-action-bg-hover: #1d4ed8;
   --ap-action-text: #ffffff;
-  --ap-sun: #ffc83d;
-  --ap-orange: #ff9f43;
-  --ap-leaf: #2fc98f;
-  --ap-coral: #ff6b6b;
-  --ap-purple: #8b6ff7;
-  --ap-purple-soft: #f1eeff;
-  --ap-navy: #17213d;
-  --ap-shadow: 0 18px 50px rgba(36, 37, 35, 0.1);
-  --ap-shadow-soft: 0 8px 28px rgba(36, 37, 35, 0.08);
+  --ap-sun: #fbbf24;
+  --ap-orange: #f59e0b;
+  --ap-leaf: #10b981;
+  --ap-coral: #ef4444;
+  --ap-purple: #7c3aed;
+  --ap-purple-soft: #f3e8ff;
+  --ap-navy: #0f172a;
+  --ap-shadow: 0 20px 55px rgba(37, 99, 235, 0.1);
+  --ap-shadow-soft: 0 8px 26px rgba(37, 99, 235, 0.08);
   --ap-radius: 26px;
   --ap-max: 1240px;
   --ap-bottom-nav-height: 74px;
@@ -3743,5 +3734,339 @@ a {
   .approved-parent-sidebar a,
   .approved-parent-sidebar span {
     white-space: nowrap;
+  }
+}
+
+
+/* APPROVED BOARD FIDELITY PASS — the approved visual board is the source of truth. */
+.approved-app,
+.approved-onboarding-shell {
+  font-family: 'Poppins', Inter, system-ui, sans-serif;
+}
+
+.approved-onboarding-shell {
+  background:
+    radial-gradient(circle at 10% 12%, rgba(191, 219, 254, .55), transparent 24%),
+    radial-gradient(circle at 92% 8%, rgba(251, 191, 36, .17), transparent 18%),
+    #f8fbff;
+}
+
+.approved-onboarding-visual {
+  background: linear-gradient(145deg, #f8fbff 0%, #edf7ff 100%);
+}
+.approved-onboarding-visual::after {
+  display: none;
+}
+.approved-onboarding-visual-copy strong {
+  font-size: 26px;
+  line-height: 1.05;
+  color: #0f2f86;
+}
+.approved-onboarding-visual-copy span {
+  color: #536987;
+}
+
+.approved-onboarding-mobile-hero {
+  display: none;
+}
+
+.approved-home-hero {
+  border-color: #d8e9fb;
+  box-shadow: 0 16px 45px rgba(37, 99, 235, .10);
+  background:
+    radial-gradient(circle at 82% 22%, rgba(191, 219, 254, .78), transparent 24%),
+    radial-gradient(circle at 12% 82%, rgba(224, 242, 254, .78), transparent 26%),
+    #fafdff;
+}
+.approved-hero-copy h1 {
+  color: #0f2f86;
+  font-weight: 800;
+}
+.approved-hero-kicker {
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 11px;
+}
+.approved-mascot {
+  filter: drop-shadow(0 18px 22px rgba(37, 99, 235, .12));
+}
+.approved-primary-cta {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  border-radius: 14px !important;
+  min-height: 48px;
+  font-weight: 700;
+}
+.approved-secondary-cta {
+  background: #fbbf24 !important;
+  color: #0f172a !important;
+  border-radius: 14px !important;
+  font-weight: 700;
+}
+
+.approved-category-card {
+  border: 0;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .055);
+}
+.approved-category-icon {
+  box-shadow: inset 0 -8px 18px rgba(0,0,0,.06);
+}
+.approved-game-card {
+  border-color: #dce8f7;
+  box-shadow: 0 7px 22px rgba(37, 99, 235, .07);
+}
+.approved-game-thumb {
+  background: linear-gradient(145deg, #eaf6ff 0%, #f8fbff 60%, #fff9e9 100%);
+}
+.approved-fruit-cluster {
+  overflow: visible;
+}
+.approved-chip-row button {
+  min-height: 36px;
+  padding: 8px 15px;
+  background: #edf5ff;
+  color: #31558d;
+}
+.approved-chip-row button.active {
+  background: #2563eb;
+  box-shadow: 0 5px 14px rgba(37, 99, 235, .22);
+}
+
+.approved-bottom-nav .mobile-nav-link.active {
+  background: #e8f1ff;
+  color: #2563eb;
+  border-radius: 14px;
+}
+.approved-bottom-nav .mobile-nav-link {
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .approved-shell {
+    padding: 10px 12px calc(var(--ap-bottom-nav-height) + 24px);
+  }
+
+  .approved-mobile-topbar {
+    min-height: 60px;
+    padding: max(8px, env(safe-area-inset-top)) 12px 8px;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, .045);
+  }
+  .approved-mobile-topbar .aprincar-brand {
+    transform: scale(.92);
+    transform-origin: left center;
+  }
+  .approved-mobile-actions {
+    gap: 6px;
+  }
+  .approved-icon-button,
+  .profile-button-mobile {
+    width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    border-radius: 13px !important;
+  }
+
+  .approved-home {
+    gap: 20px;
+  }
+  .approved-home-hero {
+    position: relative;
+    display: block;
+    min-height: 350px;
+    border-radius: 22px;
+    overflow: hidden;
+  }
+  .approved-hero-copy {
+    position: relative;
+    z-index: 3;
+    width: 66%;
+    padding: 24px 0 22px 18px;
+    justify-content: flex-start;
+  }
+  .approved-hero-kicker {
+    display: none;
+  }
+  .approved-hero-copy h1 {
+    font-size: clamp(32px, 10vw, 40px);
+    line-height: .98;
+    max-width: 245px;
+    letter-spacing: -.045em;
+  }
+  .approved-hero-copy p {
+    font-size: 13px;
+    line-height: 1.42;
+    max-width: 210px;
+    margin: 13px 0 18px;
+  }
+  .approved-primary-cta {
+    width: auto;
+    min-width: 170px;
+    padding-inline: 18px !important;
+  }
+  .approved-hero-visual {
+    position: absolute;
+    right: -24px;
+    bottom: -2px;
+    width: 52%;
+    min-height: 300px;
+    display: grid;
+    place-items: end center;
+    pointer-events: none;
+  }
+  .approved-mascot {
+    height: 286px;
+    width: auto;
+    max-width: none;
+  }
+
+  .approved-section-head > div > span {
+    display: none;
+  }
+  .approved-section-head h2 {
+    font-size: 19px;
+    letter-spacing: -.02em;
+  }
+  .approved-text-action {
+    font-size: 12px !important;
+  }
+
+  .approved-category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    overflow: visible;
+  }
+  .approved-category-card {
+    min-width: 0;
+    min-height: 88px;
+    padding: 9px 7px;
+    border-radius: 16px;
+    align-content: start;
+    gap: 5px;
+  }
+  .approved-category-card:nth-child(n+5) {
+    display: none;
+  }
+  .approved-category-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 16px;
+  }
+  .approved-category-card strong {
+    font-size: 11px;
+    line-height: 1.12;
+    text-align: center;
+  }
+  .approved-category-card span {
+    display: none;
+  }
+
+  .approved-featured-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .approved-game-card,
+  .approved-game-card.compact {
+    grid-template-columns: 86px minmax(0, 1fr);
+    min-height: 88px;
+    border-radius: 16px;
+  }
+  .approved-game-card-content {
+    padding: 10px 10px 10px 12px;
+    gap: 8px;
+  }
+  .approved-game-card-copy strong {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+  .approved-game-card-copy span,
+  .approved-game-card-copy small {
+    font-size: 10px;
+  }
+  .approved-game-card-arrow {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+  }
+  .approved-game-illustration {
+    max-height: 88px;
+    padding: 5px;
+  }
+
+  .approved-progress-banner {
+    padding: 14px;
+    border-radius: 18px;
+    gap: 11px;
+  }
+  .approved-progress-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  .onboarding-mobile-brand {
+    display: block;
+    margin: 0 0 18px;
+  }
+  .approved-onboarding-mobile-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 138px;
+    min-height: 185px;
+    align-items: end;
+    overflow: hidden;
+    border: 1px solid #d8e9fb;
+    border-radius: 22px;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(191, 219, 254, .8), transparent 32%),
+      #fafdff;
+    padding: 14px 8px 0 16px;
+  }
+  .approved-onboarding-mobile-copy {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 16px;
+  }
+  .approved-onboarding-mobile-copy .aprincar-brand {
+    margin-bottom: 14px;
+  }
+  .approved-onboarding-mobile-copy strong {
+    color: #0f2f86;
+    font-size: 22px;
+    line-height: 1.02;
+    max-width: 190px;
+  }
+  .approved-onboarding-mobile-copy span {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 7px;
+    max-width: 170px;
+  }
+  .approved-onboarding-mobile-mascot {
+    width: 138px !important;
+    height: 184px !important;
+    object-fit: contain !important;
+    object-position: bottom center;
+    align-self: end;
+  }
+  .onboarding-form {
+    padding: max(12px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
+  }
+  .onboarding-progress {
+    margin-bottom: 14px;
+  }
+  .onboarding-step-panel {
+    padding-top: 0;
+  }
+  .onboarding-step-panel h1 {
+    color: #0f2f86;
+    font-size: 28px;
+    letter-spacing: -.035em;
+  }
+  .onboarding-step-panel > p {
+    font-size: 13px;
+    margin-bottom: 16px;
   }
 }

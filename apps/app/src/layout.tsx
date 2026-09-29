@@ -12,6 +12,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import {
   BarChart3,
+  Bell,
   Check,
   Gamepad2,
   Globe2,

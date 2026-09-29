@@ -53,7 +53,14 @@ export function Onboarding() {
         </aside>
         <main className="onboarding-form">
           <div className="onboarding-mobile-brand">
-            <Brand compact />
+            <div className="approved-onboarding-mobile-hero">
+              <div className="approved-onboarding-mobile-copy">
+                <Brand compact />
+                <strong>Descobrir é uma grande aventura!</strong>
+                <span>Jogos educativos para aprender brincando.</span>
+              </div>
+              <AprincarMascot size={150} className="approved-onboarding-mobile-mascot" />
+            </div>
           </div>
           <div className="onboarding-progress">
             {ONBOARDING_STEPS.map((label, index) => (
@@ -67,8 +74,8 @@ export function Onboarding() {
           {step === 0 && (
             <section className="onboarding-step-panel">
               <span className="approved-kicker">Boas-vindas</span>
-              <h1>Quem vai brincar?</h1>
-              <p>Crie um perfil local para personalizar as sugestões.</p>
+              <h1>Vamos criar seu espaço</h1>
+              <p>Conte só o necessário para o Aprincar sugerir experiências adequadas.</p>
               <TextInput
                 label="Nome ou apelido"
                 value={name}

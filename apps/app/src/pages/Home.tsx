@@ -5,6 +5,14 @@ import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
 import { GAME_FAMILIES } from '../game-families';
 
+const HOME_FAMILY_LABELS: Record<string, string> = {
+  quantities: 'Números',
+  literacy: 'Letras',
+  logic: 'Lógica',
+  creative: 'Cores',
+  spatial: 'Formas',
+};
+
 export function Home() {
   const { profile, registry } = useAppStore();
   const age = profile?.age ?? 5;
@@ -17,7 +25,7 @@ export function Home() {
     <div className="aprincar-page approved-home">
       <section className="approved-home-hero">
         <div className="approved-hero-copy">
-          <div className="approved-hero-kicker">Aprender brincando abre um mundo de possibilidades.</div>
+          <div className="approved-hero-kicker">Brincar hoje. Descobrir sempre.</div>
           <h1>Descobrir é uma grande aventura!</h1>
           <p>Jogos educativos para um futuro com mais possibilidades.</p>
           <Button
@@ -52,7 +60,7 @@ export function Home() {
           </Button>
         </div>
         <div className="approved-category-grid">
-          {GAME_FAMILIES.map((family) => (
+          {GAME_FAMILIES.slice(0, 4).map((family) => (
             <Link
               key={family.id}
               to="/world/$worldId"
@@ -60,7 +68,7 @@ export function Home() {
               className={`approved-category-card category-${family.id}`}
             >
               <div className="approved-category-icon">{family.icon}</div>
-              <strong>{family.title}</strong>
+              <strong>{HOME_FAMILY_LABELS[family.id] ?? family.title}</strong>
               <span>{family.summary}</span>
             </Link>
           ))}

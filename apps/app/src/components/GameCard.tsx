@@ -7,33 +7,45 @@ import { familyForGame } from '../game-families';
 
 function FruitCluster() {
   return (
-    <svg viewBox="0 0 180 110" className="approved-game-illustration" aria-hidden="true">
+    <svg viewBox="0 0 190 118" className="approved-game-illustration approved-fruit-cluster" aria-hidden="true">
       <defs>
-        <linearGradient id="apple" x1="0" y1="0" x2="1" y2="1">
-          <stop stopColor="#FF6B6B" />
-          <stop offset="1" stopColor="#E92D3F" />
+        <radialGradient id="appleApproved" cx="34%" cy="28%" r="76%">
+          <stop offset="0" stopColor="#FF7E78" />
+          <stop offset=".48" stopColor="#FF3948" />
+          <stop offset="1" stopColor="#D71F35" />
+        </radialGradient>
+        <linearGradient id="bananaApproved" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#FFF36E" />
+          <stop offset=".52" stopColor="#FFD51F" />
+          <stop offset="1" stopColor="#F5A500" />
         </linearGradient>
-        <linearGradient id="banana" x1="0" y1="0" x2="1" y2="1">
-          <stop stopColor="#FFE86A" />
-          <stop offset="1" stopColor="#FBBF24" />
-        </linearGradient>
-        <linearGradient id="grape" x1="0" y1="0" x2="1" y2="1">
-          <stop stopColor="#A855F7" />
-          <stop offset="1" stopColor="#6D28D9" />
-        </linearGradient>
+        <radialGradient id="grapeApproved" cx="30%" cy="25%" r="78%">
+          <stop stopColor="#C36BFF" />
+          <stop offset=".55" stopColor="#8D36E6" />
+          <stop offset="1" stopColor="#5B1CB3" />
+        </radialGradient>
+        <filter id="fruitShadow" x="-30%" y="-30%" width="160%" height="180%">
+          <feDropShadow dx="0" dy="6" stdDeviation="5" floodColor="#7AA6D9" floodOpacity=".22" />
+        </filter>
       </defs>
-      <path
-        d="M34 44c-10-18 7-29 23-21 11-8 28 1 26 18-2 24-19 38-30 43-12-6-19-18-19-40Z"
-        fill="url(#apple)"
-      />
-      <ellipse cx="64" cy="28" rx="8" ry="4" fill="#22A447" transform="rotate(-22 64 28)" />
-      <path d="M100 64c14 8 35 5 46-15 4 18-8 35-26 40-16 4-29-3-35-12 4-3 9-8 15-13Z" fill="url(#banana)" />
-      <circle cx="126" cy="34" r="12" fill="url(#grape)" />
-      <circle cx="140" cy="39" r="12" fill="url(#grape)" />
-      <circle cx="117" cy="47" r="12" fill="url(#grape)" />
-      <circle cx="133" cy="52" r="12" fill="url(#grape)" />
-      <circle cx="126" cy="65" r="12" fill="url(#grape)" />
-      <path d="M130 19c5-8 13-9 19-6" fill="none" stroke="#3A7B2F" strokeWidth="5" strokeLinecap="round" />
+      <g filter="url(#fruitShadow)">
+        <g transform="translate(12 18)">
+          <path d="M18 24C12 8 28 2 42 11 54 3 70 12 68 29 66 50 50 63 39 68 26 62 18 48 18 24Z" fill="url(#appleApproved)" />
+          <ellipse cx="44" cy="13" rx="10" ry="5" fill="#38A852" transform="rotate(-24 44 13)" />
+          <path d="M38 13c1-8 4-11 8-15" stroke="#6A3A17" strokeWidth="5" strokeLinecap="round" />
+          <ellipse cx="31" cy="25" rx="6" ry="11" fill="#fff" opacity=".45" transform="rotate(28 31 25)" />
+        </g>
+        <g transform="translate(69 26)">
+          <path d="M8 45c19 8 43 2 59-26 3 21-11 42-34 50C18 73 6 66 0 57c2-4 5-8 8-12Z" fill="url(#bananaApproved)" />
+          <path d="M14 47c17 5 34 1 47-16" fill="none" stroke="#FFF9B0" strokeWidth="5" strokeLinecap="round" opacity=".7" />
+          <circle cx="7" cy="48" r="4" fill="#7A4A1E" />
+        </g>
+        <g transform="translate(131 13)">
+          <path d="M25 1c4 1 7 4 10 8" stroke="#6A3A17" strokeWidth="4" strokeLinecap="round" />
+          <ellipse cx="36" cy="7" rx="11" ry="5" fill="#42AE4F" transform="rotate(-22 36 7)" />
+          <circle cx="18" cy="22" r="12" fill="url(#grapeApproved)" /><circle cx="14" cy="17" r="3" fill="#fff" opacity=".33" /><circle cx="34" cy="22" r="12" fill="url(#grapeApproved)" /><circle cx="30" cy="17" r="3" fill="#fff" opacity=".33" /><circle cx="10" cy="36" r="12" fill="url(#grapeApproved)" /><circle cx="6" cy="31" r="3" fill="#fff" opacity=".33" /><circle cx="26" cy="36" r="12" fill="url(#grapeApproved)" /><circle cx="22" cy="31" r="3" fill="#fff" opacity=".33" /><circle cx="42" cy="36" r="12" fill="url(#grapeApproved)" /><circle cx="38" cy="31" r="3" fill="#fff" opacity=".33" /><circle cx="18" cy="50" r="12" fill="url(#grapeApproved)" /><circle cx="14" cy="45" r="3" fill="#fff" opacity=".33" /><circle cx="34" cy="50" r="12" fill="url(#grapeApproved)" /><circle cx="30" cy="45" r="3" fill="#fff" opacity=".33" /><circle cx="26" cy="64" r="12" fill="url(#grapeApproved)" /><circle cx="22" cy="59" r="3" fill="#fff" opacity=".33" />
+        </g>
+      </g>
     </svg>
   );
 }
