@@ -4,7 +4,17 @@ import { useMemo, useState } from 'react';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
 import { EmptyState } from '@aprincar/ui';
-import { GAME_FAMILIES, familyForGame } from '../game-families';
+import { familyForGame } from '../game-families';
+
+const DISCOVERY_FILTERS = [
+  { id: 'all', label: 'Todos', matches: () => true },
+  { id: 'numbers', label: 'Números', matches: (gameId: string) => familyForGame(gameId)?.id === 'quantities' },
+  { id: 'letters', label: 'Letras', matches: (gameId: string) => familyForGame(gameId)?.id === 'literacy' },
+  { id: 'logic', label: 'Lógica', matches: (gameId: string) => gameId.includes('pattern') },
+  { id: 'colors', label: 'Cores', matches: (gameId: string) => gameId.includes('color') || gameId.includes('guided-painting') },
+  { id: 'memory', label: 'Memória', matches: (gameId: string) => gameId.includes('memory') },
+  { id: 'creative', label: 'Criatividade', matches: (gameId: string) => gameId.includes('paint-free') },
+] as const;
 
 export function Discover() {
   const { registry } = useAppStore();
@@ -25,8 +35,8 @@ export function Discover() {
           .join(' ')
           .toLowerCase();
         const queryOk = !q || hay.includes(q.toLowerCase());
-        const familyOk = category === 'all' || familyForGame(entry.id)?.id === category;
-        return queryOk && familyOk;
+        const activeFilter = DISCOVERY_FILTERS.find((filter) => filter.id === category) ?? DISCOVERY_FILTERS[0];
+        return queryOk && activeFilter.matches(entry.id);
       }),
     [registry, q, category],
   );
@@ -40,9 +50,7 @@ export function Discover() {
     <div className="aprincar-page approved-catalog">
       <section className="approved-catalog-header">
         <div>
-          <span className="approved-kicker">Escolha, explore, aprenda</span>
           <h1>Jogos educativos</h1>
-          <p>Atividades organizadas por habilidade e idade, com interação simples para celular e tablet.</p>
         </div>
       </section>
 
@@ -57,16 +65,13 @@ export function Discover() {
           rightSection={<SlidersHorizontal size={17} />}
         />
         <div className="approved-chip-row" role="group" aria-label="Filtrar jogos por categoria">
-          <button className={category === 'all' ? 'active' : ''} onClick={() => setCategory('all')}>
-            Todos
-          </button>
-          {GAME_FAMILIES.map((family) => (
+          {DISCOVERY_FILTERS.map((filter) => (
             <button
-              key={family.id}
-              className={category === family.id ? 'active' : ''}
-              onClick={() => setCategory(family.id)}
+              key={filter.id}
+              className={category === filter.id ? 'active' : ''}
+              onClick={() => setCategory(filter.id)}
             >
-              {family.title.replace(' e ', ' & ')}
+              {filter.label}
             </button>
           ))}
         </div>

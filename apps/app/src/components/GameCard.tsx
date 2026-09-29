@@ -1,5 +1,5 @@
 import { Badge } from '@mantine/core';
-import { ChevronRight, Play } from 'lucide-react';
+import { ChevronRight, Play, Star } from 'lucide-react';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
 import { getSkill } from '@aprincar/skill-graph';
 import { Link } from '@tanstack/react-router';
@@ -119,14 +119,93 @@ function Paint() {
   );
 }
 
+function MemoryCards() {
+  return (
+    <svg viewBox="0 0 180 110" className="approved-game-illustration" aria-hidden="true">
+      <defs>
+        <linearGradient id="memoryBlue" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#60A5FA" />
+          <stop offset="1" stopColor="#2563EB" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(27 15)">
+        <rect x="8" y="10" width="50" height="67" rx="12" fill="#EAF3FF" transform="rotate(-8 33 43)" />
+        <rect x="68" y="8" width="50" height="67" rx="12" fill="#FFF5D9" transform="rotate(7 93 41)" />
+        <rect x="36" y="3" width="55" height="74" rx="13" fill="url(#memoryBlue)" />
+        <circle cx="63" cy="32" r="11" fill="#FBBF24" />
+        <path d="M49 55c9-14 21-14 29 0" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" />
+        <circle cx="55" cy="46" r="3.5" fill="#fff" />
+        <circle cx="71" cy="46" r="3.5" fill="#fff" />
+      </g>
+    </svg>
+  );
+}
+
+function PatternBlocks() {
+  return (
+    <svg viewBox="0 0 180 110" className="approved-game-illustration" aria-hidden="true">
+      <g transform="translate(20 28)">
+        <rect x="0" y="18" width="34" height="34" rx="10" fill="#2563EB" />
+        <circle cx="54" cy="35" r="17" fill="#FBBF24" />
+        <rect x="76" y="18" width="34" height="34" rx="10" fill="#2563EB" />
+        <circle cx="130" cy="35" r="17" fill="#FBBF24" />
+        <path d="M16 3h112" stroke="#DBEAFE" strokeWidth="8" strokeLinecap="round" />
+      </g>
+    </svg>
+  );
+}
+
+function ShapeCluster() {
+  return (
+    <svg viewBox="0 0 180 110" className="approved-game-illustration" aria-hidden="true">
+      <defs>
+        <linearGradient id="shapeBlue" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#38BDF8" />
+          <stop offset="1" stopColor="#2563EB" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(26 14)">
+        <path d="M18 70 48 17l30 53Z" fill="url(#shapeBlue)" />
+        <circle cx="102" cy="43" r="27" fill="#FBBF24" />
+        <rect x="79" y="61" width="51" height="28" rx="8" fill="#10B981" transform="rotate(-8 105 75)" />
+        <path d="M34 65 48 40l14 25Z" fill="#fff" opacity=".32" />
+        <ellipse cx="92" cy="34" rx="8" ry="5" fill="#fff" opacity=".35" />
+      </g>
+    </svg>
+  );
+}
+
+function WritingStroke() {
+  return (
+    <svg viewBox="0 0 180 110" className="approved-game-illustration" aria-hidden="true">
+      <g transform="translate(26 16)">
+        <rect x="0" y="0" width="118" height="78" rx="18" fill="#EFF6FF" />
+        <path d="M25 62c18-40 31-50 44-34 9 12 5 31 17 35 9 3 16-4 25-17" fill="none" stroke="#2563EB" strokeWidth="9" strokeLinecap="round" />
+        <path d="m112 12 16 5-12 37-11-4Z" fill="#FBBF24" />
+        <path d="m128 17 5-8 4 11Z" fill="#EF4444" />
+        <circle cx="25" cy="62" r="6" fill="#10B981" />
+      </g>
+    </svg>
+  );
+}
+
 function Illustration({ entry }: { entry: RegistryEntry }) {
   if (entry.id.includes('fruit-basket')) return <FruitCluster />;
   if (entry.id.includes('counting-animals')) return <Lion />;
   if (entry.id.includes('block-tower')) return <BlockCluster />;
+  if (entry.id.includes('memory')) return <MemoryCards />;
+  if (entry.id.includes('pattern')) return <PatternBlocks />;
+  if (entry.id.includes('space-shapes')) return <ShapeCluster />;
   if (entry.id.includes('paint') || entry.id.includes('color-match')) return <Paint />;
-  if (entry.id.includes('letter') || entry.id.includes('writing') || entry.id.includes('prewriting'))
-    return <Letters />;
-  return <BlockCluster />;
+  if (
+    entry.id.includes('writing') ||
+    entry.id.includes('prewriting') ||
+    entry.id.includes('cursive') ||
+    entry.id.includes('print-letters')
+  )
+    return <WritingStroke />;
+  if (entry.id.includes('letter')) return <Letters />;
+  return <ShapeCluster />;
 }
 
 export function GameCard({ entry, compact = false }: { entry: RegistryEntry; compact?: boolean }) {
@@ -151,7 +230,8 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
           <strong>{name}</strong>
           {objective && <span className="sr-only">{objective}</span>}
           <span>{family?.title ?? skill}</span>
-          <small>
+          <small className="approved-game-age">
+            <Star size={12} fill="#FBBF24" strokeWidth={1.5} />
             {entry.ageGuidance?.min ?? 2}–{entry.ageGuidance?.max ?? 10} anos
           </small>
         </div>

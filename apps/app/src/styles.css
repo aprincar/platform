@@ -4070,3 +4070,101 @@ a {
     margin-bottom: 16px;
   }
 }
+
+
+/* APPROVED BOARD — catalog fidelity */
+.approved-catalog-header {
+  padding: 0;
+}
+.approved-catalog-header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(30px, 4.4vw, 46px);
+  letter-spacing: -.035em;
+}
+.approved-catalog-tools {
+  padding: 10px 12px 12px;
+  gap: 10px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, .055);
+}
+.approved-search-input input {
+  min-height: 46px;
+  border-radius: 14px;
+  background: #fff;
+}
+.approved-game-age {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.approved-game-card-copy strong {
+  letter-spacing: -.015em;
+}
+
+@media (max-width: 767px) {
+  .approved-catalog {
+    gap: 14px;
+  }
+  .approved-catalog-header h1 {
+    font-size: 22px;
+  }
+  .approved-catalog-tools {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .approved-search-input input {
+    min-height: 42px;
+    font-size: 12px;
+  }
+  .approved-search-input {
+    margin-bottom: 2px;
+  }
+  .approved-chip-row {
+    gap: 6px;
+    padding: 1px 0 4px;
+  }
+  .approved-chip-row button {
+    min-height: 32px;
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+  .approved-game-list {
+    gap: 8px;
+  }
+  .approved-game-card,
+  .approved-game-card.compact {
+    grid-template-columns: 82px minmax(0, 1fr);
+    min-height: 78px;
+  }
+  .approved-game-card-content {
+    padding: 8px 8px 8px 10px;
+  }
+  .approved-game-card-copy {
+    gap: 1px;
+  }
+  .approved-game-card-copy strong {
+    font-size: 12px;
+  }
+  .approved-game-card-copy span {
+    font-size: 9.5px;
+  }
+  .approved-game-card-copy small {
+    font-size: 9.5px;
+  }
+  .approved-game-card-arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+  }
+  .approved-game-card-arrow svg {
+    width: 17px;
+    height: 17px;
+  }
+  .approved-game-illustration {
+    max-height: 78px;
+    padding: 4px;
+  }
+}
