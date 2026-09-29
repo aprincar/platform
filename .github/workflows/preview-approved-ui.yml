@@ -1,0 +1,113 @@
+name: Publish approved UI preview
+
+on:
+  push:
+    branches:
+      - feat/approved-ui-1to1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-approved-ui-preview
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: https://aprincar.github.io/platform/preview/approved-ui/
+    steps:
+      - name: Checkout production main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: prod
+
+      - name: Checkout approved UI branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/approved-ui-1to1
+          path: preview
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install production dependencies
+        working-directory: prod
+        run: npm ci
+
+      - name: Verify production snapshot
+        working-directory: prod
+        run: npm run verify:official
+
+      - name: Build production App and Hub
+        working-directory: prod
+        run: |
+          VITE_BASE_PATH=/platform/app/ npm run build -w @aprincar/app
+          VITE_BASE_PATH=/platform/hub/ VITE_APRINCAR_APP_URL=/platform/app npm run build -w @aprincar/hub
+
+      - name: Install preview dependencies
+        working-directory: preview
+        run: npm ci
+
+      - name: Verify preview snapshot
+        working-directory: preview
+        run: npm run verify:official
+
+      - name: Build approved UI preview
+        working-directory: preview
+        run: VITE_BASE_PATH=/platform/preview/approved-ui/ npm run build -w @aprincar/app
+
+      - name: Assemble production plus preview
+        run: |
+          rm -rf site
+          mkdir -p site/app site/hub site/extensions site/preview/approved-ui
+
+          cp -R prod/apps/app/dist/. site/app/
+          cp -R prod/apps/hub/dist/. site/hub/
+          cp -R prod/apps/app/public/extensions/. site/extensions/
+          cp -R preview/apps/app/dist/. site/preview/approved-ui/
+
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          for (const file of [
+            'site/app/registry.json',
+            'site/hub/registry.json',
+            'site/preview/approved-ui/registry.json',
+          ]) {
+            const entries = JSON.parse(fs.readFileSync(file, 'utf8'));
+            for (const entry of entries) {
+              for (const key of ['manifestUrl', 'entryUrl']) {
+                if (entry[key]?.startsWith('/extensions/')) entry[key] = `/platform${entry[key]}`;
+              }
+            }
+            fs.writeFileSync(file, `${JSON.stringify(entries, null, 2)}\n`);
+          }
+          NODE
+
+          cp site/app/registry.json site/registry.json
+          cp prod/canonical-games.json site/canonical-games.json
+
+          cat > site/index.html <<'HTML'
+          <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=app/"><title>Aprincar</title></head><body><p>Abrindo o <a href="app/">Aprincar</a>…</p><script>location.replace('app/' + location.search + location.hash)</script></body></html>
+          HTML
+
+          touch site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy production-preserving preview
+        id: deployment
+        uses: actions/deploy-pages@v4
