@@ -11,19 +11,25 @@ export function Discover() {
   const [q, setQ] = useState('');
   const [category, setCategory] = useState('all');
 
-  const list = useMemo(() => registry.filter((entry) => {
-    const hay = [
-      entry.id,
-      entry.name?.['pt-BR'] ?? '',
-      entry.description?.['pt-BR'] ?? '',
-      entry.objective?.['pt-BR'] ?? '',
-      ...(entry.tags ?? []),
-      ...(entry.skills ?? []),
-    ].join(' ').toLowerCase();
-    const queryOk = !q || hay.includes(q.toLowerCase());
-    const familyOk = category === 'all' || familyForGame(entry.id)?.id === category;
-    return queryOk && familyOk;
-  }), [registry, q, category]);
+  const list = useMemo(
+    () =>
+      registry.filter((entry) => {
+        const hay = [
+          entry.id,
+          entry.name?.['pt-BR'] ?? '',
+          entry.description?.['pt-BR'] ?? '',
+          entry.objective?.['pt-BR'] ?? '',
+          ...(entry.tags ?? []),
+          ...(entry.skills ?? []),
+        ]
+          .join(' ')
+          .toLowerCase();
+        const queryOk = !q || hay.includes(q.toLowerCase());
+        const familyOk = category === 'all' || familyForGame(entry.id)?.id === category;
+        return queryOk && familyOk;
+      }),
+    [registry, q, category],
+  );
 
   const reset = () => {
     setQ('');
@@ -51,7 +57,9 @@ export function Discover() {
           rightSection={<SlidersHorizontal size={17} />}
         />
         <div className="approved-chip-row" role="group" aria-label="Filtrar jogos por categoria">
-          <button className={category === 'all' ? 'active' : ''} onClick={() => setCategory('all')}>Todos</button>
+          <button className={category === 'all' ? 'active' : ''} onClick={() => setCategory('all')}>
+            Todos
+          </button>
           {GAME_FAMILIES.map((family) => (
             <button
               key={family.id}
@@ -68,11 +76,17 @@ export function Discover() {
         <EmptyState
           title="Nenhum jogo encontrado"
           description="Tente outra busca ou limpe o filtro."
-          action={<Button onClick={reset} leftSection={<RotateCcw size={16} />}>Limpar filtros</Button>}
+          action={
+            <Button onClick={reset} leftSection={<RotateCcw size={16} />}>
+              Limpar filtros
+            </Button>
+          }
         />
       ) : (
         <section className="approved-game-list" aria-label="Jogos encontrados">
-          {list.map((entry) => <GameCard key={entry.id} entry={entry} compact />)}
+          {list.map((entry) => (
+            <GameCard key={entry.id} entry={entry} compact />
+          ))}
         </section>
       )}
     </div>

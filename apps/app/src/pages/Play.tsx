@@ -81,8 +81,8 @@ export function Play() {
           <span className="approved-kicker">Hora de descansar os olhos</span>
           <h1>Você já brincou bastante hoje.</h1>
           <p>
-            A meta de {limitMinutes} minutos foi alcançada. Que tal desenhar, construir ou fazer
-            uma missão fora da tela?
+            A meta de {limitMinutes} minutos foi alcançada. Que tal desenhar, construir ou fazer uma missão
+            fora da tela?
           </p>
           <Group justify="center" mt="lg">
             <Button component={Link} to="/missions" className="approved-primary-cta">

@@ -18,7 +18,9 @@ export function Library() {
       for (const item of list) next[item.id] = await isOfflineReady(item);
       if (mounted) setOfflineStatus(next);
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [list.length, registry]);
 
   const offlineReadyCount = list.filter((entry) => offlineStatus[entry.id]).length;
@@ -40,11 +42,22 @@ export function Library() {
         <EmptyState
           title="Sua biblioteca está pronta para crescer"
           description="Escolha jogos no catálogo para guardar aqui."
-          action={<Button component={Link} to="/discover" className="approved-primary-cta" leftSection={<Gamepad2 size={17}/>}>Explorar jogos</Button>}
+          action={
+            <Button
+              component={Link}
+              to="/discover"
+              className="approved-primary-cta"
+              leftSection={<Gamepad2 size={17} />}
+            >
+              Explorar jogos
+            </Button>
+          }
         />
       ) : (
         <section className="approved-game-list">
-          {list.map((entry) => <GameCard key={entry.id} entry={entry} compact />)}
+          {list.map((entry) => (
+            <GameCard key={entry.id} entry={entry} compact />
+          ))}
         </section>
       )}
     </div>

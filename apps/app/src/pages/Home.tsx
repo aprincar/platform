@@ -78,12 +78,16 @@ export function Home() {
           </Button>
         </div>
         <div className="approved-featured-grid">
-          {featured.map((entry) => <GameCard key={entry.id} entry={entry} compact />)}
+          {featured.map((entry) => (
+            <GameCard key={entry.id} entry={entry} compact />
+          ))}
         </div>
       </section>
 
       <section className="approved-progress-banner">
-        <div className="approved-progress-icon"><BarChart3 size={28} /></div>
+        <div className="approved-progress-icon">
+          <BarChart3 size={28} />
+        </div>
         <div>
           <span>Seu progresso</span>
           <strong>Veja o que você já explorou</strong>

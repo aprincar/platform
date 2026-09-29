@@ -378,7 +378,10 @@ export function Parent() {
                   />
                 </div>
 
-                <div className="parent-card approved-parent-card" style={{ background: 'var(--ap-purple-soft)' }}>
+                <div
+                  className="parent-card approved-parent-card"
+                  style={{ background: 'var(--ap-purple-soft)' }}
+                >
                   <h3>Missões em Família</h3>
                   <Text size="sm">
                     Incentive atividades fora da tela para conectar o aprendizado digital com objetos e

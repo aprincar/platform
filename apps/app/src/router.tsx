@@ -27,8 +27,16 @@ const missions = createRoute({ getParentRoute: () => root, path: '/missions', co
 const more = createRoute({ getParentRoute: () => root, path: '/more', component: More });
 const profile = createRoute({ getParentRoute: () => root, path: '/profile', component: More });
 const parent = createRoute({ getParentRoute: () => root, path: '/parent', component: Parent });
-const parentSkill = createRoute({ getParentRoute: () => root, path: '/parent/skills/$skillId', component: ParentSkillDetail });
-const parentOffline = createRoute({ getParentRoute: () => root, path: '/parent/offline', component: ParentOffline });
+const parentSkill = createRoute({
+  getParentRoute: () => root,
+  path: '/parent/skills/$skillId',
+  component: ParentSkillDetail,
+});
+const parentOffline = createRoute({
+  getParentRoute: () => root,
+  path: '/parent/offline',
+  component: ParentOffline,
+});
 const settings = createRoute({ getParentRoute: () => root, path: '/settings', component: Settings });
 const play = createRoute({ getParentRoute: () => root, path: '/play/$gameId', component: Play });
 
@@ -39,12 +47,27 @@ const useMemoryHistory = Boolean(
 export const router = createRouter({
   basepath: import.meta.env.BASE_URL,
   routeTree: root.addChildren([
-    index, onboarding, discover, library, worlds, progress, world, missions, more, profile,
-    parent, parentSkill, parentOffline, settings, play,
+    index,
+    onboarding,
+    discover,
+    library,
+    worlds,
+    progress,
+    world,
+    missions,
+    more,
+    profile,
+    parent,
+    parentSkill,
+    parentOffline,
+    settings,
+    play,
   ]),
   ...(useMemoryHistory ? { history: createMemoryHistory({ initialEntries: ['/'] }) } : {}),
 });
 
 declare module '@tanstack/react-router' {
-  interface Register { router: typeof router; }
+  interface Register {
+    router: typeof router;
+  }
 }

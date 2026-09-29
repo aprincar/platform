@@ -67,7 +67,12 @@ export function RootLayout() {
 
   if (!initialized) return null;
   if (!profile && path !== '/onboarding') return <Onboarding />;
-  if (playing) return <div className="game-route-shell"><Outlet /></div>;
+  if (playing)
+    return (
+      <div className="game-route-shell">
+        <Outlet />
+      </div>
+    );
 
   const profileMenu = (mobile = false) => (
     <Menu shadow="md" width={250} position="bottom-end" radius="lg">
@@ -79,7 +84,9 @@ export function RootLayout() {
           <div className="profile-avatar">{profile?.avatar ?? '⭐'}</div>
           {!mobile && (
             <div className="profile-copy">
-              <Text size="sm" fw={800} lh={1.1}>{profile?.name ?? 'Perfil'}</Text>
+              <Text size="sm" fw={800} lh={1.1}>
+                {profile?.name ?? 'Perfil'}
+              </Text>
               <Text size="xs" c="dimmed" mt={3} className="profile-network">
                 {online ? <Wifi size={11} /> : <WifiOff size={11} />} {online ? 'Online' : 'Offline'}
               </Text>
@@ -93,13 +100,19 @@ export function RootLayout() {
           <Menu.Item
             key={p.id}
             onClick={() => selectProfile(p.id)}
-            leftSection={<Avatar size="sm" color="yellow">{p.avatar}</Avatar>}
+            leftSection={
+              <Avatar size="sm" color="yellow">
+                {p.avatar}
+              </Avatar>
+            }
             rightSection={p.id === profile?.id ? <Check size={14} /> : null}
           >
             {p.name}
           </Menu.Item>
         ))}
-        <Menu.Item leftSection={<UserPlus size={14} />} onClick={openModal}>Adicionar perfil</Menu.Item>
+        <Menu.Item leftSection={<UserPlus size={14} />} onClick={openModal}>
+          Adicionar perfil
+        </Menu.Item>
         <Menu.Divider />
         <Menu.Item leftSection={<ShieldCheck size={15} />} onClick={() => navigate({ to: '/parent' })}>
           Área do responsável
@@ -115,47 +128,71 @@ export function RootLayout() {
     <div className="app-bg approved-app">
       <header className="aprincar-topbar desktop-topbar approved-topbar">
         <div className="aprincar-topbar-inner">
-          <Link to="/" className="brand-link" aria-label="Aprincar - Início"><Brand compact /></Link>
+          <Link to="/" className="brand-link" aria-label="Aprincar - Início">
+            <Brand compact />
+          </Link>
           <nav className="aprincar-nav" aria-label="Navegação principal">
             {childItems.map(([to, label, Icon]) => {
               const active = to === '/' ? path === '/' : path.startsWith(to);
               return (
                 <Link key={to} to={to} className={`aprincar-nav-link ${active ? 'active' : ''}`}>
-                  <Icon size={18} /><span>{label}</span>
+                  <Icon size={18} />
+                  <span>{label}</span>
                 </Link>
               );
             })}
           </nav>
-          <Link to="/discover" className="approved-search-link" aria-label="Buscar jogos"><Search size={19} /></Link>
+          <Link to="/discover" className="approved-search-link" aria-label="Buscar jogos">
+            <Search size={19} />
+          </Link>
           {profileMenu(false)}
         </div>
       </header>
 
       <header className="mobile-topbar approved-mobile-topbar">
-        <Link to="/" className="brand-link" aria-label="Aprincar - Início"><Brand compact /></Link>
+        <Link to="/" className="brand-link" aria-label="Aprincar - Início">
+          <Brand compact />
+        </Link>
         <div className="approved-mobile-actions">
-          <Link to="/discover" className="approved-icon-button" aria-label="Buscar jogos"><Search size={20} /></Link>
+          <Link to="/discover" className="approved-icon-button" aria-label="Buscar jogos">
+            <Search size={20} />
+          </Link>
           {profileMenu(true)}
         </div>
       </header>
 
-      <main className="aprincar-shell approved-shell"><Outlet /></main>
+      <main className="aprincar-shell approved-shell">
+        <Outlet />
+      </main>
 
       <nav className="mobile-bottom-nav approved-bottom-nav" aria-label="Navegação infantil">
         {childItems.map(([to, label, Icon]) => {
           const active = to === '/' ? path === '/' : path.startsWith(to);
           return (
             <Link key={to} to={to} className={`mobile-nav-link ${active ? 'active' : ''}`}>
-              <Icon size={21} strokeWidth={2.2} /><span>{label}</span>
+              <Icon size={21} strokeWidth={2.2} />
+              <span>{label}</span>
             </Link>
           );
         })}
       </nav>
 
-      <Modal opened={modalOpened} onClose={closeModal} title="Criar novo perfil infantil" centered radius="xl">
+      <Modal
+        opened={modalOpened}
+        onClose={closeModal}
+        title="Criar novo perfil infantil"
+        centered
+        radius="xl"
+      >
         <Stack>
-          <TextInput label="Nome ou apelido" placeholder="Ex: Lucas" value={newName}
-            onChange={(e) => setNewName(e.currentTarget.value)} required autoFocus />
+          <TextInput
+            label="Nome ou apelido"
+            placeholder="Ex: Lucas"
+            value={newName}
+            onChange={(e) => setNewName(e.currentTarget.value)}
+            required
+            autoFocus
+          />
           <NumberInput label="Idade aproximada" min={2} max={14} value={newAge} onChange={setNewAge} />
           <Button className="ap-primary" fullWidth onClick={handleCreateProfile} disabled={!newName.trim()}>
             Criar perfil

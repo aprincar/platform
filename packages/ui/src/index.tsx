@@ -44,7 +44,14 @@ export const APRINCAR_COLORS = {
 
 export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProperties }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" style={style} data-aprincar-brand="approved-v1">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      aria-hidden="true"
+      style={style}
+      data-aprincar-brand="approved-v1"
+    >
       <defs>
         <linearGradient id="aprincar-a" x1="10" y1="10" x2="55" y2="58" gradientUnits="userSpaceOnUse">
           <stop stopColor="#0EA5E9" />
@@ -52,8 +59,17 @@ export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProp
           <stop offset="1" stopColor="#1D4ED8" />
         </linearGradient>
       </defs>
-      <path d="M12 52C14.5 28 23 12 32 12s17.5 16 20 40" fill="none" stroke="url(#aprincar-a)" strokeWidth="13" strokeLinecap="round" />
-      <path d="M27 29.8c0-2.2 2.4-3.5 4.2-2.3l12.4 8c1.7 1.1 1.7 3.6 0 4.7l-12.4 8A2.8 2.8 0 0 1 27 45.9V29.8Z" fill="#FBBF24" />
+      <path
+        d="M12 52C14.5 28 23 12 32 12s17.5 16 20 40"
+        fill="none"
+        stroke="url(#aprincar-a)"
+        strokeWidth="13"
+        strokeLinecap="round"
+      />
+      <path
+        d="M27 29.8c0-2.2 2.4-3.5 4.2-2.3l12.4 8c1.7 1.1 1.7 3.6 0 4.7l-12.4 8A2.8 2.8 0 0 1 27 45.9V29.8Z"
+        fill="#FBBF24"
+      />
     </svg>
   );
 }
