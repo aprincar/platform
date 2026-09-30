@@ -106,7 +106,9 @@ export function Progress() {
               <div className="approved-progress-main">
                 <div>
                   <strong>{row.title}</strong>
-                  <span>{row.evidence ? `${row.evidence} evidências observadas` : 'Ainda não explorado'}</span>
+                  <span>
+                    {row.evidence ? `${row.evidence} evidências observadas` : 'Ainda não explorado'}
+                  </span>
                 </div>
                 <MantineProgress value={row.value} color={row.color} radius="xl" size="md" />
               </div>
@@ -114,7 +116,8 @@ export function Progress() {
             </div>
           ))}
           <p className="approved-progress-note">
-            As barras representam evidências observadas nas brincadeiras; não são nota nem certificação de domínio.
+            As barras representam evidências observadas nas brincadeiras; não são nota nem certificação de
+            domínio.
           </p>
         </section>
       )}
@@ -133,7 +136,9 @@ export function Progress() {
           </article>
           <article className="approved-progress-summary-card green">
             <Brain size={28} />
-            <strong>{exploredFamilies}/{rows.length}</strong>
+            <strong>
+              {exploredFamilies}/{rows.length}
+            </strong>
             <span>famílias exploradas</span>
           </article>
         </section>

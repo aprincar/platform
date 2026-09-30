@@ -8,10 +8,18 @@ import { familyForGame } from '../game-families';
 
 const DISCOVERY_FILTERS = [
   { id: 'all', label: 'Todos', matches: () => true },
-  { id: 'numbers', label: 'Números', matches: (gameId: string) => familyForGame(gameId)?.id === 'quantities' },
+  {
+    id: 'numbers',
+    label: 'Números',
+    matches: (gameId: string) => familyForGame(gameId)?.id === 'quantities',
+  },
   { id: 'letters', label: 'Letras', matches: (gameId: string) => familyForGame(gameId)?.id === 'literacy' },
   { id: 'logic', label: 'Lógica', matches: (gameId: string) => gameId.includes('pattern') },
-  { id: 'colors', label: 'Cores', matches: (gameId: string) => gameId.includes('color') || gameId.includes('guided-painting') },
+  {
+    id: 'colors',
+    label: 'Cores',
+    matches: (gameId: string) => gameId.includes('color') || gameId.includes('guided-painting'),
+  },
   { id: 'memory', label: 'Memória', matches: (gameId: string) => gameId.includes('memory') },
   { id: 'creative', label: 'Criatividade', matches: (gameId: string) => gameId.includes('paint-free') },
 ] as const;
@@ -35,7 +43,8 @@ export function Discover() {
           .join(' ')
           .toLowerCase();
         const queryOk = !q || hay.includes(q.toLowerCase());
-        const activeFilter = DISCOVERY_FILTERS.find((filter) => filter.id === category) ?? DISCOVERY_FILTERS[0];
+        const activeFilter =
+          DISCOVERY_FILTERS.find((filter) => filter.id === category) ?? DISCOVERY_FILTERS[0];
         return queryOk && activeFilter.matches(entry.id);
       }),
     [registry, q, category],
