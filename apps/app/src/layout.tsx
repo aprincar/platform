@@ -82,7 +82,13 @@ export function RootLayout() {
           aria-label={mobile ? 'Abrir perfil e controles' : 'Menu de perfis'}
           className={`profile-button ${mobile ? 'profile-button-mobile' : ''}`}
         >
-          <div className="profile-avatar">{profile?.avatar ?? '⭐'}</div>
+          <div className="profile-avatar approved-profile-avatar" aria-hidden="true">
+            <img
+              src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
+              alt=""
+              className="approved-profile-avatar-image"
+            />
+          </div>
           {!mobile && (
             <div className="profile-copy">
               <Text size="sm" fw={800} lh={1.1}>
