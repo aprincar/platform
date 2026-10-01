@@ -45,12 +45,12 @@ export const APRINCAR_COLORS = {
 export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProperties }) {
   return (
     <img
-      src={`${import.meta.env.BASE_URL}brand/logo-symbol.svg`}
+      src={`${import.meta.env.BASE_URL}brand/logo-symbol-approved.png`}
       width={size}
-      height={Math.round(size * 0.89)}
+      height={Math.round(size * 0.66)}
       aria-hidden="true"
       style={{ objectFit: 'contain', ...style }}
-      data-aprincar-brand="approved-v2"
+      data-aprincar-brand="approved-v3"
       className="aprincar-brand-mark"
     />
   );
@@ -58,29 +58,24 @@ export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProp
 
 export function Brand({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
   const width = compact ? 154 : 205;
+  const lightAsset = compact ? 'logo-wordmark-approved.png' : 'logo-horizontal-approved.png';
+  const darkAsset = 'logo-horizontal-approved-dark.png';
   return (
-    <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v2">
+    <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v3">
       <div className={`aprincar-brand-static ${light ? 'force-light' : ''}`}>
         <img
-          src={`${import.meta.env.BASE_URL}brand/logo-horizontal.svg`}
+          src={`${import.meta.env.BASE_URL}brand/${lightAsset}`}
           width={width}
-          height={Math.round(width * (195 / 745))}
           alt="Aprincar"
           className="aprincar-brand-logo aprincar-brand-logo-light"
         />
         <img
-          src={`${import.meta.env.BASE_URL}brand/logo-horizontal-dark.svg`}
+          src={`${import.meta.env.BASE_URL}brand/${darkAsset}`}
           width={width}
-          height={Math.round(width * (195 / 745))}
           alt="Aprincar"
           className="aprincar-brand-logo aprincar-brand-logo-dark"
           aria-hidden={!light}
         />
-        {!compact && (
-          <Text size="xs" c={light ? 'gray.2' : 'dimmed'} mt={3} fw={650}>
-            Brincar hoje. Descobrir sempre.
-          </Text>
-        )}
       </div>
     </Group>
   );
@@ -101,7 +96,7 @@ export function AprincarMascot({
       height={Math.round(size * 1.78)}
       className={className}
       alt="Mascote Aprincar: menino sorrindo e acenando"
-      data-aprincar-brand="approved-v2"
+      data-aprincar-brand="approved-v3"
       style={{ objectFit: 'contain' }}
     />
   );

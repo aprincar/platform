@@ -4426,7 +4426,7 @@ a {
   height: auto;
 }
 
-/* approved-v2 uses real transparent assets; no blend/mask workaround is allowed */
+/* approved-v3 uses board-derived transparent assets; no blend/mask workaround is allowed */
 .approved-hero-visual .approved-mascot,
 .approved-onboarding-mobile-mascot,
 .onboarding-mascot,
@@ -4437,7 +4437,7 @@ a {
   mask-image: none;
 }
 
-/* approved-v2 swaps only the static wordmark treatment for dark surfaces */
+/* approved-v3 swaps only the static wordmark treatment for dark surfaces */
 .aprincar-brand-logo-dark {
   display: none;
 }
