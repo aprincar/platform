@@ -66,7 +66,15 @@ export function Brand({ compact = false, light = false }: { compact?: boolean; l
           width={width}
           height={Math.round(width * (195 / 745))}
           alt="Aprincar"
-          className="aprincar-brand-logo"
+          className="aprincar-brand-logo aprincar-brand-logo-light"
+        />
+        <img
+          src={`${import.meta.env.BASE_URL}brand/logo-horizontal-dark.svg`}
+          width={width}
+          height={Math.round(width * (195 / 745))}
+          alt="Aprincar"
+          className="aprincar-brand-logo aprincar-brand-logo-dark"
+          aria-hidden={!light}
         />
         {!compact && (
           <Text size="xs" c={light ? 'gray.2' : 'dimmed'} mt={3} fw={650}>
