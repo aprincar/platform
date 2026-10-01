@@ -93,7 +93,7 @@ export function AprincarMascot({
       height={Math.round(size * 1.78)}
       className={className}
       alt="Mascote Aprincar: menino sorrindo e acenando"
-      data-aprincar-brand="approved-v1"
+      data-aprincar-brand="approved-v2"
       style={{ objectFit: 'contain' }}
     />
   );
