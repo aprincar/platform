@@ -1,0 +1,206 @@
+name: Derive approved brand assets
+
+on:
+  push:
+    branches:
+      - feat/approved-ui-1to1
+    paths:
+      - .github/workflows/derive-approved-brand-assets.yml
+
+permissions:
+  contents: write
+
+jobs:
+  derive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Derive canonical transparent assets from approved board
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from collections import deque
+          from pathlib import Path
+
+          root = Path('.')
+          brand = root / 'apps/app/public/brand'
+          icons = root / 'apps/app/public/icons'
+          board_path = root / 'docs/design/reference/aprincar-brand-board.png'
+          mascot_path = brand / 'mascot-approved.webp'
+
+          board = Image.open(board_path).convert('RGBA')
+
+          def flood_background(im, predicate):
+              im = im.convert('RGBA')
+              px = im.load()
+              w, h = im.size
+              seen = set()
+              q = deque()
+
+              for x in range(w):
+                  for y in (0, h - 1):
+                      if predicate(*px[x, y]):
+                          q.append((x, y))
+              for y in range(h):
+                  for x in (0, w - 1):
+                      if predicate(*px[x, y]):
+                          q.append((x, y))
+
+              while q:
+                  x, y = q.popleft()
+                  if (x, y) in seen:
+                      continue
+                  seen.add((x, y))
+                  p = px[x, y]
+                  if not predicate(*p):
+                      continue
+                  px[x, y] = (p[0], p[1], p[2], 0)
+                  for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                      if 0 <= nx < w and 0 <= ny < h and (nx, ny) not in seen:
+                          q.append((nx, ny))
+              return im
+
+          def alpha_crop(im):
+              box = im.getchannel('A').getbbox()
+              return im.crop(box) if box else im
+
+          def keep_largest_component(im):
+              # Keep only the mascot's connected foreground component, dropping
+              # detached decorative background marks that survived flood fill.
+              im = im.convert('RGBA')
+              a = im.getchannel('A')
+              w, h = im.size
+              seen = set()
+              components = []
+              for sy in range(h):
+                  for sx in range(w):
+                      if (sx, sy) in seen or a.getpixel((sx, sy)) < 12:
+                          continue
+                      q = deque([(sx, sy)])
+                      seen.add((sx, sy))
+                      comp = []
+                      while q:
+                          x, y = q.popleft()
+                          comp.append((x, y))
+                          for nx, ny in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)):
+                              if 0 <= nx < w and 0 <= ny < h and (nx, ny) not in seen and a.getpixel((nx, ny)) >= 12:
+                                  seen.add((nx, ny))
+                                  q.append((nx, ny))
+                      components.append(comp)
+              if not components:
+                  return im
+              largest = set(max(components, key=len))
+              px = im.load()
+              for y in range(h):
+                  for x in range(w):
+                      if (x, y) not in largest:
+                          r, g, b, _ = px[x, y]
+                          px[x, y] = (r, g, b, 0)
+              return alpha_crop(im)
+
+          # Mascot: strip border-connected white/light-blue board background,
+          # then keep only the human mascot component.
+          mascot = Image.open(mascot_path).convert('RGBA')
+          mascot = flood_background(
+              mascot,
+              lambda r,g,b,a: a == 0 or (
+                  r > 205 and g > 215 and b > 220 and
+                  max(r,g,b) - min(r,g,b) < 70
+              ),
+          )
+          mascot = keep_largest_component(mascot)
+          mascot.save(brand / 'mascot-approved.png', optimize=True)
+          mascot.save(brand / 'mascot-approved.webp', 'WEBP', lossless=True, quality=100, method=6)
+
+          # Approved horizontal logo + tagline from the light-background usage
+          # specimen in the canonical board.
+          logo = board.crop((45, 810, 480, 925))
+          logo = flood_background(
+              logo,
+              lambda r,g,b,a: a == 0 or (
+                  r > 236 and g > 236 and b > 236 and
+                  max(r,g,b) - min(r,g,b) < 22
+              ),
+          )
+          logo = alpha_crop(logo)
+          logo.save(brand / 'logo-horizontal-approved.png', optimize=True)
+
+          # Compact wordmark: same exact approved logo, tagline removed only
+          # from its text region while keeping the full A symbol.
+          compact = logo.copy()
+          cp = compact.load()
+          for y in range(min(77, compact.height), compact.height):
+              for x in range(min(116, compact.width), compact.width):
+                  r,g,b,a = cp[x,y]
+                  cp[x,y] = (r,g,b,0)
+          compact = alpha_crop(compact)
+          compact.save(brand / 'logo-wordmark-approved.png', optimize=True)
+
+          # Symbol is taken from the same canonical approved logo.
+          symbol = compact.crop((0, 0, min(122, compact.width), compact.height))
+          symbol = alpha_crop(symbol)
+          symbol.save(brand / 'logo-symbol-approved.png', optimize=True)
+
+          # Dark logo from the approved dark-background specimen.
+          dark = board.crop((505, 820, 930, 910))
+          dark = flood_background(
+              dark,
+              lambda r,g,b,a: a == 0 or (r < 55 and g < 95 and b < 130),
+          )
+          dark = alpha_crop(dark)
+          dark.save(brand / 'logo-horizontal-approved-dark.png', optimize=True)
+
+          # Approved app icon/favicon from the icon specimen in the board.
+          icon = board.crop((868, 435, 1005, 558))
+          icon = flood_background(
+              icon,
+              lambda r,g,b,a: a == 0 or (
+                  r > 225 and g > 232 and b > 235 and
+                  max(r,g,b) - min(r,g,b) < 35
+              ),
+          )
+          icon = alpha_crop(icon)
+          side = max(icon.size)
+          canvas = Image.new('RGBA', (side, side), (0,0,0,0))
+          canvas.alpha_composite(icon, ((side-icon.width)//2, (side-icon.height)//2))
+          canvas.save(brand / 'app-icon-approved.png', optimize=True)
+          canvas.resize((192,192), Image.Resampling.LANCZOS).save(icons / 'icon-192.png', optimize=True)
+          canvas.resize((512,512), Image.Resampling.LANCZOS).save(icons / 'icon-512.png', optimize=True)
+
+          # Hard gates: canonical assets must actually contain transparency.
+          for path in [
+              brand / 'mascot-approved.webp',
+              brand / 'mascot-approved.png',
+              brand / 'logo-horizontal-approved.png',
+              brand / 'logo-wordmark-approved.png',
+              brand / 'logo-symbol-approved.png',
+              brand / 'app-icon-approved.png',
+          ]:
+              im = Image.open(path).convert('RGBA')
+              lo, hi = im.getchannel('A').getextrema()
+              if lo != 0 or hi != 255:
+                  raise SystemExit(f'{path}: expected real alpha channel, got {(lo, hi)}')
+          PY
+
+      - name: Commit canonical assets
+        run: |
+          git config user.name "aprincar-brand"
+          git config user.email "actions@users.noreply.github.com"
+          git add             apps/app/public/brand/mascot-approved.webp             apps/app/public/brand/mascot-approved.png             apps/app/public/brand/logo-horizontal-approved.png             apps/app/public/brand/logo-wordmark-approved.png             apps/app/public/brand/logo-symbol-approved.png             apps/app/public/brand/logo-horizontal-approved-dark.png             apps/app/public/brand/app-icon-approved.png             apps/app/public/icons/icon-192.png             apps/app/public/icons/icon-512.png
+          if git diff --cached --quiet; then
+            echo "Approved brand assets already synchronized."
+            exit 0
+          fi
+          git commit -m "fix(brand): derive canonical transparent assets from approved board"
+          git push origin HEAD:feat/approved-ui-1to1
