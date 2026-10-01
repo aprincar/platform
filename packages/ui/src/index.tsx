@@ -44,75 +44,30 @@ export const APRINCAR_COLORS = {
 
 export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProperties }) {
   return (
-    <svg
+    <img
+      src={`${import.meta.env.BASE_URL}brand/logo-symbol.svg`}
       width={size}
-      height={size}
-      viewBox="0 0 64 64"
+      height={Math.round(size * 0.89)}
       aria-hidden="true"
-      style={style}
-      data-aprincar-brand="approved-v1"
-    >
-      <defs>
-        <linearGradient id="aprincar-a" x1="10" y1="10" x2="55" y2="58" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#0EA5E9" />
-          <stop offset=".48" stopColor="#2563EB" />
-          <stop offset="1" stopColor="#1D4ED8" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M12 52C14.5 28 23 12 32 12s17.5 16 20 40"
-        fill="none"
-        stroke="url(#aprincar-a)"
-        strokeWidth="13"
-        strokeLinecap="round"
-      />
-      <path
-        d="M27 29.8c0-2.2 2.4-3.5 4.2-2.3l12.4 8c1.7 1.1 1.7 3.6 0 4.7l-12.4 8A2.8 2.8 0 0 1 27 45.9V29.8Z"
-        fill="#FBBF24"
-      />
-    </svg>
+      style={{ objectFit: 'contain', ...style }}
+      data-aprincar-brand="approved-v2"
+      className="aprincar-brand-mark"
+    />
   );
 }
 
-const letters = [
-  ['A', APRINCAR_COLORS.navy],
-  ['p', APRINCAR_COLORS.navy],
-  ['r', APRINCAR_COLORS.navy],
-  ['i', APRINCAR_COLORS.blue],
-  ['n', APRINCAR_COLORS.blue],
-  ['c', APRINCAR_COLORS.blue],
-  ['a', APRINCAR_COLORS.blue],
-  ['r', APRINCAR_COLORS.blue],
-] as const;
-
 export function Brand({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
+  const width = compact ? 154 : 205;
   return (
-    <Group gap={9} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v1">
-      <BrandMark size={compact ? 38 : 48} />
-      <div className="aprincar-brand-copy">
-        <span
-          aria-label="Aprincar"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'baseline',
-            fontFamily: '"Poppins", Inter, system-ui, sans-serif',
-            fontSize: compact ? 23 : 29,
-            fontWeight: 950,
-            lineHeight: 1,
-            letterSpacing: '-0.05em',
-          }}
-        >
-          {letters.map(([letter, color], index) => (
-            <span
-              key={`${letter}-${index}`}
-              className="aprincar-wordmark-letter"
-              style={{ color: light ? '#fff' : color }}
-              aria-hidden="true"
-            >
-              {letter}
-            </span>
-          ))}
-        </span>
+    <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v2">
+      <div className={`aprincar-brand-static ${light ? 'force-light' : ''}`}>
+        <img
+          src={`${import.meta.env.BASE_URL}brand/logo-horizontal.svg`}
+          width={width}
+          height={Math.round(width * (195 / 745))}
+          alt="Aprincar"
+          className="aprincar-brand-logo"
+        />
         {!compact && (
           <Text size="xs" c={light ? 'gray.2' : 'dimmed'} mt={3} fw={650}>
             Brincar hoje. Descobrir sempre.

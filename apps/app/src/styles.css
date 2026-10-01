@@ -4404,3 +4404,30 @@ a {
     width: 64%;
   }
 }
+
+
+/* APPROVED BOARD — canonical static logo assets */
+.aprincar-brand-static {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.aprincar-brand-logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+.aprincar-brand-mark {
+  display: block;
+  object-fit: contain;
+}
+.approved-mobile-topbar .aprincar-brand-logo {
+  width: 154px;
+  height: auto;
+}
+.approved-topbar .aprincar-brand-logo {
+  width: 176px;
+  height: auto;
+}
