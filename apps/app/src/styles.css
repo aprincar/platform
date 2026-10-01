@@ -4400,7 +4400,6 @@ a {
   }
 }
 
-
 /* APPROVED BOARD — canonical static logo assets */
 .aprincar-brand-static {
   display: inline-flex;
@@ -4426,7 +4425,6 @@ a {
   width: 176px;
   height: auto;
 }
-
 
 /* approved-v2 uses real transparent assets; no blend/mask workaround is allowed */
 .approved-hero-visual .approved-mascot,
