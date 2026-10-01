@@ -178,6 +178,20 @@ jobs:
           canvas.resize((192,192), Image.Resampling.LANCZOS).save(icons / 'icon-192.png', optimize=True)
           canvas.resize((512,512), Image.Resampling.LANCZOS).save(icons / 'icon-512.png', optimize=True)
 
+          # Copy the same canonical identity to Hub because @aprincar/ui is shared.
+          hub_brand = root / 'apps/hub/public/brand'
+          hub_brand.mkdir(parents=True, exist_ok=True)
+          for name in [
+              'mascot-approved.webp',
+              'mascot-approved.png',
+              'logo-horizontal-approved.png',
+              'logo-wordmark-approved.png',
+              'logo-symbol-approved.png',
+              'logo-horizontal-approved-dark.png',
+              'app-icon-approved.png',
+          ]:
+              (hub_brand / name).write_bytes((brand / name).read_bytes())
+
           # Hard gates: canonical assets must actually contain transparency.
           for path in [
               brand / 'mascot-approved.webp',
