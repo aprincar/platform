@@ -160,6 +160,14 @@ jobs:
           )
           dark = alpha_crop(dark)
           dark.save(brand / 'logo-horizontal-approved-dark.png', optimize=True)
+          dark_compact = dark.copy()
+          dcp = dark_compact.load()
+          for y in range(min(66, dark_compact.height), dark_compact.height):
+              for x in range(min(105, dark_compact.width), dark_compact.width):
+                  r,g,b,a = dcp[x,y]
+                  dcp[x,y] = (r,g,b,0)
+          dark_compact = alpha_crop(dark_compact)
+          dark_compact.save(brand / 'logo-wordmark-approved-dark.png', optimize=True)
 
           # Approved app icon/favicon from the icon specimen in the board.
           icon = board.crop((868, 435, 1005, 558))
@@ -188,6 +196,7 @@ jobs:
               'logo-wordmark-approved.png',
               'logo-symbol-approved.png',
               'logo-horizontal-approved-dark.png',
+              'logo-wordmark-approved-dark.png',
               'app-icon-approved.png',
           ]:
               (hub_brand / name).write_bytes((brand / name).read_bytes())
