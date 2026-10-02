@@ -22,98 +22,60 @@ import {
 } from 'lucide-react';
 
 export const APRINCAR_COLORS = {
-  bg: '#F7F7FB',
+  bg: '#F8FBFF',
   surface: '#FFFFFF',
-  surfaceMuted: '#EEF1F7',
-  text: '#20263A',
-  muted: '#6B7280',
-  border: '#DEE3EE',
-  blue: '#4F6EF7',
-  blueStrong: '#3B55D9',
-  sun: '#FFC83D',
-  yellow: '#FFC83D',
-  orange: '#FF9F43',
-  leaf: '#2FC98F',
-  coral: '#FF6B6B',
-  purple: '#8B6FF7',
-  purpleSoft: '#F1EEFF',
-  navy: '#17213D',
-  dark: '#111827',
+  surfaceMuted: '#EFF6FF',
+  text: '#0F172A',
+  muted: '#64748B',
+  border: '#DCE8F7',
+  blue: '#2563EB',
+  blueStrong: '#1D4ED8',
+  secondary: '#0EA5E9',
+  sun: '#FBBF24',
+  yellow: '#FBBF24',
+  orange: '#F59E0B',
+  leaf: '#10B981',
+  coral: '#EF4444',
+  purple: '#7C3AED',
+  purpleSoft: '#F3E8FF',
+  navy: '#0F172A',
+  dark: '#07142E',
 } as const;
 
 export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProperties }) {
   return (
-    <svg
+    <img
+      src={`${import.meta.env.BASE_URL}brand/logo-symbol-approved.png`}
       width={size}
-      height={size}
-      viewBox="0 0 64 64"
+      height={Math.round(size * 0.66)}
       aria-hidden="true"
-      style={style}
-      data-aprincar-brand="portal-v4"
-    >
-      <g id="aprincar-portal">
-        <path
-          d="M12.8 48.6 26.1 16.2c2.1-5.1 9.3-5.1 11.4 0l13.7 32.4c2.3 5.5-1.7 11.4-7.7 11.4H20.6c-6 0-10.1-5.9-7.8-11.4Z"
-          fill={APRINCAR_COLORS.blue}
-        />
-        <path
-          d="M27.1 28.3c0-1.4 1.6-2.2 2.8-1.5l13.2 8.3a1.8 1.8 0 0 1 0 3L30 46.3a1.8 1.8 0 0 1-2.8-1.5V28.3Z"
-          fill="#FFFFFF"
-        />
-        <circle cx="47.2" cy="15.5" r="6.3" fill={APRINCAR_COLORS.sun} />
-        <path
-          d="m14 18.2 2.3 4.3 4.4 2.2-4.4 2.2-2.3 4.3-2.2-4.3-4.4-2.2 4.4-2.2 2.2-4.3Z"
-          fill={APRINCAR_COLORS.coral}
-        />
-      </g>
-    </svg>
+      style={{ objectFit: 'contain', ...style }}
+      data-aprincar-brand="approved-v3"
+      className="aprincar-brand-mark"
+    />
   );
 }
 
-const letters = [
-  ['A', APRINCAR_COLORS.navy],
-  ['p', APRINCAR_COLORS.navy],
-  ['r', APRINCAR_COLORS.navy],
-  ['i', APRINCAR_COLORS.blue],
-  ['n', APRINCAR_COLORS.blue],
-  ['c', APRINCAR_COLORS.blue],
-  ['a', APRINCAR_COLORS.blue],
-  ['r', APRINCAR_COLORS.blue],
-] as const;
-
 export function Brand({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
+  const width = compact ? 162 : 205;
+  const lightAsset = 'logo-horizontal-approved.png';
+  const darkAsset = 'logo-horizontal-approved-dark.png';
   return (
-    <Group gap={9} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="portal-v4">
-      <BrandMark size={compact ? 38 : 48} />
-      <div className="aprincar-brand-copy">
-        <span
-          aria-label="Aprincar"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'baseline',
-            fontFamily: 'ui-rounded, "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif',
-            fontSize: compact ? 23 : 29,
-            fontWeight: 950,
-            lineHeight: 1,
-            letterSpacing: '-0.05em',
-          }}
-        >
-          {letters.map(([letter, color], index) => (
-            <span
-              key={`${letter}-${index}`}
-              className="aprincar-wordmark-letter"
-              style={{ color: light ? '#fff' : color }}
-              aria-hidden="true"
-            >
-              {letter}
-            </span>
-          ))}
-        </span>
-        {!compact && (
-          <Text size="xs" c={light ? 'gray.2' : 'dimmed'} mt={3} fw={650}>
-            Aprender acontece brincando.
-          </Text>
-        )}
+    <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v3">
+      <div className={`aprincar-brand-static ${light ? 'force-light' : ''}`}>
+        <img
+          src={`${import.meta.env.BASE_URL}brand/${lightAsset}`}
+          width={width}
+          alt="Aprincar"
+          className="aprincar-brand-logo aprincar-brand-logo-light"
+        />
+        <img
+          src={`${import.meta.env.BASE_URL}brand/${darkAsset}`}
+          width={width}
+          alt="Aprincar"
+          className="aprincar-brand-logo aprincar-brand-logo-dark"
+          aria-hidden={!light}
+        />
       </div>
     </Group>
   );
@@ -122,90 +84,21 @@ export function Brand({ compact = false, light = false }: { compact?: boolean; l
 export function AprincarMascot({
   size = 240,
   className,
-  withPencil = true,
 }: {
   size?: number;
   className?: string;
   withPencil?: boolean;
 }) {
   return (
-    <svg
-      viewBox="0 0 260 270"
+    <img
+      src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
       width={size}
-      height={Math.round(size * 1.04)}
+      height={Math.round(size * 1.78)}
       className={className}
-      aria-hidden="true"
-      data-aprincar-brand="portal-v4"
-    >
-      <g id="aprincar-portal-mascot">
-        <ellipse cx="130" cy="244" rx="70" ry="12" fill={APRINCAR_COLORS.navy} opacity=".1" />
-        <path
-          d="M62 142c0-58 26-101 68-101s68 43 68 101v35c0 39-29 67-68 67s-68-28-68-67v-35Z"
-          fill={APRINCAR_COLORS.blue}
-        />
-        <path
-          d="M82 143c0-35 19-60 48-60s48 25 48 60v23c0 30-19 49-48 49s-48-19-48-49v-23Z"
-          fill="#FFFFFF"
-          opacity=".96"
-        />
-        <circle cx="109" cy="127" r="7" fill={APRINCAR_COLORS.navy} />
-        <circle cx="151" cy="127" r="7" fill={APRINCAR_COLORS.navy} />
-        <circle cx="111.5" cy="124.5" r="2.1" fill="#FFFFFF" />
-        <circle cx="153.5" cy="124.5" r="2.1" fill="#FFFFFF" />
-        <path
-          d="M112 148c12 12 24 12 36 0"
-          fill="none"
-          stroke={APRINCAR_COLORS.navy}
-          strokeWidth="4.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M115 167c0-3 3.3-4.8 5.9-3.2l22.2 13.8a3.8 3.8 0 0 1 0 6.4l-22.2 13.8c-2.6 1.6-5.9-.2-5.9-3.2V167Z"
-          fill={APRINCAR_COLORS.blue}
-        />
-        <circle cx="174" cy="48" r="13" fill={APRINCAR_COLORS.sun} />
-        <path
-          d="m79 53 4.2 7.6 7.6 4.2-7.6 4.2-4.2 7.6-4.2-7.6-7.6-4.2 7.6-4.2 4.2-7.6Z"
-          fill={APRINCAR_COLORS.coral}
-        />
-        <path
-          d="M62 155c-19 2-31 11-39 26"
-          fill="none"
-          stroke={APRINCAR_COLORS.coral}
-          strokeWidth="13"
-          strokeLinecap="round"
-        />
-        <path
-          d="M198 155c19 2 31 11 39 26"
-          fill="none"
-          stroke={APRINCAR_COLORS.leaf}
-          strokeWidth="13"
-          strokeLinecap="round"
-        />
-        <path
-          d="M100 232c-6 10-14 17-25 21"
-          fill="none"
-          stroke={APRINCAR_COLORS.navy}
-          strokeWidth="12"
-          strokeLinecap="round"
-        />
-        <path
-          d="M160 232c6 10 14 17 25 21"
-          fill="none"
-          stroke={APRINCAR_COLORS.navy}
-          strokeWidth="12"
-          strokeLinecap="round"
-        />
-        {withPencil && (
-          <g transform="translate(211 108) rotate(18)">
-            <rect x="0" y="0" width="13" height="76" rx="6.5" fill={APRINCAR_COLORS.sun} />
-            <rect x="0" y="0" width="13" height="17" rx="6.5" fill={APRINCAR_COLORS.coral} />
-            <path d="M0 76h13L6.5 89Z" fill="#E7B887" />
-            <path d="m4 84 2.5 5 2.5-5Z" fill={APRINCAR_COLORS.navy} />
-          </g>
-        )}
-      </g>
-    </svg>
+      alt="Mascote Aprincar: menino sorrindo e acenando"
+      data-aprincar-brand="approved-v3"
+      style={{ objectFit: 'contain' }}
+    />
   );
 }
 

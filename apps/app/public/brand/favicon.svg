@@ -1,8 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title" data-brand-version="4">
-  <title id="title">Aprincar</title>
-  <g id="aprincar-portal">
-    <path d="M12.8 48.6 26.1 16.2c2.1-5.1 9.3-5.1 11.4 0l13.7 32.4c2.3 5.5-1.7 11.4-7.7 11.4H20.6c-6 0-10.1-5.9-7.8-11.4Z" fill="#4F6EF7"/>
-    <path d="M27.1 28.3c0-1.4 1.6-2.2 2.8-1.5l13.2 8.3a1.8 1.8 0 0 1 0 3L30 46.3a1.8 1.8 0 0 1-2.8-1.5V28.3Z" fill="#fff"/>
-    <circle cx="47.2" cy="15.5" r="6.3" fill="#FFC83D"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 195" role="img" data-brand-version="approved-v2"><title>Símbolo Aprincar</title>
+<defs><linearGradient id="symbolBlue" x1="0" y1="0" x2="210" y2="190"><stop stop-color="#2391FF"/><stop offset=".55" stop-color="#2563EB"/><stop offset="1" stop-color="#1755D9"/></linearGradient></defs>
+<path d="M 78 15 L 59 34 L 34 78 L 6 132 L 1 146 L 1 162 L 8 176 L 16 183 L 29 188 L 57 187 L 65 180 L 70 126 L 75 94 L 79 79 L 89 67 L 98 63 L 109 63 L 125 72 L 153 93 L 163 103 L 167 112 L 168 117 L 167 126 L 162 136 L 153 145 L 134 156 L 136 179 L 140 186 L 145 190 L 158 193 L 181 193 L 196 186 L 203 179 L 209 167 L 210 148 L 203 127 L 169 46 L 160 30 L 149 18 L 142 13 L 122 6 L 101 6 L 90 9 Z" fill="url(#symbolBlue)"/>
+<path d="M 107 86 L 103 86 L 102 87 L 101 87 L 98 90 L 98 91 L 97 92 L 97 96 L 96 97 L 96 108 L 95 109 L 95 118 L 94 119 L 94 130 L 93 131 L 93 140 L 92 141 L 92 149 L 93 150 L 93 151 L 95 153 L 96 153 L 97 154 L 102 154 L 103 153 L 104 153 L 105 152 L 106 152 L 108 150 L 109 150 L 110 149 L 111 149 L 113 147 L 114 147 L 116 145 L 117 145 L 118 144 L 119 144 L 121 142 L 122 142 L 124 140 L 125 140 L 126 139 L 127 139 L 129 137 L 130 137 L 131 136 L 132 136 L 134 134 L 135 134 L 137 132 L 138 132 L 139 131 L 140 131 L 142 129 L 143 129 L 145 127 L 146 127 L 146 126 L 148 124 L 148 122 L 149 121 L 149 117 L 148 116 L 148 115 L 147 114 L 147 113 L 146 112 L 145 112 L 143 110 L 142 110 L 140 108 L 139 108 L 136 105 L 135 105 L 133 103 L 132 103 L 131 102 L 130 102 L 128 100 L 127 100 L 124 97 L 123 97 L 121 95 L 120 95 L 118 93 L 117 93 L 114 90 L 113 90 L 111 88 L 110 88 L 109 87 L 108 87 Z" fill="#FBBF24"/>
 </svg>

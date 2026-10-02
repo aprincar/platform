@@ -1,186 +1,105 @@
-import { Button, Text } from '@mantine/core';
-import { ArrowRight, Compass, Library, Sparkles } from 'lucide-react';
-import { Link, useNavigate } from '@tanstack/react-router';
-import { AprincarMascot, MissionCard, WorldCard } from '@aprincar/ui';
+import { Button } from '@mantine/core';
+import { ArrowRight, BarChart3, Gamepad2 } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { AprincarMascot } from '@aprincar/ui';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
-import { WORLDS, MISSIONS, type MissionItem } from '../worlds';
-import { useState } from 'react';
+import { GAME_FAMILIES } from '../game-families';
+
+const HOME_FAMILY_LABELS: Record<string, string> = {
+  quantities: 'Números',
+  literacy: 'Letras',
+  logic: 'Lógica',
+  creative: 'Cores',
+  spatial: 'Formas',
+};
 
 export function Home() {
-  const { profile, registry, libraryIds } = useAppStore();
-  const navigate = useNavigate();
+  const { profile, registry } = useAppStore();
   const age = profile?.age ?? 5;
-
-  const [missionIndex, setMissionIndex] = useState(0);
-  const [completedMissions, setCompletedMissions] = useState<Set<string>>(new Set());
-
-  const currentMission: MissionItem = MISSIONS[missionIndex % MISSIONS.length] ?? MISSIONS[0]!;
-  const isCurrentMissionDone = completedMissions.has(currentMission.id);
-
-  const handleCompleteMission = () => {
-    setCompletedMissions((prev) => new Set(prev).add(currentMission.id));
-  };
-
-  const handleNextMission = () => {
-    setMissionIndex((prev) => prev + 1);
-  };
-
-  // Find games fitting age and child preferences
   const fitting = registry.filter(
-    (e) => age >= (e.ageGuidance?.min ?? 2) - 1 && age <= (e.ageGuidance?.max ?? 10) + 1,
+    (entry) => age >= (entry.ageGuidance?.min ?? 2) - 1 && age <= (entry.ageGuidance?.max ?? 10) + 1,
   );
-  const featured = (fitting.length ? fitting : registry).slice(0, 6);
-  const library = registry
-    .filter((e) => libraryIds.has(e.id) && !featured.some((f) => f.id === e.id))
-    .slice(0, 5);
+  const featured = (fitting.length ? fitting : registry).slice(0, 4);
 
   return (
-    <div className="aprincar-page">
-      {/* Hero child section */}
-      <section className="child-hero aprincar-panel">
-        <div className="child-hero-main">
-          <div className="child-eyebrow">Aprender acontece brincando</div>
-          <h1>
-            Oi, {profile?.name}!{' '}
-            <span className="hero-wave" aria-hidden="true">
-              ✦
-            </span>
-          </h1>
-          <p className="hero-question">Bora explorar uma ideia nova?</p>
-          <p className="hero-description">
-            Conte, desenhe, descubra padrões, experimente formas e crie do seu jeito. Cada brincadeira abre um
-            caminho diferente para aprender.
-          </p>
-          <div className="hero-actions">
-            <Button
-              component={Link}
-              to="/discover"
-              className="ap-primary hero-cta"
-              rightSection={<ArrowRight size={18} />}
-            >
-              Começar a brincar
-            </Button>
-            <Button
-              component={Link}
-              to="/library"
-              className="ap-secondary"
-              leftSection={<Library size={18} />}
-            >
-              Minha biblioteca
-            </Button>
-          </div>
+    <div className="aprincar-page approved-home">
+      <section className="approved-home-hero">
+        <div className="approved-hero-copy">
+          <div className="approved-hero-kicker">Brincar hoje. Descobrir sempre.</div>
+          <h1>Descobrir é uma grande aventura!</h1>
+          <p>Jogos educativos para um futuro com mais possibilidades.</p>
+          <Button
+            component={Link}
+            to="/discover"
+            className="approved-primary-cta"
+            rightSection={<ArrowRight size={18} />}
+          >
+            Explorar jogos
+          </Button>
         </div>
-        <div className="child-hero-side" aria-hidden="true">
-          <div className="hero-orbit-chip hero-orbit-one">Jogar</div>
-          <div className="hero-orbit-chip hero-orbit-two">Criar</div>
-          <div className="hero-orbit-chip hero-orbit-three">Descobrir</div>
-          <AprincarMascot size={250} className="hero-star-mascot" />
+        <div className="approved-hero-visual">
+          <span className="approved-blob approved-blob-one" />
+          <span className="approved-blob approved-blob-two" />
+          <span className="approved-blob approved-blob-three" />
+          <AprincarMascot size={230} className="approved-mascot" />
         </div>
       </section>
 
-      {/* Featured shelf */}
-      <section>
-        <div className="section-head">
+      <section className="approved-section">
+        <div className="approved-section-head">
           <div>
-            <h2>Destaques para você</h2>
-            <p>Brincadeiras que combinam com sua idade e seu momento.</p>
+            <span>Escolha um caminho</span>
+            <h2>Categorias em destaque</h2>
           </div>
-          <Button component={Link} to="/discover" variant="subtle" color="blue" className="section-more">
-            Ver todos
+          <Button component={Link} to="/worlds" variant="subtle" className="approved-text-action">
+            Ver todas <ArrowRight size={16} />
           </Button>
         </div>
-        <div className="game-shelf" style={{ marginTop: 14 }}>
-          {featured.map((e) => (
-            <GameCard key={e.id} entry={e} compact />
+        <div className="approved-category-grid">
+          {GAME_FAMILIES.slice(0, 4).map((family) => (
+            <Link
+              key={family.id}
+              to="/world/$worldId"
+              params={{ worldId: family.id }}
+              className={`approved-category-card category-${family.id}`}
+            >
+              <div className="approved-category-icon">{family.icon}</div>
+              <strong>{HOME_FAMILY_LABELS[family.id] ?? family.title}</strong>
+              <span>{family.summary}</span>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* Continue exploring library */}
-      {library.length > 0 && (
-        <section>
-          <div className="section-head">
-            <div>
-              <h2>Continue brincando</h2>
-              <p>Sua coleção de favoritos por perto.</p>
-            </div>
-            <Button component={Link} to="/library" variant="subtle" color="blue" className="section-more">
-              Abrir biblioteca
-            </Button>
-          </div>
-          <div className="game-shelf" style={{ marginTop: 14 }}>
-            {library.map((e) => (
-              <GameCard key={e.id} entry={e} compact />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Discovery families */}
-      <section>
-        <div className="section-head">
+      <section className="approved-section">
+        <div className="approved-section-head">
           <div>
-            <h2>Mundos de Descoberta</h2>
-            <p>Cinco caminhos com objetivos claros, sem transformar brincar em lição de casa.</p>
+            <span>Para começar agora</span>
+            <h2>Jogos educativos</h2>
           </div>
+          <Button component={Link} to="/discover" variant="subtle" className="approved-text-action">
+            Ver catálogo <Gamepad2 size={16} />
+          </Button>
         </div>
-        <div className="worlds-grid" style={{ marginTop: 16 }}>
-          {WORLDS.map((w) => (
-            <WorldCard
-              key={w.id}
-              id={w.id}
-              title={w.title}
-              icon={w.icon}
-              color={w.color}
-              description={w.childSummary}
-              onClick={() => navigate({ to: '/world/$worldId', params: { worldId: w.id } })}
-            />
+        <div className="approved-featured-grid">
+          {featured.map((entry) => (
+            <GameCard key={entry.id} entry={entry} compact />
           ))}
         </div>
       </section>
 
-      {/* Off-screen mission */}
-      <section>
-        <div className="section-head">
-          <div>
-            <h2>Missão fora da tela</h2>
-            <p>Brincadeiras e desafios para fazer no mundo real com a família.</p>
-          </div>
-          <Button component={Link} to="/missions" variant="subtle" color="blue" className="section-more">
-            Ver todas as missões
-          </Button>
+      <section className="approved-progress-banner">
+        <div className="approved-progress-icon">
+          <BarChart3 size={28} />
         </div>
-        <div style={{ marginTop: 14 }}>
-          <MissionCard
-            id={currentMission.id}
-            title={currentMission.title}
-            prompt={currentMission.prompt}
-            category={currentMission.category}
-            completed={isCurrentMissionDone}
-            onComplete={handleCompleteMission}
-            onNext={handleNextMission}
-          />
-        </div>
-      </section>
-
-      {/* Local-first banner */}
-      <section className="aprincar-panel local-first-card">
-        <Sparkles className="local-first-icon" />
         <div>
-          <Text fw={850}>Seu espaço continua seu, mesmo sem internet.</Text>
-          <Text size="sm" c="dimmed">
-            Perfis e progresso ficam salvos com segurança neste dispositivo.
-          </Text>
+          <span>Seu progresso</span>
+          <strong>Veja o que você já explorou</strong>
+          <p>O Aprincar acompanha evidências de aprendizagem sem transformar brincadeira em ranking.</p>
         </div>
-        <Button
-          component={Link}
-          to="/discover"
-          variant="subtle"
-          color="blue"
-          leftSection={<Compass size={17} />}
-        >
-          Explorar
+        <Button component={Link} to="/progress" className="approved-secondary-cta">
+          Ver progresso
         </Button>
       </section>
     </div>

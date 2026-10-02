@@ -11,16 +11,17 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
+  BarChart3,
+  Bell,
   Check,
-  Compass,
+  Gamepad2,
+  Globe2,
   Home,
-  Library,
-  MoreHorizontal,
+  Search,
   Settings,
   ShieldCheck,
-  Sparkles,
   UserPlus,
-  Users,
+  UserRound,
   Wifi,
   WifiOff,
 } from 'lucide-react';
@@ -30,18 +31,12 @@ import { useEffect, useState } from 'react';
 import { useAppStore } from './app-store';
 import { Onboarding } from './pages/Onboarding';
 
-const desktopChildItems = [
+const childItems = [
   ['/', 'Início', Home],
-  ['/discover', 'Jogos', Compass],
-  ['/library', 'Biblioteca', Library],
-  ['/missions', 'Missões', Sparkles],
-] as const;
-
-const mobileChildItems = [
-  ['/', 'Início', Home],
-  ['/discover', 'Jogos', Compass],
-  ['/library', 'Biblioteca', Library],
-  ['/more', 'Mais', MoreHorizontal],
+  ['/discover', 'Jogos', Gamepad2],
+  ['/worlds', 'Mundos', Globe2],
+  ['/progress', 'Progresso', BarChart3],
+  ['/profile', 'Perfil', UserRound],
 ] as const;
 
 export function RootLayout() {
@@ -71,22 +66,14 @@ export function RootLayout() {
     closeModal();
   };
 
-  if (!initialized) {
-    return null;
-  }
-
-  // If no profile exists yet, show onboarding
-  if (!profile && path !== '/onboarding') {
-    return <Onboarding />;
-  }
-
-  if (playing) {
+  if (!initialized) return null;
+  if (!profile && path !== '/onboarding') return <Onboarding />;
+  if (playing)
     return (
       <div className="game-route-shell">
         <Outlet />
       </div>
     );
-  }
 
   const profileMenu = (mobile = false) => (
     <Menu shadow="md" width={250} position="bottom-end" radius="lg">
@@ -95,10 +82,16 @@ export function RootLayout() {
           aria-label={mobile ? 'Abrir perfil e controles' : 'Menu de perfis'}
           className={`profile-button ${mobile ? 'profile-button-mobile' : ''}`}
         >
-          <div className="profile-avatar">{profile?.avatar ?? '⭐'}</div>
+          <div className="profile-avatar approved-profile-avatar" aria-hidden="true">
+            <img
+              src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
+              alt=""
+              className="approved-profile-avatar-image"
+            />
+          </div>
           {!mobile && (
             <div className="profile-copy">
-              <Text size="sm" fw={850} lh={1.1}>
+              <Text size="sm" fw={800} lh={1.1}>
                 {profile?.name ?? 'Perfil'}
               </Text>
               <Text size="xs" c="dimmed" mt={3} className="profile-network">
@@ -139,41 +132,52 @@ export function RootLayout() {
   );
 
   return (
-    <div className="app-bg">
-      <header className="aprincar-topbar desktop-topbar">
+    <div className="app-bg approved-app">
+      <header className="aprincar-topbar desktop-topbar approved-topbar">
         <div className="aprincar-topbar-inner">
           <Link to="/" className="brand-link" aria-label="Aprincar - Início">
             <Brand compact />
           </Link>
           <nav className="aprincar-nav" aria-label="Navegação principal">
-            {desktopChildItems.map(([to, label, Icon]) => (
-              <Link key={to} to={to} className={`aprincar-nav-link ${path === to ? 'active' : ''}`}>
-                <Icon size={18} />
-                <span>{label}</span>
-              </Link>
-            ))}
+            {childItems.map(([to, label, Icon]) => {
+              const active = to === '/' ? path === '/' : path.startsWith(to);
+              return (
+                <Link key={to} to={to} className={`aprincar-nav-link ${active ? 'active' : ''}`}>
+                  <Icon size={18} />
+                  <span>{label}</span>
+                </Link>
+              );
+            })}
           </nav>
+          <Link to="/discover" className="approved-search-link" aria-label="Buscar jogos">
+            <Search size={19} />
+          </Link>
           {profileMenu(false)}
         </div>
       </header>
 
-      <header className="mobile-topbar">
+      <header className="mobile-topbar approved-mobile-topbar">
         <Link to="/" className="brand-link" aria-label="Aprincar - Início">
           <Brand compact />
         </Link>
-        {profileMenu(true)}
+        <div className="approved-mobile-actions">
+          <Link to="/discover" className="approved-icon-button" aria-label="Buscar jogos">
+            <Search size={20} />
+          </Link>
+          {profileMenu(true)}
+        </div>
       </header>
 
-      <main className="aprincar-shell">
+      <main className="aprincar-shell approved-shell">
         <Outlet />
       </main>
 
-      <nav className="mobile-bottom-nav" aria-label="Navegação infantil">
-        {mobileChildItems.map(([to, label, Icon]) => {
-          const isActive = to === '/' ? path === '/' : path.startsWith(to);
+      <nav className="mobile-bottom-nav approved-bottom-nav" aria-label="Navegação infantil">
+        {childItems.map(([to, label, Icon]) => {
+          const active = to === '/' ? path === '/' : path.startsWith(to);
           return (
-            <Link key={to} to={to} className={`mobile-nav-link ${isActive ? 'active' : ''}`}>
-              <Icon size={22} />
+            <Link key={to} to={to} className={`mobile-nav-link ${active ? 'active' : ''}`}>
+              <Icon size={21} strokeWidth={2.2} />
               <span>{label}</span>
             </Link>
           );

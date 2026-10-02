@@ -4,51 +4,32 @@ import fs from 'node:fs';
 
 const ui = fs.readFileSync(new URL('../ui/src/index.tsx', import.meta.url), 'utf8');
 const brandRoot = new URL('../../apps/app/public/brand/', import.meta.url);
-const mark = fs.readFileSync(new URL('aprincar-mark.svg', brandRoot), 'utf8');
-const logo = fs.readFileSync(new URL('aprincar-logo.svg', brandRoot), 'utf8');
-const symbol = fs.readFileSync(new URL('logo-symbol.svg', brandRoot), 'utf8');
-const horizontal = fs.readFileSync(new URL('logo-horizontal.svg', brandRoot), 'utf8');
-const stacked = fs.readFileSync(new URL('logo-stacked.svg', brandRoot), 'utf8');
-const appIcon = fs.readFileSync(new URL('app-icon.svg', brandRoot), 'utf8');
-const favicon = fs.readFileSync(new URL('favicon.svg', brandRoot), 'utf8');
-const monochrome = fs.readFileSync(new URL('monochrome.svg', brandRoot), 'utf8');
+const styles = fs.readFileSync(new URL('../../apps/app/src/styles.css', import.meta.url), 'utf8');
 const guidelines = fs.readFileSync(new URL('../../docs/design/BRAND_GUIDELINES.md', import.meta.url), 'utf8');
-const icon192 = fs.readFileSync(new URL('../../apps/app/public/icons/icon-192.svg', import.meta.url), 'utf8');
-const icon512 = fs.readFileSync(new URL('../../apps/app/public/icons/icon-512.svg', import.meta.url), 'utf8');
 
-test('Brand System v4 uses the portal identity consistently', () => {
-  assert.match(ui, /data-aprincar-brand=["']portal-v4["']/);
-  assert.match(ui, /AprincarMascot/);
-  assert.match(ui, /aprincar-wordmark-letter/);
-  assert.match(ui, /#4F6EF7/i);
-  assert.match(ui, /#FFC83D/i);
-  assert.doesNotMatch(ui, /data-aprincar-brand=["']star-v3["']/);
+const approvedAssets = [
+  'mascot-approved.webp',
+  'mascot-approved.png',
+  'logo-horizontal-approved.png',
+  'logo-wordmark-approved.png',
+  'logo-symbol-approved.png',
+  'logo-horizontal-approved-dark.png',
+  'app-icon-approved.png',
+];
 
-  for (const asset of [mark, logo, symbol, horizontal, stacked, appIcon, favicon, icon192, icon512]) {
-    assert.match(asset, /data-brand-version=["']4["']/);
-    assert.match(asset, /aprincar-portal/i);
-    assert.match(asset, /#4F6EF7/i);
+test('approved Aprincar identity uses only canonical board-derived runtime assets', () => {
+  assert.match(ui, /data-aprincar-brand=["']approved-v3["']/);
+  assert.match(ui, /logo-symbol-approved\.png/);
+  assert.match(ui, /logo-wordmark-approved\.png/);
+  assert.match(ui, /logo-horizontal-approved\.png/);
+  assert.match(ui, /mascot-approved\.webp/);
+  assert.doesNotMatch(ui, /logo-horizontal\.svg/);
+  assert.doesNotMatch(ui, /logo-symbol\.svg/);
+  for (const name of approvedAssets) {
+    const stat = fs.statSync(new URL(name, brandRoot));
+    assert.ok(stat.size > 1000, `${name}: canonical asset is unexpectedly small`);
   }
-
-  for (const asset of [logo, horizontal, stacked]) {
-    assert.match(asset, /Aprincar/);
-    assert.match(asset, /#17213D/i);
-    assert.match(asset, /#4F6EF7/i);
-  }
-
-  assert.match(monochrome, /data-brand-version=["']4["']/);
-  assert.match(monochrome, /aprincar-portal/i);
-  assert.match(monochrome, /#17213D/i);
-  assert.doesNotMatch(monochrome, /#FFC83D/i);
-
-  for (const required of [
-    'logo-symbol.svg',
-    'logo-horizontal.svg',
-    'logo-stacked.svg',
-    'app-icon.svg',
-    'favicon.svg',
-    'monochrome.svg',
-  ]) {
-    assert.match(guidelines, new RegExp(required.replace('.', '\\.')));
-  }
+  assert.doesNotMatch(styles, /mix-blend-mode:\s*multiply/i);
+  assert.doesNotMatch(styles, /mask-image:\s*linear-gradient/i);
+  assert.match(guidelines, /Brincar hoje\. Descobrir sempre\./i);
 });
