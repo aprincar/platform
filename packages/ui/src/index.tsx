@@ -57,8 +57,8 @@ export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProp
 }
 
 export function Brand({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
-  const width = compact ? 154 : 205;
-  const lightAsset = compact ? 'logo-wordmark-approved.png' : 'logo-horizontal-approved.png';
+  const width = compact ? 162 : 205;
+  const lightAsset = 'logo-horizontal-approved.png';
   const darkAsset = 'logo-horizontal-approved-dark.png';
   return (
     <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v3">
