@@ -73,6 +73,8 @@ A implementação desta branch deve reproduzir os boards aprovados pelo produto.
 
 ## Mascote e assets
 
+- [x] Mascote com alpha real e cantos transparentes, sem fundo retangular ou máscara CSS.
+
 - [x] Asset principal do mascote extraído da referência aprovada.
 - [ ] Expressões/poses futuras usam o mesmo personagem.
 - [ ] Frutas aprovadas: maçã, banana, uva, laranja, pera, morango, melancia, abacaxi, manga e kiwi.
