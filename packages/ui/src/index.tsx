@@ -45,9 +45,9 @@ export const APRINCAR_COLORS = {
 export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProperties }) {
   return (
     <img
-      src={`${import.meta.env.BASE_URL}brand/logo-symbol-approved.png`}
+      src={`${import.meta.env.BASE_URL}brand/logo-symbol.svg`}
       width={size}
-      height={Math.round(size * 0.66)}
+      height={Math.round(size * (195 / 220))}
       aria-hidden="true"
       style={{ objectFit: 'contain', ...style }}
       data-aprincar-brand="approved-v3"
@@ -58,8 +58,8 @@ export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProp
 
 export function Brand({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
   const width = compact ? 162 : 205;
-  const lightAsset = 'logo-horizontal-approved.png';
-  const darkAsset = 'logo-horizontal-approved-dark.png';
+  const lightAsset = 'logo-horizontal.svg';
+  const darkAsset = 'logo-horizontal-dark.svg';
   return (
     <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v3">
       <div className={`aprincar-brand-static ${light ? 'force-light' : ''}`}>
