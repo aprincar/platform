@@ -23,6 +23,14 @@ jobs:
               print(label,img.size)
               img.thumbnail((700,500))
               img.save(f'docs/design/reference/_inspect-{label}.webp','WEBP',quality=60)
+          source=Image.open('apps/app/public/brand/mascot-approved.png').convert('RGBA')
+          print('mascot original',source.size,source.getextrema()[3])
+          from PIL import ImageChops
+          rgb=Image.new('RGBA',source.size,'#233f7f')
+          raw=source.copy()
+          raw.putalpha(255)
+          raw.thumbnail((350,550))
+          raw.convert('RGB').save('docs/design/reference/_inspect-mascot-raw.webp','WEBP',quality=65)
           PY
       - name: Commit visual inspection files
         run: |
