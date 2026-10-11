@@ -1,0 +1,59 @@
+name: Prepare approved transparent mascot
+on:
+  push:
+    branches: [feat/approved-ui-1to1]
+    paths: [.github/workflows/prepare-approved-mascot.yml]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install segmentation dependencies
+        run: python -m pip install "rembg[cpu]>=2.0.60,<3" "Pillow>=10,<12"
+      - name: Remove background from intact approved boy source
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          from rembg import remove, new_session
+          import numpy as np
+          root = Path('apps/app/public/brand')
+          source = Image.open(root / 'mascot-source-approved.webp').convert('RGBA')
+          print('Original mascot dimensions', source.size)
+          enlarged = source.resize((source.width * 3, source.height * 3), Image.Resampling.LANCZOS)
+          output = remove(enlarged, session=new_session('u2netp'), post_process_mask=True)
+          output = output.convert('RGBA')
+          output.thumbnail((440, 770), Image.Resampling.LANCZOS)
+          arr = np.asarray(output)
+          alpha = arr[:,:,3]
+          h,w=alpha.shape
+          stats={'transparent':float(np.mean(alpha<10)),'center_face':int(alpha[int(h*.31),int(w*.50)]),'center_shirt':int(alpha[int(h*.62),int(w*.53)]),'corners':[int(alpha[0,0]),int(alpha[0,-1]),int(alpha[-1,0]),int(alpha[-1,-1])]}
+          print('Mascot segmentation stats', stats)
+          if not .16 < stats['transparent'] < .84: raise RuntimeError('Invalid alpha coverage')
+          if max(stats['corners']) > 20: raise RuntimeError('Background reaches a corner')
+          if stats['center_face'] < 190 or stats['center_shirt'] < 180: raise RuntimeError('Segmentation damaged face or shirt')
+          output.save(root / 'mascot-candidate.png', optimize=True)
+          output.save(root / 'mascot-candidate.webp', quality=88, method=6)
+          proof=Image.new('RGBA',(w*2,h))
+          for i,color in enumerate(('#F8FBFF','#0E2149')):
+              bg=Image.new('RGBA',(w,h),color)
+              bg.alpha_composite(output)
+              proof.alpha_composite(bg,(i*w,0))
+          proof.convert('RGB').save('docs/design/reference/_inspect-mascot-candidate.webp',quality=78,method=6)
+          PY
+      - name: Commit candidate and transparency proof
+        run: |
+          git config user.name "aprincar-brand"
+          git config user.email "actions@users.noreply.github.com"
+          git add apps/app/public/brand/mascot-candidate.png apps/app/public/brand/mascot-candidate.webp docs/design/reference/_inspect-mascot-candidate.webp
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "asset(brand): prepare human mascot alpha candidate"
+          git push origin HEAD:feat/approved-ui-1to1
