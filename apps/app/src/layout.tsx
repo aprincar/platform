@@ -84,7 +84,7 @@ export function RootLayout() {
         >
           <div className="profile-avatar approved-profile-avatar" aria-hidden="true">
             <img
-              src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
+              src={`${import.meta.env.BASE_URL}brand/mascot-approved-v4.webp`}
               alt=""
               className="approved-profile-avatar-image"
             />

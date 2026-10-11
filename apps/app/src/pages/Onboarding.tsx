@@ -53,9 +53,11 @@ export function Onboarding() {
         </aside>
         <main className="onboarding-form">
           <div className="onboarding-mobile-brand">
+            <div className="approved-onboarding-logo" aria-label="Marca Aprincar">
+              <Brand compact />
+            </div>
             <div className="approved-onboarding-mobile-hero">
               <div className="approved-onboarding-mobile-copy">
-                <Brand compact />
                 <strong>Descobrir é uma grande aventura!</strong>
                 <span>Jogos educativos para aprender brincando.</span>
               </div>

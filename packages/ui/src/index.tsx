@@ -91,7 +91,7 @@ export function AprincarMascot({
 }) {
   return (
     <img
-      src={`${import.meta.env.BASE_URL}brand/mascot-approved.webp`}
+      src={`${import.meta.env.BASE_URL}brand/mascot-approved-v4.webp`}
       width={size}
       height={Math.round(size * 1.78)}
       className={className}
