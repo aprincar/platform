@@ -1,9 +1,9 @@
-# Approved UI preview deployment
+# Publicação de prévia — Design System Aprincar
 
-This marker triggers a fresh GitHub Pages deployment of the approved visual preview.
+Este arquivo aciona um novo build Pages a partir da main, sem substituir a aplicação atual.
 
-- preview branch: `feat/approved-ui-1to1`
-- preview head: `3f6806225ed9d0fe84acc632deab41c3caeb175e`
-- brand: approved horizontal logo used by compact/header variants
-- mascot: canonical asset rebuilt with real alpha transparency
-- date: 2026-10-01
+- Branch de prévia: `feat/approved-ui-1to1`
+- HEAD da prévia: `b10577ececb4a8171f7ca44ead8c24a7b2b25429`
+- Correção: logo e mascote aprovados, arquivos v4 com canal alfa real e identidade unificada entre App e Hub
+- Integridade: `docs/design/APPROVED_BRAND_ALPHA_QA.json`
+- Publicação solicitada em: 2026-10-11
