@@ -109,6 +109,30 @@ jobs:
 
           cp site/app/registry.json site/registry.json
           cp canonical-games.json site/canonical-games.json
+
+          # The approved redesign lives beside production, never replaces it.
+          mkdir -p site/preview/approved-ui
+          (
+            cd .approved-ui-preview
+            npm run verify:official
+            VITE_BASE_PATH=/platform/preview/approved-ui/ npm run build -w @aprincar/app
+          )
+          cp -R .approved-ui-preview/apps/app/dist/. site/preview/approved-ui/
+          cp -R .approved-ui-preview/apps/app/public/extensions/. site/preview/approved-ui/extensions/
+
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const file='site/preview/approved-ui/registry.json';
+          const entries=JSON.parse(fs.readFileSync(file,'utf8'));
+          for(const entry of entries) {
+            for(const key of ['manifestUrl','entryUrl']) {
+              if(entry[key]?.startsWith('/extensions/'))
+                entry[key]='/platform/preview/approved-ui'+entry[key];
+            }
+          }
+          fs.writeFileSync(file,JSON.stringify(entries,null,2)+'\\n');
+          NODE
+          git -C .approved-ui-preview rev-parse HEAD > site/preview/approved-ui/preview-sha.txt
           cp .approved-ui-preview/canonical-games.json site/preview/canonical-games.json
           printf '%s\n' '${{ github.sha }}' > site/production-sha.txt
           printf '%s\n' "$(git -C .approved-ui-preview rev-parse HEAD)" > site/preview/approved-ui/preview-sha.txt
