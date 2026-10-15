@@ -68,8 +68,8 @@ export function ParentOffline() {
   };
 
   return (
-    <div className="aprincar-page">
-      <section className="section-head">
+    <div className="aprincar-page approved-parent-page">
+      <section className="section-head approved-parent-header">
         <div>
           <Button
             variant="subtle"
@@ -80,7 +80,7 @@ export function ParentOffline() {
           >
             Voltar para Painel do Responsável
           </Button>
-          <div className="child-eyebrow">Armazenamento & Funcionamento Local</div>
+          <div className="approved-kicker">Armazenamento & Funcionamento Local</div>
           <h2 style={{ fontSize: 34 }}>Gerenciador Offline</h2>
           <p>
             Controle quais jogos ficam baixados neste dispositivo para brincar sem conexão com a internet.
@@ -90,7 +90,7 @@ export function ParentOffline() {
 
       {/* KPI stats */}
       <div className="parent-kpis">
-        <div className="parent-card">
+        <div className="parent-card approved-parent-card">
           <Text size="sm" c="dimmed">
             Jogos baixados
           </Text>
@@ -102,7 +102,7 @@ export function ParentOffline() {
           </Text>
         </div>
 
-        <div className="parent-card">
+        <div className="parent-card approved-parent-card">
           <Text size="sm" c="dimmed">
             Espaço estimado utilizado
           </Text>
@@ -114,7 +114,7 @@ export function ParentOffline() {
           </Text>
         </div>
 
-        <div className="parent-card">
+        <div className="parent-card approved-parent-card">
           <Text size="sm" c="dimmed">
             Evidências & Registros
           </Text>
@@ -128,7 +128,7 @@ export function ParentOffline() {
       </div>
 
       {/* Games management table */}
-      <div className="parent-card">
+      <div className="parent-card approved-parent-card">
         <div className="section-head" style={{ marginBottom: 16 }}>
           <div>
             <h3>Gerenciamento de Jogos</h3>

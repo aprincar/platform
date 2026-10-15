@@ -69,9 +69,21 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
   const refresh = async () => {
     const storedTheme = (await db.settings.get('theme'))?.value;
-    const savedTheme = normalizeThemePreference(storedTheme);
+    const visualThemeSeed = (await db.settings.get('approvedVisualThemeV1'))?.value;
+    let savedTheme = normalizeThemePreference(storedTheme);
+
+    // The approved board defines Claro as the default product presentation.
+    // Existing preview profiles inherited "system" from the older direction,
+    // which makes the approved light UI open dark on phones using dark mode.
+    // Migrate once, then respect any theme choice the user makes afterwards.
+    if (!visualThemeSeed) {
+      savedTheme = 'light';
+      await db.settings.put({ key: 'theme', value: 'light' });
+      await db.settings.put({ key: 'approvedVisualThemeV1', value: true });
+    }
+
     setThemePreferenceState(savedTheme);
-    if (storedTheme !== savedTheme) {
+    if (storedTheme !== savedTheme && visualThemeSeed) {
       await db.settings.put({ key: 'theme', value: savedTheme });
     }
     const ps = await db.profiles.toArray();

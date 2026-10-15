@@ -1,0 +1,22 @@
+{
+  "mascot": {
+    "width": 408,
+    "height": 729,
+    "fully_transparent_fraction": 0.3497
+  },
+  "logo-horizontal-approved-v4.png": {
+    "width": 1482,
+    "height": 384,
+    "fully_transparent_fraction": 0.655
+  },
+  "logo-horizontal-approved-dark-v4.png": {
+    "width": 1482,
+    "height": 384,
+    "fully_transparent_fraction": 0.655
+  },
+  "logo-symbol-approved-v4.png": {
+    "width": 426,
+    "height": 384,
+    "fully_transparent_fraction": 0.4701
+  }
+}
