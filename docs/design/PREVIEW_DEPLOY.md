@@ -1,9 +1,12 @@
-# Publicação de prévia — Design System Aprincar
+# Publicação de prévia — Identidade Aprincar approved-v5
 
-Este arquivo aciona um novo build Pages a partir da main, sem substituir a aplicação atual.
+Esta alteração solicita um novo deploy **de prévia**, preservando a versão atual do produto na raiz do GitHub Pages.
 
 - Branch de prévia: `feat/approved-ui-1to1`
-- HEAD da prévia: `b10577ececb4a8171f7ca44ead8c24a7b2b25429`
-- Correção: logo e mascote aprovados, arquivos v4 com canal alfa real e identidade unificada entre App e Hub
-- Integridade: `docs/design/APPROVED_BRAND_ALPHA_QA.json`
-- Publicação solicitada em: 2026-10-11
+- HEAD da prévia: `45e2dc7d50be81c204c260c7df6f7445f7bd2800`
+- Logo: A azul arredondado + base branca do play + triângulo amarelo + tagline oficial
+- Mascote: original aprovado, canal alpha preservado, asset versionado `mascot-approved-v5.webp`
+- Contratos: `packages/core-tests/brand-system.test.ts` e `visual-contract.test.ts`
+- Data: 2026-10-14
+
+A aprovação visual continua pendente e o PR do redesign deve permanecer Draft.
