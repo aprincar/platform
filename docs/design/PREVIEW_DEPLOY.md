@@ -1,12 +1,12 @@
-# Publicação de prévia — Identidade Aprincar approved-v5
+# Publicação de prévia — Aprincar approved-v5
 
-Esta alteração solicita um novo deploy **de prévia**, preservando a versão atual do produto na raiz do GitHub Pages.
+Aciona um novo GitHub Pages na main para atualizar **somente a prévia** em `/platform/preview/approved-ui/`; a produção permanece em `/platform/`.
 
-- Branch de prévia: `feat/approved-ui-1to1`
-- HEAD da prévia: `45e2dc7d50be81c204c260c7df6f7445f7bd2800`
-- Logo: A azul arredondado + base branca do play + triângulo amarelo + tagline oficial
-- Mascote: original aprovado, canal alpha preservado, asset versionado `mascot-approved-v5.webp`
-- Contratos: `packages/core-tests/brand-system.test.ts` e `visual-contract.test.ts`
+- Branch da prévia: `feat/approved-ui-1to1`
+- SHA final da prévia: `98fab1890a9a256dccbcd8431ca8a1150473c850`
+- Logo horizontal com base branca ao redor do play, play amarelo e tagline
+- Mascote transparente versionado em `brand/mascot-approved-v5.webp`
+- Favicon, app icon e logo empilhada no mesmo contrato approved-v5
 - Data: 2026-10-14
 
-A aprovação visual continua pendente e o PR do redesign deve permanecer Draft.
+O redesign não está aprovado para merge na produção.
