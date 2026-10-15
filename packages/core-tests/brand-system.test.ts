@@ -18,10 +18,10 @@ const approvedAssets = [
 
 test('approved Aprincar identity uses only canonical board-derived runtime assets', () => {
   assert.match(ui, /data-aprincar-brand=["']approved-v5["']/);
-  assert.match(ui, /logo-symbol-approved-v4\.png/);
-  assert.match(ui, /logo-horizontal-approved-v4\.png/);
-  assert.match(ui, /logo-horizontal-approved-dark-v4\.png/);
-  assert.match(ui, /mascot-approved-v4\.webp/);
+  assert.match(ui, /logo-symbol-approved-v5\.svg/);
+  assert.match(ui, /logo-horizontal-approved-v5\.svg/);
+  assert.match(ui, /logo-horizontal-approved-dark-v5\.svg/);
+  assert.match(ui, /mascot-approved-v5\.webp/);
   assert.doesNotMatch(ui, /brand\/logo-horizontal\.svg/);
   assert.doesNotMatch(ui, /brand\/logo-symbol\.svg/);
   for (const name of approvedAssets) {
