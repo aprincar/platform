@@ -33,7 +33,6 @@ test('approved Aprincar identity uses only canonical board-derived runtime asset
   assert.match(guidelines, /Brincar hoje\. Descobrir sempre\./i);
 });
 
-
 test('board logo preserves white surround and approved tagline', () => {
   const logo = fs.readFileSync(new URL('logo-horizontal-approved-v5.svg', brandRoot), 'utf8');
   const symbol = fs.readFileSync(new URL('logo-symbol-approved-v5.svg', brandRoot), 'utf8');
