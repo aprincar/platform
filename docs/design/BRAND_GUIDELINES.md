@@ -35,13 +35,13 @@ O mascote geométrico anterior está descontinuado e não deve voltar ao produto
 
 ## Assets canônicos
 
-- `logo-symbol.svg`
-- `logo-horizontal.svg`
+- `logo-symbol-approved-v5.svg`
+- `logo-horizontal-approved-v5.svg`
 - `logo-stacked.svg`
 - `app-icon.svg`
 - `favicon.svg`
 - `monochrome.svg`
-- `mascot-approved.webp`
+- `mascot-approved-v5.webp`
 
 ## UI
 
@@ -64,3 +64,7 @@ Claro é a aparência de referência. Escuro, automático e alto contraste devem
 Não criar uma nova interpretação visual durante desenvolvimento. Se uma tela ainda não estiver migrada, ela deve ser adaptada aos boards em vez de gerar outra linguagem.
 
 A representação React vive em `@aprincar/ui`; os assets estáticos ficam em `apps/app/public/brand`.
+
+## Critérios de regressão — approved-v5
+
+O logo horizontal incorpora a tagline e mantém a base branca ao redor do play amarelo. Header, onboarding e telas de jogos consomem o mesmo símbolo. O mascote tem alpha real; a cópia v5 evita cache da URL previamente incorreta. O fundo de cards e hero jamais é uma camada do asset.

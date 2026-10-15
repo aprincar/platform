@@ -12,7 +12,7 @@ test('approved child experience follows the locked mobile-first hierarchy', () =
   assert.match(ui, /logo-horizontal-approved-v4\.png/);
   assert.match(ui, /logo-symbol-approved-v4\.png/);
   assert.doesNotMatch(ui, /compact \? 'logo-wordmark-approved\.png'/);
-  assert.match(ui, /approved-v3/);
+  assert.match(ui, /approved-v5/);
   assert.match(layout, /approved-bottom-nav/);
   assert.match(layout, /approved-mobile-topbar/);
   assert.match(layout, /\['\/worlds', 'Mundos', Globe2\]/);

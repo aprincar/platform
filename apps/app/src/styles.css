@@ -4451,3 +4451,8 @@ a {
 .aprincar-brand-static.force-light .aprincar-brand-logo-dark {
   display: block;
 }
+
+/* Board approved-v5: no CSS knockout or painted backgrounds on the mascot. */
+.approved-onboarding-logo { display: flex; align-items: center; min-height: 50px; width: 100%; margin: 0 0 12px; }
+.approved-onboarding-logo .aprincar-brand-logo { display: block; width: 172px; height: auto; }
+.approved-onboarding-mobile-mascot, .onboarding-mascot, .approved-mascot, .approved-game-limit-mascot, .loading-mascot { background: transparent !important; mix-blend-mode: normal !important; -webkit-mask-image: none !important; mask-image: none !important; }

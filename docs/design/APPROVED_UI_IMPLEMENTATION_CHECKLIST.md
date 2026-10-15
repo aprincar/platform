@@ -117,3 +117,11 @@ A implementação desta branch deve reproduzir os boards aprovados pelo produto.
 - [ ] Reduced motion.
 - [ ] Testes de navegação e jogos.
 - [ ] Publicação no Pages validada após merge.
+
+## Correção approved-v5 (2026-10-14)
+
+- [x] Base branca ao redor do play no SVG canônico.
+- [x] Tagline da marca horizontal.
+- [x] Header e onboarding usam a mesma identidade versionada.
+- [x] Mascote com alpha pré-existente disponibilizado em URL imutável v5.
+- [ ] Preview publicado inspecionado nos dispositivos reais.
