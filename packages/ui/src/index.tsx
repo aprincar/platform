@@ -45,12 +45,12 @@ export const APRINCAR_COLORS = {
 export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProperties }) {
   return (
     <img
-      src={`${import.meta.env.BASE_URL}brand/logo-symbol.svg`}
+      src={`${import.meta.env.BASE_URL}brand/logo-symbol-approved-v5.svg`}
       width={size}
       height={Math.round(size * (195 / 220))}
       aria-hidden="true"
       style={{ objectFit: 'contain', ...style }}
-      data-aprincar-brand="approved-v3"
+      data-aprincar-brand="approved-v5"
       className="aprincar-brand-mark"
     />
   );
@@ -58,10 +58,10 @@ export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProp
 
 export function Brand({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
   const width = compact ? 162 : 205;
-  const lightAsset = 'logo-horizontal.svg';
-  const darkAsset = 'logo-horizontal-dark.svg';
+  const lightAsset = 'logo-horizontal-approved-v5.svg';
+  const darkAsset = 'logo-horizontal-approved-dark-v5.svg';
   return (
-    <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v3">
+    <Group gap={0} wrap="nowrap" className="aprincar-brand" data-aprincar-brand="approved-v5">
       <div className={`aprincar-brand-static ${light ? 'force-light' : ''}`}>
         <img
           src={`${import.meta.env.BASE_URL}brand/${lightAsset}`}
@@ -91,12 +91,12 @@ export function AprincarMascot({
 }) {
   return (
     <img
-      src={`${import.meta.env.BASE_URL}brand/mascot-approved-v4.webp`}
+      src={`${import.meta.env.BASE_URL}brand/mascot-approved-v5.webp`}
       width={size}
       height={Math.round(size * 1.78)}
       className={className}
       alt="Mascote Aprincar: menino sorrindo e acenando"
-      data-aprincar-brand="approved-v3"
+      data-aprincar-brand="approved-v5"
       style={{ objectFit: 'contain' }}
     />
   );
