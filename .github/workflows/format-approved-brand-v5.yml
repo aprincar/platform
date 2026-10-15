@@ -1,0 +1,36 @@
+name: Format approved brand v5
+on:
+  push:
+    branches: [feat/approved-ui-1to1]
+    paths: [.github/workflows/format-approved-brand-v5.yml]
+permissions:
+  contents: write
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Format affected files
+        run: |
+          npx prettier --write \
+            packages/ui/src/index.tsx \
+            packages/core-tests/brand-system.test.ts \
+            packages/core-tests/visual-contract.test.ts \
+            apps/app/src/styles.css
+      - name: Commit changes
+        run: |
+          git config user.name "aprincar-brand"
+          git config user.email "actions@users.noreply.github.com"
+          git add packages/ui/src/index.tsx packages/core-tests/brand-system.test.ts packages/core-tests/visual-contract.test.ts apps/app/src/styles.css
+          if ! git diff --cached --quiet; then
+            git commit -m "style(brand): format approved-v5 assets and checks"
+            git push origin HEAD:feat/approved-ui-1to1
+          fi
