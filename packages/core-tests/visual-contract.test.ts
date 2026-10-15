@@ -8,9 +8,9 @@ test('approved child experience follows the locked mobile-first hierarchy', () =
     home = read('../../apps/app/src/pages/Home.tsx'),
     play = read('../../apps/app/src/pages/Play.tsx'),
     styles = read('../../apps/app/src/styles.css');
-  assert.match(ui, /mascot-approved-v4\.webp/);
-  assert.match(ui, /logo-horizontal-approved-v4\.png/);
-  assert.match(ui, /logo-symbol-approved-v4\.png/);
+  assert.match(ui, /mascot-approved-v5\.webp/);
+  assert.match(ui, /logo-horizontal-approved-v5\.svg/);
+  assert.match(ui, /logo-symbol-approved-v5\.svg/);
   assert.doesNotMatch(ui, /compact \? 'logo-wordmark-approved\.png'/);
   assert.match(ui, /approved-v5/);
   assert.match(layout, /approved-bottom-nav/);
