@@ -27,7 +27,7 @@
     "verify:release-version": "node scripts/verify-release-version.mjs"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.6",
+    "@changesets/cli": "^3.0.1",
     "@playwright/test": "^1.55.0",
     "@types/node": "^22.18.0",
     "eslint": "^9.35.0",
