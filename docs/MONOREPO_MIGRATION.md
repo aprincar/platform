@@ -29,3 +29,7 @@ O script importa sete árvores com commits fixos, sem squash e sem push. Valida 
 ## Critério de pronto
 
 `npm ci`, dev, build, check, auditoria e E2E no clone único; paridade de 14 jogos; publicação e URLs estáveis. A importação inicial não satisfaz sozinha esses critérios.
+
+## Recuperação de ancestralidade
+
+O PR #65 foi integrado por squash em `fa85ba82fa6cf17546f886ed69d3ad2195d3e7d8`. A árvore resultante é idêntica à árvore da branch importada (`b451b0723ef147fd4b182392bdbd4e164ef15b66`). O commit de recuperação conecta ambas as histórias sem modificar código nem reescrever a main. Integrar a branch `chore/restore-imported-history` exclusivamente por **Create a merge commit**. Confirmar os sete SHAs originais com `git merge-base --is-ancestor` após o merge, antes de arquivar qualquer origem.
