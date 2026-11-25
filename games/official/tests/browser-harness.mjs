@@ -199,7 +199,7 @@ function hostPrelude(options = {}) {
 }
 
 async function waitForProcessExit(processRef, timeoutMs = 1500) {
-  if (processRef.exitCode !== null) return;
+  if (processRef.exitCode !== null || processRef.signalCode !== null) return;
   await new Promise((resolve) => {
     let timer;
     const finish = () => {
@@ -249,17 +249,41 @@ async function launchChrome() {
     processRef,
     userDataDir,
     async close() {
-      if (processRef.exitCode === null) processRef.kill('SIGTERM');
-      await waitForProcessExit(processRef);
-      if (processRef.exitCode === null) {
-        processRef.kill('SIGKILL');
-        await waitForProcessExit(processRef, 1000);
+      const running = () => processRef.exitCode === null && processRef.signalCode === null;
+      if (running()) {
+        // Browser.close lets Chromium flush its profile and terminate child processes.
+        let browserClient;
+        try {
+          const version = await fetch('http://127.0.0.1:' + debugPort + '/json/version', {
+            signal: AbortSignal.timeout(1500)
+          }).then((response) => response.json());
+          browserClient = new CdpClient(version.webSocketDebuggerUrl);
+          await Promise.race([
+            browserClient.connect().then(() => browserClient.send('Browser.close')),
+            sleep(1500)
+          ]);
+        } catch {
+          // A crashed browser still needs process cleanup below.
+        } finally {
+          browserClient?.close();
+        }
+        await waitForProcessExit(processRef, 5000);
       }
-      fs.rmSync(userDataDir, {
+      if (running()) {
+        processRef.kill('SIGTERM');
+        await waitForProcessExit(processRef, 3000);
+      }
+      if (running()) {
+        processRef.kill('SIGKILL');
+        await waitForProcessExit(processRef, 3000);
+      }
+      if (running()) throw new Error('Chrome process did not exit during cleanup');
+      // Chromium children may briefly finish writing the profile after the parent exits.
+      await fs.promises.rm(userDataDir, {
         recursive: true,
         force: true,
-        maxRetries: 8,
-        retryDelay: 75
+        maxRetries: 20,
+        retryDelay: 100
       });
     },
   };
