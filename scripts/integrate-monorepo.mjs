@@ -40,36 +40,7 @@ write(eslintPath, read(eslintPath).replace("'**/coverage/**'", "'**/coverage/**'
 const prettierPath = '.prettierignore';
 write(prettierPath, read(prettierPath) + '\n# Imported modules retain their native validation during migration.\ngames/\ncontent/\ntemplates/\n');
 
-const ciPath = '.github/workflows/ci.yml';
-let ci = read(ciPath);
-ci = ci.slice(0, ci.indexOf('  canonical-games:')) + `  canonical-games:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - name: Validate imported workspaces
-        run: npm run check:content
-      - name: Require canonical game snapshot parity
-        run: npm run check:snapshot
-      - name: Verify canonical snapshot integrity
-        run: npm run verify:official
-`;
-write(ciPath, ci);
-
-const artifactsPath = '.github/workflows/build-artifacts.yml';
-let artifacts = read(artifactsPath);
-const begin = artifacts.indexOf('      - name: Read canonical games pin');
-const end = artifacts.indexOf('      - uses: actions/setup-node@v4');
-if (begin < 0 || end < 0) throw new Error('Unexpected artifact workflow');
-artifacts = artifacts.slice(0, begin) + artifacts.slice(end);
-artifacts = artifacts.replace('      - run: npm ci\n', '      - run: npm ci\n      - run: npm run check:snapshot\n');
-artifacts = artifacts.replace('        env:\n          APRINCAR_CANONICAL_GAMES_DIR: .canonical-games/dist\n', '');
-write(artifactsPath, artifacts);
+// Workflow changes are applied separately through the repository connector.
 
 const readmePath = 'README.md';
 const readme = read(readmePath);
