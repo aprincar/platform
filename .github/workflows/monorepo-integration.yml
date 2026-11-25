@@ -1,4 +1,4 @@
-name: One-time monorepo integration
+name: One-time monorepo integration (retry)
 on:
   push:
     branches: [chore/monorepo-consolidation]
@@ -35,7 +35,7 @@ jobs:
       - name: Generate official snapshot and format changed Platform files
         run: |
           npm run build:games
-          npx prettier --write package.json canonical-games.json scripts/integrate-monorepo.mjs scripts/sync-official-snapshot.mjs scripts/verify-official-snapshot.mjs eslint.config.js README.md docs/MONOREPO_MIGRATION.md .github/workflows/ci.yml .github/workflows/build-artifacts.yml
+          npx prettier --write package.json canonical-games.json scripts/integrate-monorepo.mjs scripts/sync-official-snapshot.mjs scripts/verify-official-snapshot.mjs eslint.config.js README.md docs/MONOREPO_MIGRATION.md
       - name: Save candidate on migration branch only
         run: |
           git config user.name "github-actions[bot]"
