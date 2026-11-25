@@ -60,6 +60,20 @@ Validação completa:
 npm run check
 ```
 
+## Desenvolvimento em monorepo
+
+Um único clone e um único lockfile. As fontes oficiais estão em `games/official`, jogos comunitários em `games/community`, currículo em `content/curriculum-bncc` e exemplos em `templates/`.
+
+```sh
+npm ci
+npm run dev
+npm run build
+npm run check:content
+npm run check:production
+```
+
+O build regenera o catálogo oficial localmente. O sandbox, SDK e manifest permanecem independentes do React. Veja [o plano de migração](docs/MONOREPO_MIGRATION.md).
+
 ## O que existe neste repositório
 
 - aplicação principal React/PWA;

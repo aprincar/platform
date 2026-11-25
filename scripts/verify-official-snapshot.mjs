@@ -7,7 +7,9 @@ const root = path.resolve(new URL('..', import.meta.url).pathname);
 const surfaces = [path.join(root, 'apps', 'app', 'public'), path.join(root, 'apps', 'hub', 'public')];
 const canonicalRoot = process.env.APRINCAR_CANONICAL_GAMES_DIR
   ? path.resolve(process.env.APRINCAR_CANONICAL_GAMES_DIR)
-  : null;
+  : fs.existsSync(path.join(root, 'games', 'official', 'dist', 'registry.json'))
+    ? path.join(root, 'games', 'official', 'dist')
+    : null;
 
 const sha = (file) => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const json = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));

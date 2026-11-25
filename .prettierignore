@@ -5,3 +5,8 @@ coverage
 **/public/registry.json
 
 **/docs/design/reference/**
+
+# Imported modules retain their native validation during migration.
+games/
+content/
+templates/

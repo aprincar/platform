@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const canonicalRoot = path.resolve(
-  process.env.APRINCAR_CANONICAL_GAMES_DIR ?? path.join(root, '.canonical-games', 'dist'),
+  process.env.APRINCAR_CANONICAL_GAMES_DIR ?? path.join(root, 'games', 'official', 'dist'),
 );
 const registrySource = path.join(canonicalRoot, 'registry.json');
 const extensionsSource = path.join(canonicalRoot, 'extensions');
