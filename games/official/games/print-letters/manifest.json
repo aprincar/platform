@@ -1,0 +1,55 @@
+{
+  "manifestVersion": 1,
+  "id": "aprincar.print-letters",
+  "kind": "game",
+  "version": "1.1.0",
+  "publisher": "aprincar",
+  "name": {
+    "pt-BR": "Letras de Forma"
+  },
+  "description": {
+    "pt-BR": "Trace letras de forma com guias grandes e pratique cada movimento."
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "writing.trace-letter"
+    ],
+    "secondarySkills": [
+      "writing.copy-letter"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "interests": [
+      "letters",
+      "writing",
+      "tracing"
+    ],
+    "playType": "practice"
+  },
+  "experience": {
+    "fantasy": "Oficina das letras",
+    "mechanic": "trace-print-letter",
+    "interaction": "draw",
+    "progression": {
+      "maxLevel": 6,
+      "adaptive": true
+    },
+    "learningSignals": [
+      "pathCoverage",
+      "shape"
+    ]
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}
