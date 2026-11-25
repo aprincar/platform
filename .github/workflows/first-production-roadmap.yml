@@ -1,0 +1,50 @@
+name: Configure first production milestones
+on:
+  push:
+    branches: [chore/first-production-roadmap]
+    paths: [.github/workflows/first-production-roadmap.yml]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  organize:
+    if: github.repository == 'aprincar/platform' && github.ref == 'refs/heads/chore/first-production-roadmap'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: aprincar/platform
+    steps:
+      - name: Create five milestones and classify existing issues
+        shell: bash
+        run: |
+          set -euo pipefail
+          entries=(
+            'F1|Fundação técnica|57 58 59 70 71'
+            'F2|Experiência infantil|60 72 73 79'
+            'F3|Jogos e conteúdo pedagógico|61 62 74 75 76 77'
+            'F4|Aprendizagem, responsáveis e privacidade|63 78 80 81 83'
+            'F5|Homologação e lançamento|64 82 84 85'
+          )
+          for p in P0 P1 P2; do
+            case "$p" in P0) color=b60205;; P1) color=fbca04;; P2) color=0e8a16;; esac
+            gh label create "priority:$p" --color "$color" --description "Prioridade $p" --force
+          done
+          gh label create "epic:production" --color 5319e7 --description "Primeira produção do Aprincar" --force
+          gh issue edit 56 --add-label epic:production
+          for entry in "${entries[@]}"; do
+            IFS='|' read -r phase title issues <<< "$entry"
+            milestone="$phase — $title"
+            number="$(gh api --paginate 'repos/aprincar/platform/milestones?state=all&per_page=100' | jq -rs --arg title "$milestone" 'map(.[]) | map(select(.title==$title)) | first | .number // empty')"
+            if [[ -z "$number" ]]; then
+              number="$(gh api --method POST repos/aprincar/platform/milestones -f title="$milestone" -f description="Roadmap da primeira produção; issue #56." --jq .number)"
+            fi
+            gh label create "phase:$phase" --color 1d76db --description "$title" --force
+            for issue in $issues; do
+              priority=P0
+              case "$issue" in 61) priority=P1;; 71) priority=P2;; esac
+              gh api --method PATCH "repos/aprincar/platform/issues/$issue" -F milestone="$number" --jq '{number,milestone:.milestone.title}'
+              gh issue edit "$issue" --add-label "phase:$phase,priority:$priority"
+            done
+          done
+          gh api 'repos/aprincar/platform/milestones?state=all&per_page=100' --jq '.[] | {number,title,open_issues,closed_issues}'
