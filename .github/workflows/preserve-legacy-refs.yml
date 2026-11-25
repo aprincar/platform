@@ -13,30 +13,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: chore/preserve-legacy-refs
           fetch-depth: 0
-      - name: Preserve every legacy branch and tag under explicit namespaces
+      - name: Preserve every legacy tip as Git ancestry without publishing old workflow trees
         shell: bash
         run: |
           set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p docs/legacy-git-refs
+          manifest=docs/legacy-git-refs/refs.tsv
+          printf 'repository\tref\tobject_sha\tcommit_sha\n' > "$manifest"
           for repo in games-official community-games curriculum-bncc game-template-vite game-template-react game-template-phaser game-template-threejs; do
-            url="https://github.com/aprincar/$repo.git"
-            git fetch --no-tags "$url" "+refs/heads/*:refs/legacy/$repo/heads/*" "+refs/tags/*:refs/legacy/$repo/tags/*"
+            git fetch --no-tags "https://github.com/aprincar/$repo.git" "+refs/heads/*:refs/legacy/$repo/heads/*" "+refs/tags/*:refs/legacy/$repo/tags/*"
             while read -r ref; do
               test -n "$ref" || continue
-              suffix="${ref#refs/legacy/$repo/}"
-              case "$suffix" in
-                heads/*) dst="refs/heads/archive/$repo/${suffix#heads/}" ;;
-                tags/*) dst="refs/tags/archive/$repo/${suffix#tags/}" ;;
-                *) exit 1 ;;
-              esac
-              sha="$(git rev-parse "$ref")"
-              existing="$(git ls-remote --refs origin "$dst" | cut -f1)"
-              if [[ -n "$existing" && "$existing" != "$sha" ]]; then
-                echo "Ref collision $dst; refusing overwrite"; exit 1
+              object="$(git rev-parse "$ref")"
+              commit="$(git rev-parse "$ref^{commit}")"
+              printf '%s\t%s\t%s\t%s\n' "$repo" "${ref#refs/legacy/$repo/}" "$object" "$commit" >> "$manifest"
+              if [[ "$(git cat-file -t "$object")" == tag ]]; then
+                git cat-file tag "$object" > "docs/legacy-git-refs/$object.tag"
               fi
-              if [[ -z "$existing" ]]; then git push origin "$ref:$dst"; fi
-              test "$(git ls-remote --refs origin "$dst" | cut -f1)" = "$sha"
-              echo "Verified $dst $sha"
+              if ! git merge-base --is-ancestor "$commit" HEAD; then
+                next="$(git commit-tree HEAD^{tree} -p HEAD -p "$commit" -m "chore: preserve legacy $repo ${ref#refs/legacy/$repo/}")"
+                git update-ref HEAD "$next"
+              fi
+              git merge-base --is-ancestor "$commit" HEAD
+              echo "Verified $repo $ref $commit"
             done < <(git for-each-ref --format='%(refname)' "refs/legacy/$repo/")
           done
-          echo 'Git refs preserved; release assets, issues and metadata still require separate archival.'
+          git add docs/legacy-git-refs/
+          git commit -m "docs: record archived branch and tag provenance"
+          git push origin HEAD:refs/heads/chore/preserve-legacy-refs
+          echo 'Git tips preserved; release assets, issues and metadata still require separate backup.'
