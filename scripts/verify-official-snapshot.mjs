@@ -39,7 +39,9 @@ for (let index = 0; index < surfaces.length; index += 1) {
       if (!fs.existsSync(path.join(dir, file)))
         errors.push(`${path.relative(root, surface)} missing ${slug}/${file}`);
     }
-    if (['game.html', 'manifest.json', 'integrity.json'].some((file) => !fs.existsSync(path.join(dir, file)))) {
+    if (
+      ['game.html', 'manifest.json', 'integrity.json'].some((file) => !fs.existsSync(path.join(dir, file)))
+    ) {
       continue;
     }
     const actual = sha(path.join(dir, 'game.html'));
