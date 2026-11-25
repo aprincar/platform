@@ -1,0 +1,47 @@
+name: Import pending official games redesign
+on:
+  push:
+    branches: [feat/migrate-official-games-redesign]
+    paths: [.github/workflows/import-games-redesign.yml]
+permissions:
+  contents: write
+jobs:
+  migrate:
+    if: github.repository == 'aprincar/platform' && github.ref == 'refs/heads/feat/migrate-official-games-redesign'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/migrate-official-games-redesign
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Preserve pending PR patch and history in the monorepo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          base=e46e7650f0dd16df143c5a30fbc27356ff4fe736
+          head=73f530922b668078954f1d2330ee6efd9ed0cf5b
+          git fetch --no-tags https://github.com/aprincar/games-official.git refs/pull/27/head
+          test "$(git rev-parse FETCH_HEAD)" = "$head"
+          git merge-base --is-ancestor "$base" HEAD
+          git diff --binary "$base" "$head" | git apply --index --directory=games/official
+          tree="$(git write-tree)"
+          merged="$(git commit-tree "$tree" -p HEAD -p "$head" -m 'feat(games): preserve draft visual redesign from games-official#27')"
+          git merge --ff-only "$merged"
+          git merge-base --is-ancestor "$head" HEAD
+          npm ci --no-audit
+          npm run build:games
+          git rm .github/workflows/import-games-redesign.yml
+          git add games/official/games apps/app/public apps/hub/public
+          git commit -m "chore: regenerate game snapshots for migrated redesign"
+          git push origin HEAD:refs/heads/feat/migrate-official-games-redesign
+      - name: Verify game contracts
+        run: |
+          npm run check:snapshot
+          npm run verify:official
+          npm run check -w games/official
