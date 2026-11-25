@@ -32,7 +32,7 @@ O catálogo de jogos oficiais está entrando em uma sprint própria de **hardeni
 
 Abra **https://aprincar.github.io/platform/**.
 
-O beta foi desenhado para funcionar no navegador e manter a experiência principal local-first. Problemas de navegação, instalação, progresso ou runtime devem ser reportados neste repositório; problemas específicos de jogos oficiais pertencem ao [aprincar/games-official](https://github.com/aprincar/games-official).
+O beta foi desenhado para funcionar no navegador e manter a experiência principal local-first. Problemas de navegação, instalação, progresso, runtime ou jogos oficiais devem ser reportados nas [issues deste repositório](https://github.com/aprincar/platform/issues).
 
 ### Quero rodar localmente
 
@@ -44,7 +44,7 @@ Requisitos:
 ```bash
 git clone https://github.com/aprincar/platform.git
 cd platform
-npm install
+npm ci
 npm run dev
 ```
 
@@ -54,10 +54,11 @@ Para o Hub:
 npm run dev:hub
 ```
 
-Validação completa:
+Validação completa (com Chrome/Chromium disponível para os jogos):
 
 ```bash
-npm run check
+npx playwright install chromium
+npm run check:production
 ```
 
 ## Desenvolvimento em monorepo
@@ -72,7 +73,7 @@ npm run check:content
 npm run check:production
 ```
 
-O build regenera o catálogo oficial localmente. O sandbox, SDK e manifest permanecem independentes do React. Veja [o plano de migração](docs/MONOREPO_MIGRATION.md).
+O build regenera o catálogo oficial localmente. Ao editar jogos, execute `npm run build:games` para atualizar o catálogo e os snapshots antes de testar no App ou Hub. O sandbox, SDK e manifest permanecem independentes do React. Veja [o plano de migração](docs/MONOREPO_MIGRATION.md).
 
 ## O que existe neste repositório
 
@@ -128,7 +129,7 @@ A V1 usa domínios de versão independentes:
 
 O SemVer dos pacotes não altera automaticamente o schema do manifest nem o protocolo do SDK.
 
-O gate de release verifica uma única versão de plataforma em todos os workspaces e no lockfile:
+O gate de release verifica a versão dos workspaces de plataforma (`apps/` e `packages/`) e suas entradas no lockfile. Jogos, conteúdo e templates conservam seus próprios contratos de versão:
 
 ```bash
 npm run verify:release-version

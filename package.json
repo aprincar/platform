@@ -30,7 +30,7 @@
     "verify:release-version": "node scripts/verify-release-version.mjs",
     "build:games": "npm run build -w aprincar-games-official && npm run registry -w aprincar-games-official && npm run sync:official",
     "check:content": "npm run check -w games/official && npm run check -w games/community && npm run check -w content/curriculum-bncc && npm run check -w templates/vite && npm run check -w templates/react && npm run check -w templates/phaser && npm run check -w templates/threejs",
-    "check:snapshot": "npm run build:games && git diff --exit-code -- apps/app/public/registry.json apps/app/public/extensions apps/hub/public/registry.json apps/hub/public/extensions"
+    "check:snapshot": "npm run build:games && node scripts/check-snapshot-clean.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",

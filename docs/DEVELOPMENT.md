@@ -1,29 +1,33 @@
-# Platform development
+# Aprincar development
 
 ## Requirements
 
-Node 22 and npm 10. Run `npm install` from this directory.
+Node 22 and npm 10. Clone `aprincar/platform` and run `npm ci` at the repository root. No secondary clone or lockfile is needed.
 
 ## Commands
 
 ```bash
 npm run dev
 npm run dev:hub
+npm run build:games
+npm run build
 npm run test
 npm run typecheck
 npm run lint
 npm run format:check
-npm run build
-npm run test:e2e
 npm run check
+npm run check:content
+npm run check:snapshot
+npm run test:e2e
+npm run check:production
 ```
 
-The E2E suite uses Playwright. Set `PLAYWRIGHT_EXECUTABLE_PATH` when the environment does not use the bundled browser.
+After changing an official game, run `npm run build:games` before testing the App or Hub; commit the regenerated artifacts together with their source. `check:snapshot` is a clean-checkout CI parity gate, not a formatter. The official browser suite requires system Chrome/Chromium (or `CHROME_BIN`); the Platform suite uses Playwright (`npx playwright install chromium`, or `PLAYWRIGHT_EXECUTABLE_PATH`).
 
 ## Local hooks
 
-Husky is installed by `npm install`. The commit hook checks staged files for common secrets and formats staged files. The push hook runs the unit tests.
+Only the root Husky configuration is installed. The commit hook checks staged files for common secrets and formats staged Platform source; the push hook runs the platform unit tests. Imported modules retain native checks.
 
 ## Adding an extension
 
-Build the game in its own repository, validate its manifest and registry entry, then publish the immutable artifact. The App consumes registry artifacts; it does not import `games/*`.
+Official source lives in `games/official/src`. Community submissions live in `games/community`; starter templates are in `templates/`. Validate each manifest and generated registry before publication. Games run as immutable sandboxed extension artifacts; the App never imports their implementation.
