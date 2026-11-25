@@ -1,0 +1,42 @@
+name: Preserve legacy Git refs
+on:
+  push:
+    branches: [chore/preserve-legacy-refs]
+    paths: [.github/workflows/preserve-legacy-refs.yml]
+permissions:
+  contents: write
+jobs:
+  preserve:
+    if: github.repository == 'aprincar/platform'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve every legacy branch and tag under explicit namespaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          for repo in games-official community-games curriculum-bncc game-template-vite game-template-react game-template-phaser game-template-threejs; do
+            url="https://github.com/aprincar/$repo.git"
+            git fetch --no-tags "$url" "+refs/heads/*:refs/legacy/$repo/heads/*" "+refs/tags/*:refs/legacy/$repo/tags/*"
+            while read -r ref; do
+              test -n "$ref" || continue
+              suffix="${ref#refs/legacy/$repo/}"
+              case "$suffix" in
+                heads/*) dst="refs/heads/archive/$repo/${suffix#heads/}" ;;
+                tags/*) dst="refs/tags/archive/$repo/${suffix#tags/}" ;;
+                *) exit 1 ;;
+              esac
+              sha="$(git rev-parse "$ref")"
+              existing="$(git ls-remote --refs origin "$dst" | cut -f1)"
+              if [[ -n "$existing" && "$existing" != "$sha" ]]; then
+                echo "Ref collision $dst; refusing overwrite"; exit 1
+              fi
+              if [[ -z "$existing" ]]; then git push origin "$ref:$dst"; fi
+              test "$(git ls-remote --refs origin "$dst" | cut -f1)" = "$sha"
+              echo "Verified $dst $sha"
+            done < <(git for-each-ref --format='%(refname)' "refs/legacy/$repo/")
+          done
+          echo 'Git refs preserved; release assets, issues and metadata still require separate archival.'
