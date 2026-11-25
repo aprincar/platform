@@ -1,0 +1,86 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { games } from '../src/config/games.mjs';
+
+const root = path.resolve(new URL('..', import.meta.url).pathname);
+const gamesDir = path.join(root, 'games');
+const challengeSource = fs.readFileSync(path.join(root, 'src/challenges/index.mjs'), 'utf8').replace(/\bexport\s+/g, '');
+const sdk = fs.readFileSync(path.join(root, 'src/runtime/sdk-bridge.js'), 'utf8');
+const brand = fs.readFileSync(path.join(root, 'src/runtime/brand.js'), 'utf8');
+
+// Common infrastructure
+const audio = fs.readFileSync(path.join(root, 'src/common/audio.js'), 'utf8');
+const vectorArt = fs.readFileSync(path.join(root, 'src/common/vector-art.js'), 'utf8');
+const feedback = fs.readFileSync(path.join(root, 'src/common/feedback.js'), 'utf8');
+const inputGestures = fs.readFileSync(path.join(root, 'src/common/input-gestures.js'), 'utf8');
+const layout = fs.readFileSync(path.join(root, 'src/common/layout.js'), 'utf8');
+const traceTools = fs.readFileSync(path.join(root, 'src/common/trace-tools.js'), 'utf8');
+const phaserConfig = fs.readFileSync(path.join(root, 'src/common/phaser-config.js'), 'utf8');
+const baseScene = fs.readFileSync(path.join(root, 'src/common/base-scene.js'), 'utf8');
+
+const phaser = fs.readFileSync(path.join(root, 'vendor/phaser.min.js'), 'utf8');
+const three = fs.readFileSync(path.join(root, 'vendor/three.bundle.min.js'), 'utf8');
+
+const css = `
+*{box-sizing:border-box}html,body,#game{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Inter,ui-rounded,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f6f2;color:#242523}canvas{display:block;touch-action:none}.three-ui{position:absolute;z-index:3;left:0;right:0;top:0;padding:20px 28px;pointer-events:none;text-align:center}.three-brand{position:absolute;left:22px;top:14px}.aprincar-game-lockup{display:flex;align-items:center;gap:8px;color:#2563eb;font:900 18px/1 ui-rounded,"Arial Rounded MT Bold","Trebuchet MS",Inter,system-ui,sans-serif}.aprincar-game-lockup svg{width:36px;height:36px;display:block}.aprincar-game-wordmark{display:inline-flex;letter-spacing:-.04em}.three-ui #three-level{position:absolute;right:26px;top:23px;color:#2563eb;font-weight:800}.three-ui h1{margin:28px auto 4px;font-size:clamp(24px,4vw,36px)}.three-ui p{margin:0;color:#6f716d;font-weight:700}#three-canvas{width:100%;height:100%}@media(max-width:600px){.three-ui{padding:12px 14px}.three-brand{left:12px;top:10px}.aprincar-game-lockup{font-size:14px;gap:5px}.aprincar-game-lockup svg{width:28px;height:28px}.three-ui #three-level{right:14px;top:15px;font-size:13px}.three-ui h1{margin:48px auto 4px;font-size:clamp(22px,7vw,30px);max-width:82vw}.three-ui p{font-size:13px;max-width:88vw;margin:0 auto;line-height:1.3}}@media(orientation:landscape) and (max-height:560px){.three-ui h1{margin:24px auto 2px}.three-ui p{font-size:12px}}`;
+
+for (const game of games) {
+  const dir = path.join(gamesDir, game.slug);
+  fs.mkdirSync(dir, { recursive: true });
+
+  const gameFile = path.join(root, `src/games/${game.slug}.js`);
+  const gameSpecificCode = fs.existsSync(gameFile) ? fs.readFileSync(gameFile, 'utf8') : '';
+
+  const config = JSON.stringify({
+    name: game.name,
+    mode: game.mode,
+    variant: game.variant,
+    answer: game.answer,
+    answers: game.answers,
+    skillId: game.skillId,
+    fantasy: game.experience.fantasy,
+    mechanic: game.experience.mechanic,
+    familyId: game.familyId,
+    objective: game.objective,
+    mobileFirst: game.mobileFirst === true
+  });
+
+  let engine;
+  if (game.mode === 'three') {
+    engine = `${three}\n${brand}\n${audio}\n${gameSpecificCode}`;
+  } else {
+    engine = `${phaser}\n${brand}\n${audio}\n${vectorArt}\n${feedback}\n${inputGestures}\n${layout}\n${traceTools}\n${phaserConfig}\n${baseScene}\n${gameSpecificCode}`;
+  }
+
+  const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${game.name} — Aprincar</title><style>${css}</style></head><body><div id="game"></div><script>window.APRINCAR_GAME_CONFIG=${config};</script><script>${sdk}</script><script>${challengeSource}</script><script>${engine}</script></body></html>`;
+
+  const manifest = {
+    manifestVersion: 1,
+    id: game.id,
+    kind: 'game',
+    version: '1.1.0',
+    publisher: 'aprincar',
+    name: { 'pt-BR': game.name },
+    description: { 'pt-BR': game.description },
+    engines: { aprincar: '^1.0.0', sdkProtocol: 1 },
+    entrypoints: { game: 'game.html' },
+    permissions: game.permissions ?? [],
+    optionalPermissions: [],
+    contributes: {
+      skills: [game.skillId],
+      secondarySkills: game.secondarySkills ?? [],
+      ageGuidance: { min: game.ages[0], max: game.ages[1] },
+      interests: game.interests,
+      playType: game.playType,
+    },
+    experience: game.experience,
+    offline: true,
+    bundleMode: 'single-html',
+  };
+
+  fs.writeFileSync(path.join(dir, 'game.html'), html);
+  fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(path.join(dir, 'README.md'), `# ${game.name}\n\nJogo oficial Aprincar. Fonte modular em \`src/games/${game.slug}.js\`; este diretório contém o artefato gerado.\n`);
+}
+
+console.log(`Built ${games.length} official games (Modular Architecture)`);

@@ -2,12 +2,15 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(new URL('..', import.meta.url).pathname);
+const root = fileURLToPath(new URL('..', import.meta.url));
 const surfaces = [path.join(root, 'apps', 'app', 'public'), path.join(root, 'apps', 'hub', 'public')];
 const canonicalRoot = process.env.APRINCAR_CANONICAL_GAMES_DIR
   ? path.resolve(process.env.APRINCAR_CANONICAL_GAMES_DIR)
-  : null;
+  : fs.existsSync(path.join(root, 'games', 'official', 'dist', 'registry.json'))
+    ? path.join(root, 'games', 'official', 'dist')
+    : null;
 
 const sha = (file) => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const json = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -36,7 +39,11 @@ for (let index = 0; index < surfaces.length; index += 1) {
       if (!fs.existsSync(path.join(dir, file)))
         errors.push(`${path.relative(root, surface)} missing ${slug}/${file}`);
     }
-    if (!fs.existsSync(path.join(dir, 'game.html'))) continue;
+    if (
+      ['game.html', 'manifest.json', 'integrity.json'].some((file) => !fs.existsSync(path.join(dir, file)))
+    ) {
+      continue;
+    }
     const actual = sha(path.join(dir, 'game.html'));
     const integrity = json(path.join(dir, 'integrity.json'));
     const manifest = json(path.join(dir, 'manifest.json'));
@@ -62,7 +69,7 @@ if (canonicalRoot) {
         for (const file of ['game.html', 'manifest.json', 'integrity.json']) {
           const canonical = path.join(canonicalRoot, 'extensions', slug, file);
           const deployed = path.join(surface, 'extensions', slug, file);
-          if (fs.existsSync(canonical) && fs.existsSync(deployed) && sha(canonical) !== sha(deployed)) {
+          if (!fs.existsSync(canonical) || !fs.existsSync(deployed) || sha(canonical) !== sha(deployed)) {
             errors.push(
               `${path.relative(root, surface)} ${slug}/${file} differs from canonical games-official`,
             );

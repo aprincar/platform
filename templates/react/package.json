@@ -1,0 +1,28 @@
+{
+  "name": "game-template-react",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "check": "npm run test && npm run typecheck && npm run build && npm run package && npm run validate",
+    "test": "node --test tests/*.test.mjs",
+    "package": "node scripts/package.mjs",
+    "validate": "node scripts/validate.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7",
+    "vite-plugin-singlefile": "^2.3.0",
+    "@vitejs/plugin-react": "^5.0.2",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9"
+  }
+}

@@ -7,12 +7,15 @@
   "packageManager": "npm@10.9.2",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "games/*",
+    "content/*",
+    "templates/*"
   ],
   "scripts": {
     "dev": "npm run dev -w @aprincar/app",
     "dev:hub": "npm run dev -w @aprincar/hub",
-    "build": "npm run build -w @aprincar/app && npm run build -w @aprincar/hub",
+    "build": "npm run build:games && npm run build -w @aprincar/app && npm run build -w @aprincar/hub",
     "typecheck": "tsc -p tsconfig.all.json",
     "test": "node --experimental-strip-types --test packages/core-tests/*.test.ts",
     "test:unit": "npm run test",
@@ -22,9 +25,12 @@
     "check": "npm run test && npm run typecheck && npm run lint && npm run build",
     "prepare": "husky",
     "verify:official": "node scripts/verify-official-snapshot.mjs",
-    "check:production": "npm run check && npm run verify:official && npm run test:e2e",
+    "check:production": "npm run check && npm run check:content && npm run verify:official && npm run test:e2e",
     "sync:official": "node scripts/sync-official-snapshot.mjs",
-    "verify:release-version": "node scripts/verify-release-version.mjs"
+    "verify:release-version": "node scripts/verify-release-version.mjs",
+    "build:games": "npm run build -w aprincar-games-official && npm run registry -w aprincar-games-official && npm run sync:official",
+    "check:content": "npm run check -w games/official && npm run check -w games/community && npm run check -w content/curriculum-bncc && npm run check -w templates/vite && npm run check -w templates/react && npm run check -w templates/phaser && npm run check -w templates/threejs",
+    "check:snapshot": "npm run build:games && node scripts/check-snapshot-clean.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",

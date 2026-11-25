@@ -1,0 +1,53 @@
+{
+  "manifestVersion": 1,
+  "id": "aprincar.color-match",
+  "kind": "game",
+  "version": "1.1.0",
+  "publisher": "aprincar",
+  "name": {
+    "pt-BR": "Mundo das Cores"
+  },
+  "description": {
+    "pt-BR": "Leve cada peça até a cor correspondente."
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "perception.colors.match"
+    ],
+    "secondarySkills": [],
+    "ageGuidance": {
+      "min": 2,
+      "max": 5
+    },
+    "interests": [
+      "colors",
+      "logic",
+      "drag"
+    ],
+    "playType": "learning"
+  },
+  "experience": {
+    "fantasy": "Ateliê das cores",
+    "mechanic": "drag-match",
+    "interaction": "drag",
+    "progression": {
+      "maxLevel": 5,
+      "adaptive": true
+    },
+    "learningSignals": [
+      "classification",
+      "accuracy"
+    ]
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}
