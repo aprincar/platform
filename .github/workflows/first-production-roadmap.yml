@@ -31,7 +31,7 @@ jobs:
             gh label create "priority:$p" --color "$color" --description "Prioridade $p" --force
           done
           gh label create "epic:production" --color 5319e7 --description "Primeira produção do Aprincar" --force
-          gh issue edit 56 --add-label epic:production
+          gh api --method POST repos/aprincar/platform/issues/56/labels -f 'labels[]=epic:production' --silent
           for entry in "${entries[@]}"; do
             IFS='|' read -r phase title issues <<< "$entry"
             milestone="$phase — $title"
@@ -44,7 +44,7 @@ jobs:
               priority=P0
               case "$issue" in 61) priority=P1;; 71) priority=P2;; esac
               gh api --method PATCH "repos/aprincar/platform/issues/$issue" -F milestone="$number" --jq '{number,milestone:.milestone.title}'
-              gh issue edit "$issue" --add-label "phase:$phase,priority:$priority"
+              gh api --method POST "repos/aprincar/platform/issues/$issue/labels" -f "labels[]=phase:$phase" -f "labels[]=priority:$priority" --silent
             done
           done
           gh api 'repos/aprincar/platform/milestones?state=all&per_page=100' --jq '.[] | {number,title,open_issues,closed_issues}'
