@@ -1,0 +1,63 @@
+name: One-time monorepo integration
+on:
+  push:
+    branches: [chore/monorepo-consolidation]
+    paths: [.github/workflows/monorepo-integration.yml]
+permissions:
+  contents: write
+concurrency:
+  group: aprincar-monorepo-integration
+  cancel-in-progress: false
+jobs:
+  integrate:
+    if: github.repository == 'aprincar/platform' && github.ref == 'refs/heads/chore/monorepo-consolidation'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/monorepo-consolidation
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Integrate local modules and regenerate the root lockfile
+        run: |
+          node scripts/integrate-monorepo.mjs
+          npm install --package-lock-only --ignore-scripts --no-audit
+          npm ci --no-audit
+      - name: Apply compatible security updates (no forced major upgrades)
+        run: |
+          npm audit fix --package-lock-only --ignore-scripts || echo "::warning::Some findings remain; final audit is mandatory."
+          npm ci --no-audit
+      - name: Generate official snapshot and format changed Platform files
+        run: |
+          npm run build:games
+          npx prettier --write package.json canonical-games.json scripts/integrate-monorepo.mjs scripts/sync-official-snapshot.mjs scripts/verify-official-snapshot.mjs eslint.config.js README.md docs/MONOREPO_MIGRATION.md .github/workflows/ci.yml .github/workflows/build-artifacts.yml
+      - name: Save candidate on migration branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/monorepo-integration.yml
+          git add -A
+          git diff --cached --stat
+          git commit -m "chore: unify Aprincar workspaces, local catalog and dependency lock"
+          git push origin HEAD:refs/heads/chore/monorepo-consolidation
+      - name: Platform checks
+        run: |
+          npm run check
+          npm run format:check
+          node scripts/check-boundaries.mjs
+          npm run verify:release-version
+          npm run check:snapshot
+      - name: Native content checks
+        run: npm run check:content
+      - name: Browser acceptance
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+      - name: Mandatory full security audit
+        if: always()
+        run: npm audit --audit-level=high
