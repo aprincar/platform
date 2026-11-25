@@ -1,0 +1,63 @@
+name: Monorepo and redesign compatibility
+on:
+  push:
+    branches: [chore/monorepo-redesign-compat]
+    paths: [.github/workflows/monorepo-redesign-compat.yml]
+permissions:
+  contents: read
+concurrency:
+  group: monorepo-redesign-compat
+  cancel-in-progress: true
+jobs:
+  compatibility:
+    if: github.repository == 'aprincar/platform' && github.ref == 'refs/heads/chore/monorepo-redesign-compat'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Simulate merging the pinned redesign without touching production
+        shell: bash
+        run: |
+          git config user.name "compatibility-test"
+          git config user.email "compatibility@example.invalid"
+          git merge --no-commit --no-ff 98fab1890a9a256dccbcd8431ca8a1150473c850 || {
+            git diff --name-only --diff-filter=U
+            while IFS= read -r file; do
+              case "$file" in
+                package-lock.json|canonical-games.json) git checkout --ours -- "$file"; git add "$file" ;;
+                *) echo "Unexpected conflict: $file"; exit 1 ;;
+              esac
+            done < <(git diff --name-only --diff-filter=U)
+            test -z "$(git diff --name-only --diff-filter=U)"
+          }
+          # Keep the monorepo provenance and regenerate lockfile against the merged package manifests.
+          git restore --source=HEAD --staged --worktree canonical-games.json package-lock.json
+          npm install --package-lock-only --ignore-scripts --no-audit
+          npm ci --no-audit
+      - name: Validate the merged candidate
+        run: |
+          npm run check
+          npm run verify:official
+          node scripts/check-boundaries.mjs
+          npm audit --audit-level=high
+      - name: Browser acceptance (no deployment)
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: redesign-compat-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
