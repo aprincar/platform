@@ -67,8 +67,12 @@ test('reversible counting publishes interactive targets at their current visual 
 
 test('browser harness waits for Chrome exit and retries temporary directory cleanup', () => {
   assert.match(browserHarness, /waitForProcessExit/);
-  assert.match(browserHarness, /maxRetries:\s*8/);
-  assert.match(browserHarness, /retryDelay:\s*75/);
+  assert.match(browserHarness, /Browser\.close/);
+  assert.match(browserHarness, /processRef\.signalCode/);
+  assert.match(browserHarness, /await fs\.promises\.rm\(userDataDir/);
+  const retries = Number(browserHarness.match(/maxRetries:\s*(\d+)/)?.[1]);
+  const delay = Number(browserHarness.match(/retryDelay:\s*(\d+)/)?.[1]);
+  assert.ok(retries >= 8 && delay >= 75, 'profile cleanup must retain bounded filesystem retries');
 });
 
 
