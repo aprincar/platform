@@ -14,3 +14,7 @@
 - Branches de diagnóstico do Pages e redesign: históricos preservados; workflows antigos substituídos pelo pipeline da main e checks atuais.
 
 Atualizações major de dependências são avaliadas no #59; não misturar upgrades incompatíveis com a primeira produção.
+
+## Dependências
+
+O grupo #25 de minor/patch será atualizado no lockfile desta mesma branch e validado com a suíte completa. Propostas de upgrade major #9, #13, #16, #17, #21, #22, #23 não fazem parte desta produção inicial: TypeScript, Vite, ESLint, lint-staged, lucide-react, plugin React e tipos Node permanecem nas majors suportadas pelo stack atual. Reavaliar em #59 após a primeira produção, exceto se uma correção de segurança exigir mudança antes. Não considerar as vulnerabilidades moderadas resolvidas sem nova evidência.
