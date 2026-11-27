@@ -18,3 +18,5 @@ Atualizações major de dependências são avaliadas no #59; não misturar upgra
 ## Dependências
 
 O grupo #25 de minor/patch será atualizado no lockfile desta mesma branch e validado com a suíte completa. Propostas de upgrade major #9, #13, #16, #17, #21, #22, #23 não fazem parte desta produção inicial: TypeScript, Vite, ESLint, lint-staged, lucide-react, plugin React e tipos Node permanecem nas majors suportadas pelo stack atual. Reavaliar em #59 após a primeira produção, exceto se uma correção de segurança exigir mudança antes. Não considerar as vulnerabilidades moderadas resolvidas sem nova evidência.
+
+Atualização compatível executada no run [46051826868](https://github.com/aprincar/platform/actions/runs/46051826868): router 1.170.46, React/React DOM 19.3.1 e Dexie 4.4.7 já resolvidos no lockfile. Mantine core/hooks/notifications permaneceram em 9.5.2; a atualização conjunta para 9.7.2 ainda precisa de validação (peer dependencies entre os três pacotes). O PR #25 é substituído pelo #88; a pendência de Mantine continua rastreada em #59. Não considerar a atualização ou a RC homologada até a suíte final passar.
