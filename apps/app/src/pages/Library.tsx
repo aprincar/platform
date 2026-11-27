@@ -1,7 +1,7 @@
-import { Badge, Button, Group, Text } from '@mantine/core';
-import { CloudCheck, CloudOff, Compass, Sparkles, Star, Trash2 } from 'lucide-react';
+import { Badge, Button } from '@mantine/core';
+import { CloudOff, Gamepad2 } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
 import { EmptyState } from '@aprincar/ui';
@@ -9,64 +9,56 @@ import { EmptyState } from '@aprincar/ui';
 export function Library() {
   const { registry, libraryIds, isOfflineReady } = useAppStore();
   const [offlineStatus, setOfflineStatus] = useState<Record<string, boolean>>({});
-
-  const list = registry.filter((e) => libraryIds.has(e.id));
+  const list = registry.filter((entry) => libraryIds.has(entry.id));
 
   useEffect(() => {
     let mounted = true;
-    (async () => {
-      const statusMap: Record<string, boolean> = {};
-      for (const item of list) {
-        statusMap[item.id] = await isOfflineReady(item);
-      }
-      if (mounted) setOfflineStatus(statusMap);
+    void (async () => {
+      const next: Record<string, boolean> = {};
+      for (const item of list) next[item.id] = await isOfflineReady(item);
+      if (mounted) setOfflineStatus(next);
     })();
     return () => {
       mounted = false;
     };
   }, [list.length, registry]);
 
-  const offlineReadyCount = list.filter((e) => offlineStatus[e.id]).length;
+  const offlineReadyCount = list.filter((entry) => offlineStatus[entry.id]).length;
 
   return (
-    <div className="aprincar-page">
-      <section className="section-head">
+    <div className="aprincar-page approved-library-page">
+      <section className="approved-catalog-header approved-library-header">
         <div>
-          <div className="child-eyebrow">Sua coleção</div>
-          <h1 style={{ fontSize: 36, margin: 0 }}>Biblioteca</h1>
-          <p>As brincadeiras que você escolheu guardar ficam reunidas aqui.</p>
+          <span className="approved-kicker">Sua coleção</span>
+          <h1>Biblioteca</h1>
+          <p>Jogos favoritos e atividades preparadas para voltar a brincar rapidamente.</p>
         </div>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-          <Badge size="lg" color="teal" variant="light" leftSection={<CloudOff size={14} />}>
-            {offlineReadyCount} de {list.length} prontas offline
-          </Badge>
-          <Button
-            component={Link}
-            to="/discover"
-            className="ap-secondary"
-            leftSection={<Compass size={17} />}
-          >
-            Descobrir mais
-          </Button>
-        </div>
+        <Badge size="lg" color="teal" variant="light" leftSection={<CloudOff size={14} />}>
+          {offlineReadyCount} de {list.length} offline
+        </Badge>
       </section>
 
       {list.length === 0 ? (
         <EmptyState
-          title="Sua biblioteca ainda está vazia"
-          description="Guarde suas brincadeiras favoritas para encontrá-las facilmente e prepará-las para brincar sem internet."
+          title="Sua biblioteca está pronta para crescer"
+          description="Escolha jogos no catálogo para guardar aqui."
           action={
-            <Button component={Link} to="/discover" className="ap-primary">
-              Explorar brincadeiras
+            <Button
+              component={Link}
+              to="/discover"
+              className="approved-primary-cta"
+              leftSection={<Gamepad2 size={17} />}
+            >
+              Explorar jogos
             </Button>
           }
         />
       ) : (
-        <div className="game-grid" style={{ marginTop: 16 }}>
-          {list.map((e) => (
-            <GameCard key={e.id} entry={e} />
+        <section className="approved-game-list">
+          {list.map((entry) => (
+            <GameCard key={entry.id} entry={entry} compact />
           ))}
-        </div>
+        </section>
       )}
     </div>
   );

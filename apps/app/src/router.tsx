@@ -4,6 +4,8 @@ import { Home } from './pages/Home';
 import { Discover } from './pages/Discover';
 import { Library } from './pages/Library';
 import { WorldDetail } from './pages/WorldDetail';
+import { Worlds } from './pages/Worlds';
+import { Progress } from './pages/Progress';
 import { Missions } from './pages/Missions';
 import { More } from './pages/More';
 import { Parent } from './pages/Parent';
@@ -18,9 +20,12 @@ const index = createRoute({ getParentRoute: () => root, path: '/', component: Ho
 const onboarding = createRoute({ getParentRoute: () => root, path: '/onboarding', component: Onboarding });
 const discover = createRoute({ getParentRoute: () => root, path: '/discover', component: Discover });
 const library = createRoute({ getParentRoute: () => root, path: '/library', component: Library });
+const worlds = createRoute({ getParentRoute: () => root, path: '/worlds', component: Worlds });
+const progress = createRoute({ getParentRoute: () => root, path: '/progress', component: Progress });
 const world = createRoute({ getParentRoute: () => root, path: '/world/$worldId', component: WorldDetail });
 const missions = createRoute({ getParentRoute: () => root, path: '/missions', component: Missions });
 const more = createRoute({ getParentRoute: () => root, path: '/more', component: More });
+const profile = createRoute({ getParentRoute: () => root, path: '/profile', component: More });
 const parent = createRoute({ getParentRoute: () => root, path: '/parent', component: Parent });
 const parentSkill = createRoute({
   getParentRoute: () => root,
@@ -46,9 +51,12 @@ export const router = createRouter({
     onboarding,
     discover,
     library,
+    worlds,
+    progress,
     world,
     missions,
     more,
+    profile,
     parent,
     parentSkill,
     parentOffline,

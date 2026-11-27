@@ -70,8 +70,8 @@ export function ParentSkillDetail() {
     offscreenSuggestions[skillId] ?? 'Explore atividades práticas e conversas em família no dia a dia.';
 
   return (
-    <div className="aprincar-page">
-      <section className="section-head">
+    <div className="aprincar-page approved-parent-page">
+      <section className="section-head approved-parent-header">
         <div>
           <Button
             variant="subtle"
@@ -82,7 +82,7 @@ export function ParentSkillDetail() {
           >
             Voltar para Visão Geral do Responsável
           </Button>
-          <div className="child-eyebrow">Detalhe pedagógico da habilidade</div>
+          <div className="approved-kicker">Detalhe pedagógico</div>
           <h2 style={{ fontSize: 32 }}>{skillTitle}</h2>
           <p>{skillDesc}</p>
         </div>
@@ -90,7 +90,7 @@ export function ParentSkillDetail() {
       </section>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
-        <div className="parent-card">
+        <div className="parent-card approved-parent-card">
           <h3>Estado de Domínio</h3>
           <Text size="sm" c="dimmed">
             O Aprincar avalia consistência em múltiplos contextos, sem notas escolares ou punições.
@@ -108,7 +108,7 @@ export function ParentSkillDetail() {
           </div>
         </div>
 
-        <div className="parent-card" style={{ background: 'var(--ap-purple-soft)' }}>
+        <div className="parent-card approved-parent-card" style={{ background: 'var(--ap-purple-soft)' }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             <Sparkles size={20} color="var(--ap-purple)" />
             <h3 style={{ margin: 0 }}>Sugestão fora da tela</h3>
@@ -122,7 +122,7 @@ export function ParentSkillDetail() {
         </div>
       </div>
 
-      <div className="parent-card">
+      <div className="parent-card approved-parent-card">
         <h3>Histórico de evidências registradas ({evidences.length})</h3>
         <Text size="sm" c="dimmed" mb="md">
           Cada rodada concluída com sucesso ou autonomia gera uma evidência pedagógica local.
