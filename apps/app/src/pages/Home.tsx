@@ -1,4 +1,7 @@
 import { Button } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { db } from '@aprincar/storage';
+import { recommendNextExperience, type LearningRecommendation } from '@aprincar/learning-engine';
 import { ArrowRight, BarChart3, Gamepad2 } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { AprincarMascot } from '@aprincar/ui';
@@ -15,12 +18,39 @@ const HOME_FAMILY_LABELS: Record<string, string> = {
 };
 
 export function Home() {
-  const { profile, registry } = useAppStore();
+  const { profile, registry, libraryIds, isOfflineReady } = useAppStore();
+  const [recommendation, setRecommendation] = useState<{ profileId: string; value: LearningRecommendation } | null>(null);
+  const [offline, setOffline] = useState(!navigator.onLine);
+  useEffect(() => {
+    const update = () => setOffline(!navigator.onLine);
+    window.addEventListener('online', update);
+    window.addEventListener('offline', update);
+    return () => {
+      window.removeEventListener('online', update);
+      window.removeEventListener('offline', update);
+    };
+  }, []);
+  useEffect(() => {
+    if (!profile) return;
+    let active = true;
+    void Promise.all([
+      db.skillStates.where('profileId').equals(profile.id).toArray(),
+      db.sessions.where('profileId').equals(profile.id).toArray(),
+      Promise.all(registry.map(async (entry) => [entry.id, await isOfflineReady(entry)] as const)),
+    ]).then(([skillStates, sessions, cached]) => {
+      if (!active) return;
+      const recentGameIds = sessions.sort((a, b) => a.startedAt.localeCompare(b.startedAt)).map((session) => session.extensionId);
+      const offlineReadyIds = new Set(cached.filter(([, ready]) => ready).map(([id]) => id));
+      setRecommendation({ profileId: profile.id, value: recommendNextExperience({ profile, registry, skillStates, recentGameIds, offlineReadyIds, libraryIds, isOffline: offline }) });
+    }).catch(() => { if (active) setRecommendation(null); });
+    return () => { active = false; };
+  }, [profile, registry, libraryIds, offline]);
   const age = profile?.age ?? 5;
   const fitting = registry.filter(
     (entry) => age >= (entry.ageGuidance?.min ?? 2) - 1 && age <= (entry.ageGuidance?.max ?? 10) + 1,
   );
-  const featured = (fitting.length ? fitting : registry).slice(0, 4);
+  const ranked = recommendation?.profileId === profile?.id ? recommendation.value : null;
+  const featured = ranked ? ranked.ranked.slice(0, 4).map(({ entry }) => entry) : offline ? [] : (fitting.length ? fitting : registry).slice(0, 4);
 
   return (
     <div className="aprincar-page approved-home">
@@ -75,13 +105,14 @@ export function Home() {
       <section className="approved-section">
         <div className="approved-section-head">
           <div>
-            <span>Para começar agora</span>
+            <span>{ranked?.recommended ? ranked.reason : 'Para começar agora'}</span>
             <h2>Jogos educativos</h2>
           </div>
           <Button component={Link} to="/discover" variant="subtle" className="approved-text-action">
             Ver catálogo <Gamepad2 size={16} />
           </Button>
         </div>
+        {offline && featured.length === 0 && <p>Nenhum jogo preparado para uso offline.</p>}
         <div className="approved-featured-grid">
           {featured.map((entry) => (
             <GameCard key={entry.id} entry={entry} compact />

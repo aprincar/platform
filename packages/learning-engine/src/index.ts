@@ -59,18 +59,27 @@ export function recommendNextExperience(input: LearningRecommendationInput): Lea
   const recentWindow = recentGameIds.slice(-5);
   const lastPlayedId = recentWindow.length > 0 ? recentWindow[recentWindow.length - 1] : null;
 
-  const ranked: RecommendationScore[] = registry.map((entry) => {
+  const available = isOffline ? registry.filter((entry) => offlineReadyIds.has(entry.id)) : registry;
+  const ranked: RecommendationScore[] = available.map((entry) => {
     let score = 50; // Base score
     const reasons: string[] = [];
 
     const contributesSkills = entry.skills ?? [];
     let focusMatch = false;
-    let needsPractice = false;
     let contextDiversity = false;
 
     // 1. Alinhamento com Foco Pedagógico & Estado de Habilidade
     for (const skillId of contributesSkills) {
-      if (focusSkills.has(skillId)) {
+      const domains: Record<string, string[]> = {
+        letters: ['literacy.'],
+        math: ['math.'],
+        logic: ['logic.'],
+        motor: ['writing.', 'motor.'],
+        creative: ['creativity.', 'perception.'],
+      };
+      if (focusSkills.has(skillId) || [...focusSkills].some((focus) =>
+        domains[focus]?.some((prefix) => skillId.startsWith(prefix)),
+      )) {
         score += 30;
         focusMatch = true;
         reasons.push('Desenvolve habilidade em foco');
@@ -80,7 +89,6 @@ export function recommendNextExperience(input: LearningRecommendationInput): Lea
       if (st) {
         if (st.state === 'developing' || st.state === 'exploring') {
           score += 20;
-          needsPractice = true;
         } else if (st.state === 'consolidated') {
           score -= 10; // Habilidade já dominada tem leve despriorização para dar espaço a novas
         }
@@ -167,13 +175,13 @@ export function recommendNextExperience(input: LearningRecommendationInput): Lea
     };
   });
 
-  ranked.sort((a, b) => b.score - a.score);
+  ranked.sort((a, b) => b.score - a.score || (a.entry.id < b.entry.id ? -1 : a.entry.id > b.entry.id ? 1 : 0));
 
   const top = ranked.length > 0 ? ranked[0]! : null;
 
   return {
     recommended: top ? top.entry : null,
-    reason: top ? top.reason : 'Explore as novidades do dia',
+    reason: top ? top.reason : isOffline ? 'Nenhum jogo preparado para uso offline.' : 'Explore as novidades do dia',
     ranked,
   };
 }
