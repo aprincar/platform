@@ -1,0 +1,58 @@
+name: Single branch production validation
+on:
+  push:
+    branches: [feat/production-v5-integration]
+    paths: [.github/workflows/single-branch-validation.yml]
+permissions:
+  contents: write
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/production-v5-integration
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Reconcile compatible Dependabot group on the existing branch
+        run: |
+          npm update --package-lock-only --ignore-scripts --no-audit @mantine/core @mantine/hooks @mantine/notifications @tanstack/react-router react react-dom dexie
+          git diff --exit-code -- '**/package.json' package.json
+          npm ci --no-audit
+          npm ls @mantine/core @mantine/hooks @mantine/notifications @tanstack/react-router react react-dom dexie --all
+          npm audit --audit-level=high
+      - name: Format consolidated files
+        run: |
+          npx prettier --write apps/app/src/pages/Missions.tsx packages/core-tests/learning-engine-context.test.ts e2e/helpers.ts e2e/missions-persistence.spec.ts docs/product/first-production-branch.md
+          bash -n scripts/setup-first-production-project.sh scripts/archive-legacy-repositories.sh
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/single-branch-validation.yml
+          git add -A
+          git commit -m 'chore: reconcile compatible dependencies and format single release branch'
+          git push origin HEAD:refs/heads/feat/production-v5-integration
+      - name: Validate consolidated candidate
+        run: |
+          npm run check
+          npm run format:check
+          npm run check:snapshot
+          npm run check:content
+          npm run verify:official
+          npm audit --audit-level=high
+      - name: Browser acceptance
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:e2e -- --max-failures=1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: single-release-validation
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
