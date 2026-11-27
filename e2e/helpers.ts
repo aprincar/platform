@@ -91,7 +91,7 @@ export async function completeOnboarding(page: Page, name: string) {
 
 export async function openGame(page: Page, gameId: string, title: string) {
   if (!page.url().includes('/discover')) {
-    await page.getByRole('link', { name: 'Descobrir', exact: true }).click();
+    await page.getByRole('link', { name: 'Jogos', exact: true }).click();
   }
   const card = page.locator(`[data-game-id="${gameId}"]`);
   await expect(card).toBeVisible({ timeout: 15000 });

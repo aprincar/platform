@@ -6,7 +6,7 @@ test.describe('Child Mode Community Games Filtering', () => {
     page,
   }) => {
     await completeOnboarding(page, 'Clara');
-    await page.getByRole('link', { name: 'Descobrir', exact: true }).first().click();
+    await page.getByRole('link', { name: 'Jogos', exact: true }).click();
     await expect(page.locator('.child-card').getByText('Comunidade')).toHaveCount(0);
 
     await page.getByLabel('Menu de perfis').click();
