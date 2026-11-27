@@ -1,0 +1,60 @@
+name: Audit and refresh compatible dependencies
+on:
+  push:
+    branches: [fix/production-dependency-audit]
+    paths: [.github/workflows/production-dependency-audit.yml]
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/production-dependency-audit
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Compare audit results with compatible fixes only
+        run: |
+          mkdir -p "$RUNNER_TEMP/audit"
+          npm ci --no-audit
+          npm audit --json > "$RUNNER_TEMP/audit/before.json" || true
+          npm audit fix --package-lock-only --ignore-scripts --no-audit || true
+          npm ci --no-audit
+          npm audit --json > "$RUNNER_TEMP/audit/after.json" || true
+          node --input-type=module - "$RUNNER_TEMP/audit" <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          for (const file of ['before.json', 'after.json']) {
+            const report = JSON.parse(fs.readFileSync(path.join(process.argv[2], file), 'utf8'));
+            if (!report.metadata?.vulnerabilities) throw Error('Missing audit evidence');
+            console.log(file, JSON.stringify(report.metadata.vulnerabilities));
+            for (const [name, v] of Object.entries(report.vulnerabilities || {})) {
+              console.log(name, v.severity, v.range, JSON.stringify(v.fixAvailable));
+            }
+          }
+          NODE
+          git diff --exit-code -- package.json
+          npm audit --audit-level=high
+      - name: Validate candidate
+        run: |
+          npm run check
+          npm run check:snapshot
+          npm run verify:official
+      - name: Publish lockfile changes on this branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/production-dependency-audit.yml
+          git add package-lock.json
+          git commit -m 'chore: refresh compatible dependency resolutions and remove temporary audit workflow'
+          git push origin HEAD:refs/heads/fix/production-dependency-audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-audit
+          path: ${{ runner.temp }}/audit/
