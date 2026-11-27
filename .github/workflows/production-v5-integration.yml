@@ -34,6 +34,33 @@ jobs:
                     git checkout --ours -- "$file"
                     git add "$file"
                     ;;
+                  games/official/tests/browser-harness.mjs)
+                    # Both branches fix the same cleanup race; retain the validated graceful CDP shutdown from main.
+                    git checkout --ours -- "$file"
+                    git add "$file"
+                    ;;
+                  games/official/tests/runtime-quality.test.mjs)
+                    # Keep the approved artwork and brand assertions from the games redesign,
+                    # while using the cleanup contract matching the retained harness.
+                    git checkout --theirs -- "$file"
+                    node --input-type=module - "$file" <<'NODE'
+          import fs from 'node:fs';
+          const file = process.argv[2];
+          let source = fs.readFileSync(file, 'utf8');
+          const original = source;
+          source = source.replace(/  assert\.match\(browserHarness, \/removeDirectoryWithRetry\/\);\n  assert\.match\(browserHarness, \/await sleep\\\(150\\\)\/\);/g, [
+            '  assert.match(browserHarness, /Browser\\.close/);',
+            '  assert.match(browserHarness, /processRef\\.signalCode/);',
+            '  assert.match(browserHarness, /await fs\\.promises\\.rm\\(userDataDir/);',
+            '  const retries = Number(browserHarness.match(/maxRetries:\\s*(\\d+)/)?.[1]);',
+            '  const delay = Number(browserHarness.match(/retryDelay:\\s*(\\d+)/)?.[1]);',
+            "  assert.ok(retries >= 8 && delay >= 75, 'profile cleanup must retain bounded filesystem retries');"
+          ].join('\n'));
+          if (source === original || source.includes('removeDirectoryWithRetry')) throw Error('Unexpected cleanup assertions');
+          fs.writeFileSync(file, source);
+          NODE
+                    git add "$file"
+                    ;;
                   *) echo "Manual reconciliation required: $file"; exit 1 ;;
                 esac
               done < <(git diff --name-only --diff-filter=U)
