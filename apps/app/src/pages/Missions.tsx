@@ -12,14 +12,24 @@ export function Missions() {
   const { profile } = useAppStore();
   const [history, setHistory] = useState<{ profileId: string; ids: Set<string> } | null>(null);
   const [error, setError] = useState('');
-  const completed = history?.profileId === profile?.id ? history?.ids ?? new Set<string>() : new Set<string>();
+  const completed =
+    history?.profileId === profile?.id ? (history?.ids ?? new Set<string>()) : new Set<string>();
   useEffect(() => {
     if (!profile) return;
     let active = true;
-    void db.missionHistory.where('profileId').equals(profile.id).toArray().then((rows) => {
-      if (active) setHistory({ profileId: profile.id, ids: new Set(rows.map((row) => row.missionId)) });
-    }).catch(() => { if (active) setError('Não foi possível carregar as missões.'); });
-    return () => { active = false; };
+    void db.missionHistory
+      .where('profileId')
+      .equals(profile.id)
+      .toArray()
+      .then((rows) => {
+        if (active) setHistory({ profileId: profile.id, ids: new Set(rows.map((row) => row.missionId)) });
+      })
+      .catch(() => {
+        if (active) setError('Não foi possível carregar as missões.');
+      });
+    return () => {
+      active = false;
+    };
   }, [profile?.id]);
   const visible = MISSIONS.filter((mission) => filter === 'all' || mission.worldId === filter);
   const toggle = async (id: string) => {
@@ -30,7 +40,15 @@ export function Missions() {
     try {
       await db.transaction('rw', db.missionHistory, async () => {
         if (await db.missionHistory.get(key)) await db.missionHistory.delete(key);
-        else await db.missionHistory.put({ id: key, profileId, missionId: id, worldId: mission.worldId, skills: [], completedAt: new Date().toISOString() });
+        else
+          await db.missionHistory.put({
+            id: key,
+            profileId,
+            missionId: id,
+            worldId: mission.worldId,
+            skills: [],
+            completedAt: new Date().toISOString(),
+          });
       });
       const rows = await db.missionHistory.where('profileId').equals(profileId).toArray();
       setHistory({ profileId, ids: new Set(rows.map((row) => row.missionId)) });
