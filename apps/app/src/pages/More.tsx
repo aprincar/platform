@@ -1,48 +1,9 @@
-import { Button, Modal, PasswordInput, Text, TextInput } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { BookOpen, ChevronRight, LockKeyhole, Palette, ShieldCheck, Sparkles, UserRound } from 'lucide-react';
-import { Link, useNavigate } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { db } from '@aprincar/storage';
+import { Link } from '@tanstack/react-router';
 import { useAppStore } from '../app-store';
 
 export function More() {
-  const navigate = useNavigate();
   const { profile, libraryIds } = useAppStore();
-  const [gateOpened, { open: openGate, close: closeGate }] = useDisclosure();
-  const [pinRequired, setPinRequired] = useState(false);
-  const [configuredPin, setConfiguredPin] = useState('');
-  const [pinInput, setPinInput] = useState('');
-  const [mathAnswer, setMathAnswer] = useState('');
-  const [mathProblem, setMathProblem] = useState({ q: '4 + 3', a: 7 });
-  const [gateError, setGateError] = useState('');
-
-  useEffect(() => {
-    db.settings.get('parentPin').then((r) => {
-      if (r?.value) {
-        setPinRequired(true);
-        setConfiguredPin(String(r.value));
-      } else {
-        setPinRequired(false);
-        const n1 = Math.floor(Math.random() * 5) + 3;
-        const n2 = Math.floor(Math.random() * 5) + 2;
-        setMathProblem({ q: `${n1} + ${n2}`, a: n1 + n2 });
-      }
-    });
-  }, [gateOpened]);
-
-  const handleEnterParent = () => {
-    const valid = pinRequired
-      ? pinInput.trim() === configuredPin
-      : Number(mathAnswer.trim()) === mathProblem.a;
-    if (!valid) {
-      setGateError(pinRequired ? 'PIN incorreto. Tente novamente.' : 'Resposta incorreta. Tente novamente.');
-      return;
-    }
-    setGateError('');
-    closeGate();
-    navigate({ to: '/parent' });
-  };
 
   return (
     <div className="aprincar-page approved-profile-page">
@@ -91,7 +52,7 @@ export function More() {
           </div>
           <ChevronRight size={19} />
         </Link>
-        <button type="button" className="approved-setting-link" onClick={openGate}>
+        <Link to="/parent" className="approved-setting-link">
           <div className="approved-setting-icon green">
             <ShieldCheck size={22} />
           </div>
@@ -100,34 +61,10 @@ export function More() {
             <span>Progresso, evidências e controles.</span>
           </div>
           <LockKeyhole size={18} />
-        </button>
+        </Link>
       </section>
 
-      <Modal opened={gateOpened} onClose={closeGate} title="Acesso do responsável" centered radius="xl">
-        <Text size="sm" c="dimmed" mb="md">
-          {pinRequired
-            ? 'Digite o PIN configurado.'
-            : `Para confirmar que você é um adulto, quanto é ${mathProblem.q}?`}
-        </Text>
-        {pinRequired ? (
-          <PasswordInput
-            value={pinInput}
-            onChange={(e) => setPinInput(e.currentTarget.value)}
-            error={gateError}
-            autoFocus
-          />
-        ) : (
-          <TextInput
-            value={mathAnswer}
-            onChange={(e) => setMathAnswer(e.currentTarget.value)}
-            error={gateError}
-            autoFocus
-          />
-        )}
-        <Button className="ap-primary" fullWidth mt="lg" onClick={handleEnterParent}>
-          Entrar
-        </Button>
-      </Modal>
+
     </div>
   );
 }

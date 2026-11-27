@@ -1,5 +1,8 @@
-import { Badge } from '@mantine/core';
-import { ChevronRight, Play, Star } from 'lucide-react';
+import { Badge, Button, Text } from '@mantine/core';
+import { ChevronRight, CloudDownload, Play, Star } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { OfflineBadge, TrustBadge } from '@aprincar/ui';
+import { useAppStore } from '../app-store';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
 import { getSkill } from '@aprincar/skill-graph';
 import { Link } from '@tanstack/react-router';
@@ -247,6 +250,19 @@ function Illustration({ entry }: { entry: RegistryEntry }) {
 }
 
 export function GameCard({ entry, compact = false }: { entry: RegistryEntry; compact?: boolean }) {
+  const store = useAppStore();
+  const [offline, setOffline] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    let active = true;
+    void store.isOfflineReady(entry).then((ready) => {
+      if (active) setOffline(ready);
+    }).catch(() => {
+      if (active) setError('Não foi possível verificar o acesso offline.');
+    });
+    return () => { active = false; };
+  }, [entry.id, entry.version]);
   const family = familyForGame(entry.id);
   const primarySkill = entry.skills[0] ? getSkill(entry.skills[0]) : undefined;
   const name = entry.name['pt-BR'] ?? entry.id.split('.').at(-1)?.replaceAll('-', ' ');
@@ -282,6 +298,30 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
         >
           {compact ? <ChevronRight size={22} /> : <Play size={20} fill="currentColor" />}
         </Link>
+      </div>
+      <div className="approved-game-card-content" style={{ flexWrap: 'wrap', gap: 8 }}>
+        <TrustBadge trust={entry.trust} />
+        <OfflineBadge ready={offline} />
+        <Button size="compact-sm" variant="light" onClick={() => void store.addLibrary(entry)}>
+          Biblioteca
+        </Button>
+        {!offline && (
+          <Button size="compact-sm" variant="subtle" loading={busy} leftSection={<CloudDownload size={16} />} onClick={async () => {
+            setBusy(true);
+            setError('');
+            try {
+              await store.prepareOffline(entry);
+              setOffline(await store.isOfflineReady(entry));
+            } catch {
+              setError('Não foi possível baixar. Tente novamente.');
+            } finally {
+              setBusy(false);
+            }
+          }}>
+            Disponibilizar offline
+          </Button>
+        )}
+        {error && <Text role="status" size="xs" c="red">{error}</Text>}
       </div>
     </article>
   );

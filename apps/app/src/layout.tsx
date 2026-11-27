@@ -30,6 +30,7 @@ import { Brand } from '@aprincar/ui';
 import { useEffect, useState } from 'react';
 import { useAppStore } from './app-store';
 import { Onboarding } from './pages/Onboarding';
+import { ParentGate } from './components/ParentGate';
 
 const childItems = [
   ['/', 'Início', Home],
@@ -48,6 +49,7 @@ export function RootLayout() {
   const navigate = useNavigate();
   const { profile, profiles, selectProfile, createProfile, initialized } = useAppStore();
   const playing = path.startsWith('/play/');
+  const adultRoute = path === '/settings' || path === '/parent' || path.startsWith('/parent/');
 
   useEffect(() => {
     const update = () => setOnline(navigator.onLine);
@@ -169,7 +171,7 @@ export function RootLayout() {
       </header>
 
       <main className="aprincar-shell approved-shell">
-        <Outlet />
+        {adultRoute ? <ParentGate><Outlet /></ParentGate> : <Outlet />}
       </main>
 
       <nav className="mobile-bottom-nav approved-bottom-nav" aria-label="Navegação infantil">

@@ -20,6 +20,7 @@ const DISCOVERY_FILTERS = [
     label: 'Cores',
     matches: (gameId: string) => gameId.includes('color') || gameId.includes('guided-painting'),
   },
+  { id: 'spatial', label: 'Formas', matches: (gameId: string) => familyForGame(gameId)?.id === 'spatial' },
   { id: 'memory', label: 'Memória', matches: (gameId: string) => gameId.includes('memory') },
   { id: 'creative', label: 'Criatividade', matches: (gameId: string) => gameId.includes('paint-free') },
 ] as const;
@@ -77,6 +78,7 @@ export function Discover() {
           {DISCOVERY_FILTERS.map((filter) => (
             <button
               key={filter.id}
+              aria-pressed={category === filter.id}
               className={category === filter.id ? 'active' : ''}
               onClick={() => setCategory(filter.id)}
             >

@@ -1,6 +1,7 @@
 import { Button, NumberInput, Text, TextInput } from '@mantine/core';
 import { ArrowLeft, ArrowRight, Check, Palette, Puzzle, Sparkles, Type, WholeWord } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { AprincarMascot, Brand, AvatarPicker, AgePicker, InterestPicker } from '@aprincar/ui';
 import { useAppStore } from '../app-store';
 
@@ -18,6 +19,9 @@ const toggle = (list: string[], value: string) =>
 
 export function Onboarding() {
   const store = useAppStore();
+  const navigate = useNavigate();
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
   const [age, setAge] = useState<number | string>(5);
@@ -30,15 +34,26 @@ export function Onboarding() {
     [step, name, age],
   );
 
-  const finish = async () =>
-    store.createProfile({
+  const finish = async () => {
+    if (saving) return;
+    setSaving(true);
+    setSaveError('');
+    try {
+      await store.createProfile({
       name: name.trim() || 'Criança Aprincar',
       age: Number(age),
       avatar,
       focusSkills,
       interests,
       dailyGoalMinutes,
-    });
+      });
+      await navigate({ to: '/' });
+    } catch {
+      setSaveError('Não foi possível salvar o perfil. Tente novamente.');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="onboarding-shell approved-onboarding-shell">
@@ -158,6 +173,7 @@ export function Onboarding() {
             </section>
           )}
 
+          {saveError && <Text role="alert" c="red">{saveError}</Text>}
           <div className="onboarding-actions">
             <Button
               variant="subtle"
@@ -178,7 +194,7 @@ export function Onboarding() {
                 Continuar
               </Button>
             ) : (
-              <Button className="approved-primary-cta" onClick={finish} rightSection={<Sparkles size={17} />}>
+              <Button className="approved-primary-cta" onClick={finish} loading={saving} rightSection={<Sparkles size={17} />}>
                 Criar meu espaço
               </Button>
             )}

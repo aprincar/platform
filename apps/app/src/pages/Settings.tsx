@@ -16,9 +16,10 @@ export function Settings() {
   const { allowCommunity, setAllowCommunity, themePreference, setThemePreference } = useAppStore();
   const [pin, setPin] = useState('');
   const [pinSaved, setPinSaved] = useState(false);
+  const [hasPin, setHasPin] = useState(false);
 
   useEffect(() => {
-    db.settings.get('parentPin').then((r) => r?.value && setPin(String(r.value)));
+    db.settings.get('parentPin').then((record) => setHasPin(Boolean(record?.value)));
   }, []);
 
   return (
@@ -99,6 +100,8 @@ export function Settings() {
               onClick={async () => {
                 if (pin.trim()) {
                   await db.settings.put({ key: 'parentPin', value: pin.trim() });
+                  setHasPin(true);
+                  setPin('');
                   setPinSaved(true);
                   setTimeout(() => setPinSaved(false), 1800);
                 }
@@ -106,13 +109,14 @@ export function Settings() {
             >
               {pinSaved ? 'Salvo!' : 'Salvar PIN'}
             </Button>
-            {pin && (
+            {hasPin && (
               <Button
                 variant="subtle"
                 color="red"
                 onClick={async () => {
                   await db.settings.delete('parentPin');
                   setPin('');
+                  setHasPin(false);
                 }}
               >
                 Remover
