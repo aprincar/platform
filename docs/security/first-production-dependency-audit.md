@@ -7,11 +7,11 @@ Issue #59. Baseline consolidada: `2f92a53efafadabdd08b8cb02f7133df51ed4941`.
 [Workflow 46035880712](https://github.com/aprincar/platform/actions/runs/46035880712) executou npm ci, auditoria JSON antes/depois, npm audit fix sem force, reinstalação, auditoria high, check da plataforma e paridade dos snapshots. O lockfile não mudou.
 
 | Severidade | Antes | Depois |
-| --- | ---: | ---: |
-| Crítica | 0 | 0 |
-| Alta | 0 | 0 |
-| Moderada | 4 | 4 |
-| Baixa | 0 | 0 |
+| ---------- | ----: | -----: |
+| Crítica    |     0 |      0 |
+| Alta       |     0 |      0 |
+| Moderada   |     4 |      4 |
+| Baixa      |     0 |      0 |
 
 Os quatro findings decorrem da cadeia de build: vite-plugin-pwa → workbox-build → glob → minimatch. Os advisories reportados incluem GHSA-3g3m-2fjr-6pw4 e GHSA-g3hv-75wg-m249. Não há correção compatível demonstrada por npm audit fix. Não usar --force nem substituir transitivos por majors incompatíveis sem prova.
 
