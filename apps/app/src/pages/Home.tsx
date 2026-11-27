@@ -49,7 +49,7 @@ export function Home() {
   const fitting = registry.filter(
     (entry) => age >= (entry.ageGuidance?.min ?? 2) - 1 && age <= (entry.ageGuidance?.max ?? 10) + 1,
   );
-  const ranked = recommendation?.profileId === profile?.id ? recommendation.value : null;
+  const ranked = recommendation && recommendation.profileId === profile?.id ? recommendation.value : null;
   const featured = ranked ? ranked.ranked.slice(0, 4).map(({ entry }) => entry) : offline ? [] : (fitting.length ? fitting : registry).slice(0, 4);
 
   return (
