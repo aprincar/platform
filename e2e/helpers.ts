@@ -49,16 +49,19 @@ export async function completeOnboarding(page: Page, name: string) {
   await page.goto('/');
   const state = await Promise.race([
     page
-      .waitForSelector('text=Jogos educativos', { timeout: 8000 })
+      .getByRole('heading', { name: 'Jogos educativos', exact: true })
+      .waitFor({ state: 'visible', timeout: 8000 })
       .then(() => 'home')
       .catch(() => null),
     page
-      .waitForSelector('text=Vamos criar seu espaço', { timeout: 8000 })
+      .getByRole('heading', { name: 'Vamos criar seu espaço', exact: true })
+      .waitFor({ state: 'visible', timeout: 8000 })
       .then(() => 'onboarding')
       .catch(() => null),
   ]);
 
   if (state === 'home') {
+    await expect(page.locator('.approved-shell')).toBeVisible();
     return;
   }
 
@@ -89,6 +92,7 @@ export async function completeOnboarding(page: Page, name: string) {
   await expect(page.getByRole('heading', { name: 'Descobrir é uma grande aventura!' })).toBeVisible({
     timeout: 15000,
   });
+  await expect(page.locator('.approved-shell')).toBeVisible();
 }
 
 export async function openGame(page: Page, gameId: string, title: string) {
