@@ -14,8 +14,7 @@ import fs from 'node:fs';
 
 const rootValidationDir = path.resolve(
   process.cwd(),
-  '..',
-  '_validation',
+  'test-results',
   'final-consistency',
   'screenshots',
   'games',
@@ -42,7 +41,7 @@ const VIEWPORT_CLASSES = [
   { name: 'desktop', width: 1440, height: 900 },
 ];
 
-test.describe('APRINCAR Final Consistency 150 Screenshots Matrix', () => {
+test.describe('APRINCAR Final Consistency Screenshots Matrix', () => {
   test.beforeEach(async ({ page }) => {
     await completeOnboarding(page, 'Kiver');
   });
