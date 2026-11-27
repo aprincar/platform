@@ -1,0 +1,32 @@
+name: Cloudflare Worker smoke
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/production-v5-integration]
+    paths:
+      - .github/workflows/cloudflare-worker-smoke.yml
+      - deploy/cloudflare/worker.mjs
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE: https://aprincar.kivervinicius.workers.dev
+    steps:
+      - name: Confirm Worker, published SHA and 14 games
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --retry 5 --retry-all-errors --retry-delay 5 --max-time 30 -fsSL "$SITE/" -o /tmp/index.html
+          curl -fsSL -D /tmp/headers "$SITE/platform/production-sha.txt" -o /tmp/sha
+          grep -qi '^x-aprincar-hosting: github-pages-origin' /tmp/headers
+          expected="$(curl -fsSL https://aprincar.github.io/platform/production-sha.txt)"
+          test "$(cat /tmp/sha)" = "$expected"
+          echo "Published SHA: $expected"
+          curl -fsSL "$SITE/platform/registry.json" | jq -e 'type == "array" and length == 14'
+          curl -fsSL "$SITE/platform/app/" -o /tmp/app.html
+          curl -fsSL "$SITE/platform/hub/" -o /tmp/hub.html
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST "$SITE/platform/")" = 405
+          test "$(curl -s -o /dev/null -w '%{http_code}' "$SITE/not-aprincar")" = 404

@@ -9,9 +9,11 @@ test.describe('Profiles Management', () => {
     await expect(page.getByText('Criar novo perfil infantil')).toBeVisible();
     await page.getByLabel('Nome ou apelido').fill('Lucas');
     await page.getByRole('button', { name: 'Criar perfil' }).click();
-    await expect(page.getByText(/Oi, Lucas!/)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Menu de perfis' })).toContainText('Lucas');
     await page.getByLabel('Menu de perfis').click();
     await page.getByRole('menuitem', { name: 'Sofia' }).click();
-    await expect(page.getByText(/Oi, Sofia!/)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Menu de perfis' })).toContainText('Sofia');
+    await page.reload();
+    await expect(page.getByRole('button', { name: 'Menu de perfis' })).toContainText('Sofia');
   });
 });

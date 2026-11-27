@@ -11,21 +11,21 @@ const LEGACY_THEME_MAP: Record<string, AprincarThemePreference> = {
 
 export const theme = createTheme({
   primaryColor: 'aprincar',
-  fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  headings: { fontFamily: '"Nunito Sans", Inter, system-ui, sans-serif' },
+  fontFamily: '"Poppins", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  headings: { fontFamily: '"Poppins", Inter, system-ui, sans-serif' },
   defaultRadius: 'lg',
   colors: {
     aprincar: [
-      '#EEF1FF',
-      '#DDE3FF',
-      '#C2CCFF',
-      '#A3B1FF',
-      '#8193FF',
-      '#657CFA',
-      '#4F6EF7',
-      '#3B55D9',
-      '#2F45B8',
-      '#22358E',
+      '#EFF6FF',
+      '#DBEAFE',
+      '#BFDBFE',
+      '#93C5FD',
+      '#60A5FA',
+      '#3B82F6',
+      '#2563EB',
+      '#1D4ED8',
+      '#1E40AF',
+      '#1E3A8A',
     ],
   },
 });
@@ -34,17 +34,17 @@ export const themeStyles: Record<
   AprincarResolvedTheme,
   { background: string; surface: string; text: string }
 > = {
-  light: { background: '#F7F7FB', surface: '#FFFFFF', text: '#20263A' },
-  dark: { background: '#101426', surface: '#191F36', text: '#F3F5FF' },
-  contrast: { background: '#000000', surface: '#111111', text: '#FFFFFF' },
+  light: { background: '#F8FBFF', surface: '#FFFFFF', text: '#0F172A' },
+  dark: { background: '#07142E', surface: '#0E2144', text: '#F8FAFC' },
+  contrast: { background: '#000000', surface: '#000000', text: '#FFFF00' },
 };
 
 export function normalizeThemePreference(value: unknown): AprincarThemePreference {
-  const candidate = String(value ?? 'system');
+  const candidate = String(value ?? 'light');
   if (candidate === 'system' || candidate === 'light' || candidate === 'dark' || candidate === 'contrast') {
     return candidate;
   }
-  return LEGACY_THEME_MAP[candidate] ?? 'system';
+  return LEGACY_THEME_MAP[candidate] ?? 'light';
 }
 
 export function resolveThemePreference(
@@ -72,7 +72,6 @@ export function observeThemePreference(preference: AprincarThemePreference): () 
   if (preference !== 'system' || typeof window === 'undefined' || !window.matchMedia) {
     return () => undefined;
   }
-
   const media = window.matchMedia('(prefers-color-scheme: dark)');
   const handleChange = () => applyThemePreference('system');
   media.addEventListener?.('change', handleChange);
