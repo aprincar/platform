@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { clickCanvasTarget, completeOnboarding, getGameState, openGame } from './helpers';
+import { clickCanvasTarget, completeOnboarding, confirmAdult, getGameState, openGame } from './helpers';
 
 test.describe('Gameplay and Evidence Generation', () => {
   test('renders a procedural Phaser round, rejects a wrong answer and advances on the correct answer', async ({
@@ -31,7 +31,8 @@ test.describe('Gameplay and Evidence Generation', () => {
       .toBeGreaterThan(initial.level);
 
     await page.goto('/parent');
-    await expect(page.getByText('Olá, responsável!')).toBeVisible({ timeout: 10000 });
+    await confirmAdult(page);
+    await expect(page.getByText('Painel do responsável')).toBeVisible({ timeout: 10000 });
     await expect(page.getByText('Contar até 10')).toBeVisible({ timeout: 10000 });
   });
 });

@@ -66,7 +66,7 @@ test.describe('APRINCAR Final Consistency Screenshots Matrix', () => {
         expect(hasHorizontalScroll).toBe(false);
 
         // Verify Exit Button & Header Presence
-        const exitBtn = page.getByRole('button', { name: 'Sair do jogo e voltar ao início' });
+        const exitBtn = page.getByRole('button', { name: 'Sair do jogo' });
         await expect(exitBtn).toBeVisible();
 
         // 1. Start Screenshot

@@ -49,11 +49,11 @@ export async function completeOnboarding(page: Page, name: string) {
   await page.goto('/');
   const state = await Promise.race([
     page
-      .waitForSelector('text=Mundos de Descoberta', { timeout: 8000 })
+      .waitForSelector('text=Jogos educativos', { timeout: 8000 })
       .then(() => 'home')
       .catch(() => null),
     page
-      .waitForSelector('text=Quem vai brincar?', { timeout: 8000 })
+      .waitForSelector('text=Vamos criar seu espaço', { timeout: 8000 })
       .then(() => 'onboarding')
       .catch(() => null),
   ]);
@@ -66,7 +66,7 @@ export async function completeOnboarding(page: Page, name: string) {
     await page.goto('/onboarding');
   }
 
-  const onboardingHeading = page.getByRole('heading', { name: 'Quem vai brincar?' });
+  const onboardingHeading = page.getByRole('heading', { name: 'Vamos criar seu espaço' });
   await expect(onboardingHeading).toBeVisible({ timeout: 15000 });
   await page.getByLabel('Nome ou apelido').fill(name);
   await page.getByRole('button', { name: 'Continuar' }).click();
@@ -74,17 +74,17 @@ export async function completeOnboarding(page: Page, name: string) {
     timeout: 10000,
   });
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'O que já gosta de explorar?' })).toBeVisible({
+  await expect(page.getByRole('heading', { name: 'O que gosta de explorar?' })).toBeVisible({
     timeout: 10000,
   });
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Interesses' })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole('heading', { name: 'O que desperta curiosidade?' })).toBeVisible({ timeout: 10000 });
   await page.getByRole('button', { name: 'Continuar' }).click();
   await expect(page.getByRole('heading', { name: 'Tempo para brincar' })).toBeVisible({
     timeout: 10000,
   });
   await page.getByRole('button', { name: 'Criar meu espaço' }).click();
-  await expect(page.getByRole('heading', { name: 'Mundos de Descoberta' })).toBeVisible({
+  await expect(page.getByRole('heading', { name: 'Descobrir é uma grande aventura!' })).toBeVisible({
     timeout: 15000,
   });
 }
@@ -95,7 +95,7 @@ export async function openGame(page: Page, gameId: string, title: string) {
   }
   const card = page.locator(`[data-game-id="${gameId}"]`);
   await expect(card).toBeVisible({ timeout: 15000 });
-  await card.getByRole('button', { name: 'Jogar' }).click();
+  await card.getByRole('link', { name: `Jogar ${title}` }).click();
   const iframe = page.locator(`iframe[title="${title}"]`);
   await expect(iframe).toBeVisible({ timeout: 15000 });
   const handle = await iframe.elementHandle();
@@ -224,4 +224,14 @@ export async function clickThreeTarget(page: Page, frame: Frame, target: GameTar
   expect(target.normalized).toBeTruthy();
   const box = await canvasBox(frame);
   await page.mouse.click(box.x + target.normalized!.x * box.width, box.y + target.normalized!.y * box.height);
+}
+
+export async function confirmAdult(page: Page) {
+  const input = page.getByRole('textbox', { name: /Quanto é/ });
+  await expect(input).toBeVisible();
+  const label = await page.locator('label').filter({ hasText: /Quanto é/ }).innerText();
+  const numbers = label.match(/\d+/g)?.map(Number) ?? [];
+  expect(numbers).toHaveLength(2);
+  await input.fill(String(numbers[0]! + numbers[1]!));
+  await page.getByRole('button', { name: 'Entrar' }).click();
 }
