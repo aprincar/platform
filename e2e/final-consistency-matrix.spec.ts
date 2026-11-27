@@ -28,6 +28,10 @@ const GAMES = [
   { id: 'aprincar.pattern-play', title: 'Trem dos Padrões', slug: 'pattern-play' },
   { id: 'aprincar.letter-hunt', title: 'Caça às Letras', slug: 'letter-hunt' },
   { id: 'aprincar.write-a', title: 'Ateliê de Letras', slug: 'write-a' },
+  { id: 'aprincar.cursive-letters', title: 'Oficina de Cursiva', slug: 'cursive-letters' },
+  { id: 'aprincar.print-letters', title: 'Letras de Forma', slug: 'print-letters' },
+  { id: 'aprincar.prewriting-trails', title: 'Caminhos da Escrita', slug: 'prewriting-trails' },
+  { id: 'aprincar.guided-painting', title: 'Pintura por Cores', slug: 'guided-painting' },
   { id: 'aprincar.paint-free', title: 'Pintura Livre', slug: 'paint-free' },
   { id: 'aprincar.memory-animals', title: 'Memória dos Bichos', slug: 'memory-animals' },
   { id: 'aprincar.space-shapes-3d', title: 'Formas no Espaço 3D', slug: 'space-shapes-3d' },
@@ -131,9 +135,9 @@ test.describe('APRINCAR Final Consistency Screenshots Matrix', () => {
         await page.waitForTimeout(300);
         await page.screenshot({ path: path.join(gameDir, `${vp.name}-02-mid.png`) });
 
-        // 3. Success / Final State Screenshot
+        // 3. Final screenshot (not proof of semantic success)
         await page.waitForTimeout(400);
-        await page.screenshot({ path: path.join(gameDir, `${vp.name}-03-success.png`) });
+        await page.screenshot({ path: path.join(gameDir, `${vp.name}-03-after-interaction.png`) });
       });
     }
   }

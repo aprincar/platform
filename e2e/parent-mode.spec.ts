@@ -24,5 +24,13 @@ test.describe('Parent Mode, Screen Time and PIN Protection', () => {
     await expect(page.getByText('Painel do responsável')).toBeVisible();
     await expect(page.getByText('Tempo de tela & Limites')).toBeVisible();
     await page.getByLabel('Limite diário (minutos)').fill('30');
+    for (const route of ['/settings', '/parent/offline', '/parent/skills/math.counting.1-10']) {
+      await page.goto(route);
+      await expect(page.getByLabel('PIN do responsável')).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Exportar backup' })).toHaveCount(0);
+      await page.getByLabel('PIN do responsável').fill('9999');
+      await page.getByRole('button', { name: 'Entrar' }).click();
+      await expect(page.getByText('PIN incorreto. Tente novamente.')).toBeVisible();
+    }
   });
 });

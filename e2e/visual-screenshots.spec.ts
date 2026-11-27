@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { completeOnboarding, openGame } from './helpers';
+import { completeOnboarding, confirmAdult, openGame } from './helpers';
 import path from 'node:path';
 
-const outDir = path.resolve(process.cwd(), '_validation/screenshots');
+const outDir = path.resolve(process.cwd(), 'test-results/visual-screenshots');
 
 test.describe('Visual Screenshots Capture', () => {
   test.beforeEach(async ({ page }) => {
@@ -12,7 +12,7 @@ test.describe('Visual Screenshots Capture', () => {
   test('1. Onboarding Screenshot', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/onboarding');
-    await expect(page.getByRole('heading', { name: 'Quem vai brincar?' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Vamos criar seu espaço' })).toBeVisible();
     await page.screenshot({ path: path.join(outDir, 'onboarding.png') });
   });
 
@@ -21,13 +21,13 @@ test.describe('Visual Screenshots Capture', () => {
 
     // Home
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: 'Mundos de Descoberta' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Descobrir é uma grande aventura!' })).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'mobile-home.png') });
 
     // Discover
     await page.goto('/discover');
-    await expect(page.getByRole('heading', { name: 'Brincadeiras organizadas por objetivo' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Jogos educativos' })).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'mobile-discover.png') });
 
@@ -49,7 +49,7 @@ test.describe('Visual Screenshots Capture', () => {
 
     // Tablet Home
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: 'Mundos de Descoberta' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Descobrir é uma grande aventura!' })).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'tablet-home.png') });
 
@@ -69,26 +69,30 @@ test.describe('Visual Screenshots Capture', () => {
     // Mobile Parent
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/parent');
-    await expect(page.getByText('Olá, responsável!')).toBeVisible();
+    await confirmAdult(page);
+    await expect(page.getByText('Painel do responsável')).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'parent-mobile.png') });
 
     // Tablet Parent
     await page.setViewportSize({ width: 820, height: 1180 });
     await page.goto('/parent');
-    await expect(page.getByText('Olá, responsável!')).toBeVisible();
+    await confirmAdult(page);
+    await expect(page.getByText('Painel do responsável')).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'parent-tablet.png') });
 
     // Desktop Parent
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/parent');
-    await expect(page.getByText('Olá, responsável!')).toBeVisible();
+    await confirmAdult(page);
+    await expect(page.getByText('Painel do responsável')).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'parent-desktop.png') });
 
     // Offline Manager
     await page.goto('/parent/offline');
+    await confirmAdult(page);
     await expect(page.getByRole('heading', { name: 'Gerenciador Offline' })).toBeVisible();
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(outDir, 'offline-manager.png') });
