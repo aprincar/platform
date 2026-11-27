@@ -28,7 +28,16 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Semantic and responsive E2E
-        run: npm run test:e2e
+        run: npm run test:e2e -- --max-failures=1
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: platform-e2e-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
 
   canonical-games:
     runs-on: ubuntu-latest
