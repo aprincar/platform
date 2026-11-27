@@ -171,7 +171,13 @@ export function RootLayout() {
       </header>
 
       <main className="aprincar-shell approved-shell">
-        {adultRoute ? <ParentGate><Outlet /></ParentGate> : <Outlet />}
+        {adultRoute ? (
+          <ParentGate>
+            <Outlet />
+          </ParentGate>
+        ) : (
+          <Outlet />
+        )}
       </main>
 
       <nav className="mobile-bottom-nav approved-bottom-nav" aria-label="Navegação infantil">

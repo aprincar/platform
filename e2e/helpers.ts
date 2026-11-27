@@ -78,7 +78,9 @@ export async function completeOnboarding(page: Page, name: string) {
     timeout: 10000,
   });
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'O que desperta curiosidade?' })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole('heading', { name: 'O que desperta curiosidade?' })).toBeVisible({
+    timeout: 10000,
+  });
   await page.getByRole('button', { name: 'Continuar' }).click();
   await expect(page.getByRole('heading', { name: 'Tempo para brincar' })).toBeVisible({
     timeout: 10000,
@@ -229,7 +231,10 @@ export async function clickThreeTarget(page: Page, frame: Frame, target: GameTar
 export async function confirmAdult(page: Page) {
   const input = page.getByRole('textbox', { name: /Quanto é/ });
   await expect(input).toBeVisible();
-  const label = await page.locator('label').filter({ hasText: /Quanto é/ }).innerText();
+  const label = await page
+    .locator('label')
+    .filter({ hasText: /Quanto é/ })
+    .innerText();
   const numbers = label.match(/\d+/g)?.map(Number) ?? [];
   expect(numbers).toHaveLength(2);
   await input.fill(String(numbers[0]! + numbers[1]!));

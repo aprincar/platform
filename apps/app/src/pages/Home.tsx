@@ -19,7 +19,10 @@ const HOME_FAMILY_LABELS: Record<string, string> = {
 
 export function Home() {
   const { profile, registry, libraryIds, isOfflineReady } = useAppStore();
-  const [recommendation, setRecommendation] = useState<{ profileId: string; value: LearningRecommendation } | null>(null);
+  const [recommendation, setRecommendation] = useState<{
+    profileId: string;
+    value: LearningRecommendation;
+  } | null>(null);
   const [offline, setOffline] = useState(!navigator.onLine);
   useEffect(() => {
     const update = () => setOffline(!navigator.onLine);
@@ -37,20 +40,43 @@ export function Home() {
       db.skillStates.where('profileId').equals(profile.id).toArray(),
       db.sessions.where('profileId').equals(profile.id).toArray(),
       Promise.all(registry.map(async (entry) => [entry.id, await isOfflineReady(entry)] as const)),
-    ]).then(([skillStates, sessions, cached]) => {
-      if (!active) return;
-      const recentGameIds = sessions.sort((a, b) => a.startedAt.localeCompare(b.startedAt)).map((session) => session.extensionId);
-      const offlineReadyIds = new Set(cached.filter(([, ready]) => ready).map(([id]) => id));
-      setRecommendation({ profileId: profile.id, value: recommendNextExperience({ profile, registry, skillStates, recentGameIds, offlineReadyIds, libraryIds, isOffline: offline }) });
-    }).catch(() => { if (active) setRecommendation(null); });
-    return () => { active = false; };
+    ])
+      .then(([skillStates, sessions, cached]) => {
+        if (!active) return;
+        const recentGameIds = sessions
+          .sort((a, b) => a.startedAt.localeCompare(b.startedAt))
+          .map((session) => session.extensionId);
+        const offlineReadyIds = new Set(cached.filter(([, ready]) => ready).map(([id]) => id));
+        setRecommendation({
+          profileId: profile.id,
+          value: recommendNextExperience({
+            profile,
+            registry,
+            skillStates,
+            recentGameIds,
+            offlineReadyIds,
+            libraryIds,
+            isOffline: offline,
+          }),
+        });
+      })
+      .catch(() => {
+        if (active) setRecommendation(null);
+      });
+    return () => {
+      active = false;
+    };
   }, [profile, registry, libraryIds, offline]);
   const age = profile?.age ?? 5;
   const fitting = registry.filter(
     (entry) => age >= (entry.ageGuidance?.min ?? 2) - 1 && age <= (entry.ageGuidance?.max ?? 10) + 1,
   );
   const ranked = recommendation && recommendation.profileId === profile?.id ? recommendation.value : null;
-  const featured = ranked ? ranked.ranked.slice(0, 4).map(({ entry }) => entry) : offline ? [] : (fitting.length ? fitting : registry).slice(0, 4);
+  const featured = ranked
+    ? ranked.ranked.slice(0, 4).map(({ entry }) => entry)
+    : offline
+      ? []
+      : (fitting.length ? fitting : registry).slice(0, 4);
 
   return (
     <div className="aprincar-page approved-home">

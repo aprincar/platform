@@ -63,8 +63,6 @@ export function More() {
           <LockKeyhole size={18} />
         </Link>
       </section>
-
-
     </div>
   );
 }

@@ -40,12 +40,12 @@ export function Onboarding() {
     setSaveError('');
     try {
       await store.createProfile({
-      name: name.trim() || 'Criança Aprincar',
-      age: Number(age),
-      avatar,
-      focusSkills,
-      interests,
-      dailyGoalMinutes,
+        name: name.trim() || 'Criança Aprincar',
+        age: Number(age),
+        avatar,
+        focusSkills,
+        interests,
+        dailyGoalMinutes,
       });
       await navigate({ to: '/' });
     } catch {
@@ -173,7 +173,11 @@ export function Onboarding() {
             </section>
           )}
 
-          {saveError && <Text role="alert" c="red">{saveError}</Text>}
+          {saveError && (
+            <Text role="alert" c="red">
+              {saveError}
+            </Text>
+          )}
           <div className="onboarding-actions">
             <Button
               variant="subtle"
@@ -194,7 +198,12 @@ export function Onboarding() {
                 Continuar
               </Button>
             ) : (
-              <Button className="approved-primary-cta" onClick={finish} loading={saving} rightSection={<Sparkles size={17} />}>
+              <Button
+                className="approved-primary-cta"
+                onClick={finish}
+                loading={saving}
+                rightSection={<Sparkles size={17} />}
+              >
                 Criar meu espaço
               </Button>
             )}

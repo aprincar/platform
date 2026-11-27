@@ -21,17 +21,27 @@ const registry = [math, letters];
 test('onboarding focus domains affect deterministic recommendations', () => {
   const profile = { id: 'p', name: 'Teste', focusSkills: ['math'] };
   assert.equal(recommendNextExperience({ registry, profile }).recommended?.id, math.id);
-  assert.equal(recommendNextExperience({ registry: [...registry].reverse(), profile }).recommended?.id, math.id);
+  assert.equal(
+    recommendNextExperience({ registry: [...registry].reverse(), profile }).recommended?.id,
+    math.id,
+  );
 });
 
 test('offline recommendations never select unavailable games', () => {
   assert.equal(recommendNextExperience({ registry, isOffline: true }).recommended, null);
-  const result = recommendNextExperience({ registry, isOffline: true, offlineReadyIds: new Set([letters.id]) });
+  const result = recommendNextExperience({
+    registry,
+    isOffline: true,
+    offlineReadyIds: new Set([letters.id]),
+  });
   assert.equal(result.recommended?.id, letters.id);
   assert.equal(result.ranked.length, 1);
 });
 
 test('immediate repetition is disfavored, and ties are stable', () => {
   assert.equal(recommendNextExperience({ registry, recentGameIds: [math.id] }).recommended?.id, letters.id);
-  assert.equal(recommendNextExperience({ registry }).recommended?.id, recommendNextExperience({ registry: [...registry].reverse() }).recommended?.id);
+  assert.equal(
+    recommendNextExperience({ registry }).recommended?.id,
+    recommendNextExperience({ registry: [...registry].reverse() }).recommended?.id,
+  );
 });

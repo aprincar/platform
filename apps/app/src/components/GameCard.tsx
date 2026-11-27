@@ -256,12 +256,17 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
   const [error, setError] = useState('');
   useEffect(() => {
     let active = true;
-    void store.isOfflineReady(entry).then((ready) => {
-      if (active) setOffline(ready);
-    }).catch(() => {
-      if (active) setError('Não foi possível verificar o acesso offline.');
-    });
-    return () => { active = false; };
+    void store
+      .isOfflineReady(entry)
+      .then((ready) => {
+        if (active) setOffline(ready);
+      })
+      .catch(() => {
+        if (active) setError('Não foi possível verificar o acesso offline.');
+      });
+    return () => {
+      active = false;
+    };
   }, [entry.id, entry.version]);
   const family = familyForGame(entry.id);
   const primarySkill = entry.skills[0] ? getSkill(entry.skills[0]) : undefined;
@@ -306,22 +311,32 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
           Biblioteca
         </Button>
         {!offline && (
-          <Button size="compact-sm" variant="subtle" loading={busy} leftSection={<CloudDownload size={16} />} onClick={async () => {
-            setBusy(true);
-            setError('');
-            try {
-              await store.prepareOffline(entry);
-              setOffline(await store.isOfflineReady(entry));
-            } catch {
-              setError('Não foi possível baixar. Tente novamente.');
-            } finally {
-              setBusy(false);
-            }
-          }}>
+          <Button
+            size="compact-sm"
+            variant="subtle"
+            loading={busy}
+            leftSection={<CloudDownload size={16} />}
+            onClick={async () => {
+              setBusy(true);
+              setError('');
+              try {
+                await store.prepareOffline(entry);
+                setOffline(await store.isOfflineReady(entry));
+              } catch {
+                setError('Não foi possível baixar. Tente novamente.');
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
             Disponibilizar offline
           </Button>
         )}
-        {error && <Text role="status" size="xs" c="red">{error}</Text>}
+        {error && (
+          <Text role="status" size="xs" c="red">
+            {error}
+          </Text>
+        )}
       </div>
     </article>
   );

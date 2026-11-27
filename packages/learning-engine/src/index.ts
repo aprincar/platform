@@ -77,9 +77,10 @@ export function recommendNextExperience(input: LearningRecommendationInput): Lea
         motor: ['writing.', 'motor.'],
         creative: ['creativity.', 'perception.'],
       };
-      if (focusSkills.has(skillId) || [...focusSkills].some((focus) =>
-        domains[focus]?.some((prefix) => skillId.startsWith(prefix)),
-      )) {
+      if (
+        focusSkills.has(skillId) ||
+        [...focusSkills].some((focus) => domains[focus]?.some((prefix) => skillId.startsWith(prefix)))
+      ) {
         score += 30;
         focusMatch = true;
         reasons.push('Desenvolve habilidade em foco');
@@ -175,13 +176,19 @@ export function recommendNextExperience(input: LearningRecommendationInput): Lea
     };
   });
 
-  ranked.sort((a, b) => b.score - a.score || (a.entry.id < b.entry.id ? -1 : a.entry.id > b.entry.id ? 1 : 0));
+  ranked.sort(
+    (a, b) => b.score - a.score || (a.entry.id < b.entry.id ? -1 : a.entry.id > b.entry.id ? 1 : 0),
+  );
 
   const top = ranked.length > 0 ? ranked[0]! : null;
 
   return {
     recommended: top ? top.entry : null,
-    reason: top ? top.reason : isOffline ? 'Nenhum jogo preparado para uso offline.' : 'Explore as novidades do dia',
+    reason: top
+      ? top.reason
+      : isOffline
+        ? 'Nenhum jogo preparado para uso offline.'
+        : 'Explore as novidades do dia',
     ranked,
   };
 }
